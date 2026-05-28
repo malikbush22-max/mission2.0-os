@@ -1051,7 +1051,109 @@
       try { return JSON.parse(raw); } catch { return null; }
     }
 
+    // ── BJ WORKOUT CONSTANTS (defined early so dayStats can use them) ──
+    const BJ_WORKOUTS = [
+      {day:1,name:"Total-Body Burn",dur:"11:00"},{day:2,name:"Core Activation",dur:"10:59"},
+      {day:3,name:"Chest and Core",dur:"10:48"},{day:4,name:"Lower Body Blast",dur:"15:53"},
+      {day:5,name:"Total-Body HIIT",dur:"16:35"},{day:6,name:"Mobility",dur:"14:46"},
+      {day:7,name:"Upper Body",dur:"21:09"},{day:8,name:"Lower Body Power",dur:"11:39"},
+      {day:9,name:"Total-Body Burn",dur:"10:42"},{day:10,name:"Core",dur:"10:59"},
+      {day:11,name:"Total-Body HIIT",dur:"16:28"},{day:12,name:"Lower-Body HIIT",dur:"15:45"},
+      {day:13,name:"Upper Body Burn",dur:"16:15"},{day:14,name:"Mobility Movements",dur:"21:05"},
+      {day:15,name:"Total-Body Burn",dur:"10:42"},{day:16,name:"Back Strength",dur:"11:04"},
+      {day:17,name:"Total-Body HIIT",dur:"16:28"},{day:18,name:"Lower Body Burn",dur:"16:04"},
+      {day:19,name:"Core Routine",dur:"21:01"},{day:20,name:"Total-Body Blast",dur:"20:23"},
+      {day:21,name:"Mobility",dur:"21:07"},{day:22,name:"Upper Body Burn",dur:"11:09"},
+      {day:23,name:"Total-Body Burn",dur:"10:51"},{day:24,name:"Upper Body Routine",dur:"16:03"},
+      {day:25,name:"Total-Body HIIT",dur:"16:28"},{day:26,name:"Lower Body HIIT",dur:"21:11"},
+      {day:27,name:"Upper Body Burn",dur:"21:06"},{day:28,name:"Total-Body Stretch",dur:"21:11"},
+      {day:29,name:"Total-Body Burn",dur:"10:52"},{day:30,name:"Total-Body HIIT",dur:"15:58"},
+      {day:31,name:"Total-Body HIIT",dur:"16:28"},{day:32,name:"Lower Body Routine",dur:"16:05"},
+      {day:33,name:"Total-Body Blast",dur:"20:09"},{day:34,name:"Chest and Back",dur:"21:11"},
+      {day:35,name:"Core Activation",dur:"21:07"},{day:36,name:"Total-Body Stretch",dur:"11:13"},
+      {day:37,name:"Upper Body Burn",dur:"15:59"},{day:38,name:"Lower Body Burn",dur:"16:09"},
+      {day:39,name:"Total-Body HIIT",dur:"16:28"},{day:40,name:"Total-Body Stretch",dur:"20:56"},
+      {day:41,name:"Upper Body and Cardio",dur:"21:13"},{day:42,name:"Total-Body Blast",dur:"20:08"},
+      {day:43,name:"Total-Body Obliterator",dur:"10:53"},{day:44,name:"Final Core Crusher",dur:"20:21"},
+      {day:45,name:"Ultimate Total-Body Routine",dur:"30:45"}
+    ];
+    const BJ_START_DATE = new Date(2026, 4, 28);
+    const BJ_START_DAY = 11;
+    function getCurrentBJDay() {
+      const now0 = new Date(); now0.setHours(0,0,0,0);
+      const diff = Math.floor((now0 - BJ_START_DATE) / 86400000);
+      return Math.min(45, Math.max(1, BJ_START_DAY + diff));
+    }
+    const BASE_ITEMS = [
+      { id:"morning", label:"🌅 Morning Routine", type:"sub", subs:["Wake up & stretch","Shower / freshen up","Skincare"] },
+      { id:"dogs",    label:"🐾 Dog Walks",       type:"sub", subs:["Walk Miles (quick)","Walk Penny (20–30 min)"] },
+      { id:"meals",   label:"🍽️ Meals",           type:"sub", subs:["Protein shake / Breakfast","Lunch","Dinner"] },
+      { id:"creatine",label:"💊 Creatine",         type:"dots", count:4 },
+      { id:"water",   label:"💧 Water (1 gallon)", type:"water", count:8 },
+      { id:"evening", label:"🌙 Evening Routine",  type:"sub", subs:["Plan tomorrow","Wind down","Sleep on time"] }
+    ];
+
+    // ── XP / LEVEL SYSTEM ──
+    const XP_LEVELS = [
+      {name:"Rookie",xp:0},{name:"Grinder",xp:100},{name:"Warrior",xp:250},
+      {name:"Champion",xp:500},{name:"Elite",xp:1000},{name:"Legend",xp:2000},{name:"GOAT",xp:5000}
+    ];
+    const XP_STORE = "mos_xp";
+    function loadXP() {
+      return safeJson(localStorage.getItem(XP_STORE)) || { total:0, level:0 };
+    }
+    function saveXP(xpObj) { localStorage.setItem(XP_STORE, JSON.stringify(xpObj)); }
+    function getCurrentLevel(total) {
+      let lv = 0;
+      for (let i = XP_LEVELS.length - 1; i >= 0; i--) {
+        if (total >= XP_LEVELS[i].xp) { lv = i; break; }
+      }
+      return lv;
+    }
+    function addXP(points, label = "") {
+      const xpObj = loadXP();
+      const prevLevel = xpObj.level;
+      xpObj.total += points;
+      xpObj.level = getCurrentLevel(xpObj.total);
+      saveXP(xpObj);
+      // Show XP toast
+      showXPToast("+" + points + " XP" + (label ? " · " + label : ""));
+      // Level up alert
+      if (xpObj.level > prevLevel) {
+        setTimeout(() => showToast("🏆 LEVEL UP! You are now " + XP_LEVELS[xpObj.level].name + "!"), 800);
+      }
+      // Update nav streak chip to show XP
+      renderXPChip();
+    }
+    function renderXPChip() {
+      const el = document.getElementById("xpChip");
+      if (!el) return;
+      const xpObj = loadXP();
+      const lv = xpObj.level;
+      const name = XP_LEVELS[lv].name;
+      const next = lv < XP_LEVELS.length - 1 ? XP_LEVELS[lv+1].xp : 9999;
+      const prev = XP_LEVELS[lv].xp;
+      const pct = Math.min(100, Math.round(((xpObj.total - prev) / (next - prev)) * 100));
+      el.innerHTML = "⚡ " + xpObj.total + " XP · " + name + " · " + pct + "% to next";
+    }
+    function showXPToast(msg) {
+      let el = document.getElementById("xpToast");
+      if (!el) {
+        el = document.createElement("div");
+        el.id = "xpToast";
+        el.style.cssText = "position:fixed;top:80px;right:14px;z-index:9999;background:linear-gradient(135deg,#00d4b8,#f5a623);color:#000;font-family:'DM Mono',monospace;font-weight:700;font-size:15px;letter-spacing:1px;padding:8px 16px;border-radius:99px;opacity:0;transform:translateY(8px);transition:all .3s;pointer-events:none;box-shadow:0 4px 14px rgba(0,212,184,.35);";
+        document.body.appendChild(el);
+      }
+      el.textContent = msg;
+      el.style.opacity = "1";
+      el.style.transform = "translateY(0)";
+      clearTimeout(el._timer);
+      el._timer = setTimeout(() => { el.style.opacity = "0"; el.style.transform = "translateY(8px)"; }, 2200);
+      if (navigator.vibrate) navigator.vibrate(25);
+    }
+
     let state = loadState();
+
     let activeTab = "today";
     let journalDraftTags = [];
     let timer = {
@@ -1152,12 +1254,43 @@
 
     function dayStats(dateKey = today()) {
       const tasks = getTasksForDate(dateKey);
-      const done = tasks.filter(task => isTaskDone(task, dateKey)).length;
+      let taskDone = tasks.filter(task => isTaskDone(task, dateKey)).length;
       const overdue = tasks.filter(task => isTaskOverdue(task, dateKey)).length;
       const journalCount = state.journal.filter(entry => entry.date === dateKey).length;
       const photoCount = state.photos.filter(photo => photo.date === dateKey).length;
-      const pct = tasks.length ? Math.round((done / tasks.length) * 100) : 0;
-      return { tasks, total: tasks.length, done, remaining: Math.max(0, tasks.length - done), overdue, pct, journalCount, photoCount };
+
+      // Include base day items + BJ workout in progress (only for today)
+      let baseTotal = 0;
+      let baseDone = 0;
+      if (dateKey === todayKey()) {
+        const bs = safeJson(localStorage.getItem("bd_" + dateKey)) || {};
+        BASE_ITEMS.forEach(item => {
+          baseTotal += 1;
+          if (item.type === "sub") {
+            const subs = bs[item.id + "_subs"] || [];
+            if (subs.filter(Boolean).length === item.subs.length) baseDone += 1;
+          } else if (item.type === "dots" || item.type === "water") {
+            if (bs[item.id + "_done"] || (bs[item.id] || 0) >= item.count) baseDone += 1;
+          } else {
+            if (bs[item.id]) baseDone += 1;
+          }
+        });
+
+        // BJ Workout
+        const ws2 = safeJson(localStorage.getItem("wk_" + dateKey)) || {};
+        const bjDay2 = getCurrentBJDay();
+        baseTotal += 1;
+        if (ws2.bjDone || bjDay2 < BJ_START_DAY) baseDone += 1;
+        if (ws2.extraType && ws2.extraType !== "none") {
+          baseTotal += 1;
+          if (ws2.extraDone) baseDone += 1;
+        }
+      }
+
+      const total = tasks.length + baseTotal;
+      const done = taskDone + baseDone;
+      const pct = total ? Math.round((done / total) * 100) : 0;
+      return { tasks, total, done, remaining: Math.max(0, total - done), overdue, pct, journalCount, photoCount };
     }
 
     function streakCount() {
@@ -1505,12 +1638,16 @@
 
     function toggleTask(id) {
       const done = completionsFor();
+      const wasDone = Boolean(done[id]);
       done[id] = !done[id];
       if (!done[id]) delete done[id];
       saveState();
       updateHistory();
       render();
-      if (navigator.vibrate && done[id]) navigator.vibrate([20, 15, 20]);
+      if (!wasDone && done[id]) {
+        if (navigator.vibrate) navigator.vibrate([20, 15, 20]);
+        addXP(20, "Task complete");
+      }
     }
 
     function addTask(event) {
@@ -2121,49 +2258,7 @@
     // BULLYJUICE + BASE DAY + PROTEIN
     // ══════════════════════════════════════
 
-    const BJ_WORKOUTS = [
-      {day:1,name:"Total-Body Burn",dur:"11:00"},{day:2,name:"Core Activation",dur:"10:59"},
-      {day:3,name:"Chest and Core",dur:"10:48"},{day:4,name:"Lower Body Blast",dur:"15:53"},
-      {day:5,name:"Total-Body HIIT",dur:"16:35"},{day:6,name:"Mobility",dur:"14:46"},
-      {day:7,name:"Upper Body",dur:"21:09"},{day:8,name:"Lower Body Power",dur:"11:39"},
-      {day:9,name:"Total-Body Burn",dur:"10:42"},{day:10,name:"Core",dur:"10:59"},
-      {day:11,name:"Total-Body HIIT",dur:"16:28"},{day:12,name:"Lower-Body HIIT",dur:"15:45"},
-      {day:13,name:"Upper Body Burn",dur:"16:15"},{day:14,name:"Mobility Movements",dur:"21:05"},
-      {day:15,name:"Total-Body Burn",dur:"10:42"},{day:16,name:"Back Strength",dur:"11:04"},
-      {day:17,name:"Total-Body HIIT",dur:"16:28"},{day:18,name:"Lower Body Burn",dur:"16:04"},
-      {day:19,name:"Core Routine",dur:"21:01"},{day:20,name:"Total-Body Blast",dur:"20:23"},
-      {day:21,name:"Mobility",dur:"21:07"},{day:22,name:"Upper Body Burn",dur:"11:09"},
-      {day:23,name:"Total-Body Burn",dur:"10:51"},{day:24,name:"Upper Body Routine",dur:"16:03"},
-      {day:25,name:"Total-Body HIIT",dur:"16:28"},{day:26,name:"Lower Body HIIT",dur:"21:11"},
-      {day:27,name:"Upper Body Burn",dur:"21:06"},{day:28,name:"Total-Body Stretch",dur:"21:11"},
-      {day:29,name:"Total-Body Burn",dur:"10:52"},{day:30,name:"Total-Body HIIT",dur:"15:58"},
-      {day:31,name:"Total-Body HIIT",dur:"16:28"},{day:32,name:"Lower Body Routine",dur:"16:05"},
-      {day:33,name:"Total-Body Blast",dur:"20:09"},{day:34,name:"Chest and Back",dur:"21:11"},
-      {day:35,name:"Core Activation",dur:"21:07"},{day:36,name:"Total-Body Stretch",dur:"11:13"},
-      {day:37,name:"Upper Body Burn",dur:"15:59"},{day:38,name:"Lower Body Burn",dur:"16:09"},
-      {day:39,name:"Total-Body HIIT",dur:"16:28"},{day:40,name:"Total-Body Stretch",dur:"20:56"},
-      {day:41,name:"Upper Body and Cardio",dur:"21:13"},{day:42,name:"Total-Body Blast",dur:"20:08"},
-      {day:43,name:"Total-Body Obliterator",dur:"10:53"},{day:44,name:"Final Core Crusher",dur:"20:21"},
-      {day:45,name:"Ultimate Total-Body Routine",dur:"30:45"}
-    ];
 
-    const BJ_START_DATE = new Date(2026, 4, 28); // May 28 = Day 11
-    const BJ_START_DAY = 11;
-
-    function getCurrentBJDay() {
-      const now0 = new Date(); now0.setHours(0,0,0,0);
-      const diff = Math.floor((now0 - BJ_START_DATE) / 86400000);
-      return Math.min(45, Math.max(1, BJ_START_DAY + diff));
-    }
-
-    const BASE_ITEMS = [
-      { id:"morning", label:"🌅 Morning Routine", type:"sub", subs:["Wake up & stretch","Shower / freshen up","Skincare"] },
-      { id:"dogs", label:"🐾 Dog Walks", type:"sub", subs:["Walk Miles (quick)","Walk Penny (20–30 min)"] },
-      { id:"meals", label:"🍽️ Meals", type:"sub", subs:["Protein shake / Breakfast","Lunch","Dinner"] },
-      { id:"creatine", label:"💊 Creatine", type:"dots", count:4 },
-      { id:"water", label:"💧 Water (1 gallon)", type:"water", count:8 },
-      { id:"evening", label:"🌙 Evening Routine", type:"sub", subs:["Plan tomorrow","Wind down","Sleep on time"] }
-    ];
 
     function getBDKey() { return "bd_" + today(); }
     function getWKKey() { return "wk_" + today(); }
@@ -2370,6 +2465,22 @@
       document.body.style.overflow = "";
     }
 
+    // Lightweight progress refresh — updates bar + stats without full re-render
+    function refreshProgress() {
+      const stats = dayStats();
+      const pt = $("#progressText");
+      const pf = $("#progressFill");
+      const ns = $("#navScore");
+      const nd = $("#navDone");
+      const nr = $("#navOverdue");
+      if (pt) pt.textContent = stats.done + "/" + stats.total;
+      if (pf) pf.style.width = stats.pct + "%";
+      if (ns) ns.textContent = stats.pct + "%";
+      if (nd) nd.textContent = stats.done + "/" + stats.total;
+      if (nr) nr.textContent = stats.overdue;
+      updateHistory();
+    }
+
     // ── EVENT HANDLERS FOR NEW SECTIONS ──
     function handleNewActions(event) {
       const target = event.target;
@@ -2380,10 +2491,12 @@
         const ws = getWKState();
         const bjDay = getCurrentBJDay();
         if (bjDay < BJ_START_DAY) return;
+        const wasBJDone = ws.bjDone;
         ws.bjDone = !ws.bjDone;
         saveWKState(ws);
+        if (!wasBJDone && ws.bjDone) addXP(25, "BJ Day " + bjDay + " 🔥");
         renderBJWorkout();
-        renderHeader();
+        refreshProgress();
         return;
       }
 
@@ -2391,9 +2504,14 @@
       const bjExtraDone = target.closest("[data-bj-extra-done]");
       if (bjExtraDone) {
         const ws = getWKState();
+        const wasExtraDone = ws.extraDone;
         ws.extraDone = !ws.extraDone;
         saveWKState(ws);
+        if (!wasExtraDone && ws.extraDone) {
+          addXP(15, ws.extraType === "run" ? "Run complete 🏃" : "Gym complete 🏋️");
+        }
         renderBJWorkout();
+        refreshProgress();
         return;
       }
 
@@ -2416,11 +2534,16 @@
         const total = parseInt(subItem.dataset.subTotal);
         const bs = getBDState();
         if (!bs[id+"_subs"]) bs[id+"_subs"] = [];
+        const wasOn = Boolean(bs[id+"_subs"][idx]);
         bs[id+"_subs"][idx] = !bs[id+"_subs"][idx];
-        bs[id] = bs[id+"_subs"].filter(Boolean).length === total;
+        const allDone = bs[id+"_subs"].filter(Boolean).length === total;
+        const wasFull = bs[id];
+        bs[id] = allDone;
         saveBDState(bs);
+        if (!wasOn) addXP(10, "Base day item");
+        if (allDone && !wasFull) addXP(10, "Section complete");
         renderBaseDay();
-        renderHeader();
+        refreshProgress();
         return;
       }
 
@@ -2431,11 +2554,16 @@
         const n = parseInt(dotEl.dataset.dotN);
         const total = parseInt(dotEl.dataset.dotTotal);
         const bs = getBDState();
+        const prevN = bs[id] || 0;
         bs[id] = bs[id] === n ? n - 1 : n;
-        bs[id+"_done"] = bs[id] >= total;
+        const nowDone = bs[id] >= total;
+        const wasDone = bs[id+"_done"];
+        bs[id+"_done"] = nowDone;
         saveBDState(bs);
+        if (bs[id] > prevN) addXP(5, "Creatine");
+        if (nowDone && !wasDone) addXP(10, "Creatine done");
         renderBaseDay();
-        renderHeader();
+        refreshProgress();
         return;
       }
 
@@ -2446,11 +2574,15 @@
         const n = parseInt(waterEl.dataset.waterN);
         const total = parseInt(waterEl.dataset.waterTotal);
         const bs = getBDState();
+        const prevN2 = bs[id] || 0;
+        const wasDone2 = bs[id+"_done"];
         bs[id] = n;
         bs[id+"_done"] = n >= total;
         saveBDState(bs);
+        if (n > prevN2) addXP(3, "Water");
+        if (bs[id+"_done"] && !wasDone2) addXP(15, "Gallon done! 💧");
         renderBaseDay();
-        renderHeader();
+        refreshProgress();
         return;
       }
 
