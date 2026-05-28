@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Mission OS icon">
+  <defs>
+    <linearGradient id="bg" x1="80" y1="40" x2="432" y2="472" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#080c12"/>
+      <stop offset="1" stop-color="#172131"/>
+    </linearGradient>
+    <linearGradient id="mark" x1="110" y1="120" x2="410" y2="390" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#00d4b8"/>
+      <stop offset=".55" stop-color="#f5c842"/>
+      <stop offset="1" stop-color="#ff6b4a"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <path d="M92 382 157 124h72l29 126 29-126h72l61 258h-66l-35-163-40 163h-44l-40-163-37 163H92Z" fill="url(#mark)"/>
+  <path d="M140 406h232" stroke="#00d4b8" stroke-width="18" stroke-linecap="round" opacity=".85"/>
+</svg>
