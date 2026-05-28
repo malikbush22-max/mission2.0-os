@@ -1,1297 +1,2163 @@
 <html lang="en"><head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Mission OS">
-<meta name="theme-color" content="#0a0a0a">
-<title>Mission OS</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=DM+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
-<style>
-:root {
-  --bg:#0a0a0a;--surface:#121212;--card:#1a1a1a;--card2:#222;
-  --border:#2a2a2a;--border2:#333;--text:#f0ece4;--muted:#666;--muted2:#999;
-  --gold:#f0c040;--orange:#e05c2f;--red:#ff4545;--green:#4caf7d;
-  --blue:#4a90d9;--purple:#9b6dff;--pink:#ff6b9d;
-  --header-h:110px;
-}
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Mission OS">
+  <meta name="theme-color" content="#080c12">
+  <meta name="description" content="TODAY'S MISSION personal discipline command center.">
+  <title>Mission OS - Today's Mission</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=DM+Mono:wght@400;500&amp;family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #080c12;
+      --bg-soft: #0d1219;
+      --surface: #111820;
+      --surface-2: #172131;
+      --card: #141c26;
+      --card-2: #1a2535;
+      --border: #1e2d40;
+      --border-2: #263852;
+      --text: #e8f0f8;
+      --muted: #7b8da6;
+      --quiet: #526781;
+      --teal: #00d4b8;
+      --teal-2: #00a991;
+      --amber: #f5a623;
+      --gold: #f5c842;
+      --coral: #ff6b4a;
+      --red: #ff4560;
+      --green: #00d4a0;
+      --blue: #3b82f6;
+      --purple: #8b5cf6;
+      --shadow: 0 18px 48px rgba(0, 0, 0, .35);
+    }
 
-/* ── TOP NAV ── */
-.top-nav{position:sticky;top:0;z-index:200;background:rgba(10,10,10,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
-.nav-header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px 6px;}
-.nav-brand{display:flex;flex-direction:column;}
-.nav-title{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:3px;background:linear-gradient(135deg,var(--gold),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;}
-.nav-clock{font-size:11px;color:var(--muted);letter-spacing:1px;margin-top:1px;}
-.nav-stats{display:flex;align-items:center;gap:10px;}
-.stat-chip{display:flex;align-items:center;gap:4px;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:4px 10px;font-size:12px;font-weight:600;}
-.stat-chip .icon{font-size:14px;}
-.streak-chip{color:var(--orange);}
-.xp-chip{color:var(--gold);}
-.level-chip{color:var(--purple);}
-.nav-tabs{display:flex;border-top:1px solid var(--border);}
-.nav-tab{flex:1;padding:8px 4px;text-align:center;cursor:pointer;font-size:10px;font-weight:600;letter-spacing:1px;color:var(--muted);border-bottom:2px solid transparent;transition:all .2s;text-transform:uppercase;}
-.nav-tab.active{color:var(--gold);border-bottom-color:var(--gold);}
-.nav-tab .t-icon{font-size:16px;display:block;margin-bottom:2px;}
+    body[data-theme="day"] {
+      color-scheme: light;
+      --bg: #f7f3ea;
+      --bg-soft: #fffaf0;
+      --surface: #fffdf8;
+      --surface-2: #fff6df;
+      --card: #ffffff;
+      --card-2: #f8efe0;
+      --border: #e4d6be;
+      --border-2: #d5c09b;
+      --text: #1b2028;
+      --muted: #5c6470;
+      --quiet: #7a7164;
+      --teal: #008d7d;
+      --teal-2: #006e63;
+      --amber: #c97d0a;
+      --gold: #b9850a;
+      --coral: #d65b38;
+      --red: #c9364c;
+      --green: #008a65;
+      --blue: #2464c8;
+      --purple: #6e47cf;
+      --shadow: 0 18px 42px rgba(94, 64, 18, .12);
+    }
 
-/* ── PAGES ── */
-.page{display:none;padding:14px 14px 80px;}
-.page.active{display:block;animation:fadeUp .25s ease;}
-@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    html { background: var(--bg); }
+    body {
+      min-height: 100vh;
+      overflow-x: hidden;
+      background:
+        radial-gradient(800px 260px at 50% -60px, rgba(0, 212, 184, .08), transparent 70%),
+        linear-gradient(180deg, var(--bg), var(--bg-soft));
+      color: var(--text);
+      font-family: "Space Grotesk", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      transition: background .25s ease, color .25s ease;
+    }
 
-/* ── PROGRESS BAR ── */
-.prog-wrap{margin-bottom:14px;}
-.prog-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;}
-.prog-label{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:2px;color:var(--muted2);}
-.prog-right{display:flex;align-items:center;gap:8px;}
-.prog-count{font-size:12px;color:var(--muted);}
-.prog-bar{background:var(--border);border-radius:99px;height:5px;overflow:hidden;}
-.prog-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--orange));border-radius:99px;transition:width .5s cubic-bezier(.4,0,.2,1);}
+    button, input, select, textarea { font: inherit; }
+    button { border: 0; cursor: pointer; color: inherit; }
+    a { color: var(--teal); }
+    .app-shell { max-width: 680px; margin: 0 auto; padding-bottom: 96px; }
 
-/* ── DEADLINE BANNER ── */
-.deadline-banner{background:rgba(255,69,69,.1);border:1px solid rgba(255,69,69,.3);border-radius:12px;padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;gap:10px;font-size:13px;}
-.deadline-banner .db-icon{font-size:20px;}
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: color-mix(in srgb, var(--bg) 94%, transparent);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+    }
 
-/* ── SECTION LABELS ── */
-.sec-label{font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:3px;color:var(--orange);margin:18px 0 7px 2px;display:flex;align-items:center;gap:8px;}
-.sec-label::after{content:'';flex:1;height:1px;background:var(--border);}
+    .hero { padding: 13px 15px 8px; position: relative; }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--teal), var(--amber), transparent);
+      opacity: .65;
+    }
 
-/* ── TASK CARDS ── */
-.task-card{background:var(--card);border:1px solid var(--border);border-radius:13px;margin-bottom:7px;padding:12px 13px;display:flex;align-items:flex-start;gap:11px;position:relative;overflow:hidden;transition:all .2s;user-select:none;}
-.task-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;opacity:0;transition:opacity .3s;}
-.task-card.pri-high::before{background:var(--red);opacity:1;}
-.task-card.pri-medium::before{background:var(--gold);opacity:1;}
-.task-card.pri-low::before{background:var(--green);opacity:.7;}
-.task-card.done{background:#111;border-color:#1e1e1e;opacity:.5;}
-.task-card:active{transform:scale(.98);}
-.cb{width:22px;height:22px;border-radius:50%;border:2px solid var(--muted);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .25s;margin-top:1px;cursor:pointer;}
-.task-card.done .cb{background:linear-gradient(135deg,var(--gold),var(--orange));border-color:transparent;}
-.cb-check{display:none;font-size:11px;color:#000;font-weight:700;}
-.task-card.done .cb-check{display:block;}
-.task-body{flex:1;min-width:0;}
-.task-name{font-size:14px;font-weight:500;line-height:1.3;}
-.task-card.done .task-name{text-decoration:line-through;color:#333;}
-.task-desc{font-size:12px;color:var(--muted);margin-top:2px;}
-.task-meta{display:flex;align-items:center;gap:5px;margin-top:5px;flex-wrap:wrap;}
-.badge{font-size:10px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;padding:2px 7px;border-radius:99px;}
-.b-cat{background:rgba(74,144,217,.15);color:var(--blue);border:1px solid rgba(74,144,217,.25);}
-.b-time{background:rgba(255,255,255,.06);color:var(--muted2);border:1px solid var(--border);}
-.b-overdue{background:rgba(255,69,69,.15);color:var(--red);border:1px solid rgba(255,69,69,.25);animation:pulse 1.8s ease-in-out infinite;}
-.b-deadline{background:rgba(240,192,64,.12);color:var(--gold);border:1px solid rgba(240,192,64,.2);}
-.b-work{background:rgba(224,92,47,.12);color:var(--orange);border:1px solid rgba(224,92,47,.25);}
-.b-7pm{background:rgba(255,69,69,.15);color:var(--red);border:1px solid rgba(255,69,69,.3);}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+    .hero-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; }
+    .eyebrow {
+      color: var(--teal);
+      font: 700 9px/1.2 "DM Mono", monospace;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+    .mission-title {
+      font-family: "Bebas Neue", Impact, sans-serif;
+      font-size: clamp(31px, 11vw, 45px);
+      letter-spacing: 3px;
+      line-height: .9;
+      background: linear-gradient(135deg, var(--text) 0%, var(--teal) 55%, var(--amber) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .affirmation-line {
+      max-width: 330px;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.45;
+      font-style: italic;
+    }
+    .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+    .live-clock { font: 500 12px/1 "DM Mono", monospace; letter-spacing: .5px; white-space: nowrap; }
+    .quick-actions { display: flex; gap: 5px; }
+    .icon-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      display: grid;
+      place-items: center;
+      box-shadow: none;
+    }
+    .icon-btn:active { transform: scale(.96); background: var(--card-2); }
 
-/* ── TIMER ── */
-.task-timer{display:flex;align-items:center;gap:6px;margin-top:7px;}
-.timer-display{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--gold);min-width:60px;}
-.timer-btn{background:var(--card2);border:1px solid var(--border2);border-radius:8px;padding:4px 10px;font-size:11px;color:var(--muted2);cursor:pointer;transition:all .15s;font-weight:600;}
-.timer-btn:active{background:var(--border);}
-.timer-btn.running{color:var(--green);border-color:var(--green);}
+    .stat-row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; padding: 0 14px 10px; }
+    .stat-pill {
+      min-width: 0;
+      border: 1px solid var(--border);
+      background: var(--card);
+      border-radius: 10px;
+      padding: 7px 8px;
+    }
+    .stat-label {
+      color: var(--quiet);
+      font: 700 8px/1 "DM Mono", monospace;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .stat-value { font: 700 14px/1 "DM Mono", monospace; color: var(--text); white-space: nowrap; }
+    .stat-value.good { color: var(--teal); }
+    .stat-value.warn { color: var(--amber); }
+    .stat-value.hot { color: var(--coral); }
 
-/* ── BASE TRACKERS ── */
-.tracker-row{display:flex;align-items:center;gap:5px;margin-top:7px;flex-wrap:wrap;}
-.t-dot{width:28px;height:28px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:10px;color:var(--muted);transition:all .2s;font-weight:700;}
-.t-dot.on{background:linear-gradient(135deg,var(--gold),var(--orange));border-color:transparent;color:#000;}
-.t-emoji{font-size:20px;cursor:pointer;opacity:.3;transition:all .2s;}
-.t-emoji.on{opacity:1;transform:scale(1.15);}
-.t-lbl{font-size:11px;color:var(--muted);}
-.sub-tasks{margin-top:7px;display:flex;flex-direction:column;gap:5px;}
-.sub-item{display:flex;align-items:center;gap:8px;cursor:pointer;}
-.sub-cb{width:16px;height:16px;border-radius:4px;border:1.5px solid var(--muted);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s;}
-.sub-item.done .sub-cb{background:var(--gold);border-color:transparent;}
-.sub-chk{display:none;font-size:9px;color:#000;font-weight:700;}
-.sub-item.done .sub-chk{display:block;}
-.sub-txt{font-size:12px;color:var(--muted2);}
-.sub-item.done .sub-txt{text-decoration:line-through;color:#333;}
+    .tabs {
+      display: flex;
+      overflow-x: auto;
+      scrollbar-width: none;
+      border-top: 1px solid var(--border);
+    }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tab {
+      flex: 1 0 70px;
+      min-width: 70px;
+      padding: 9px 4px 8px;
+      border-bottom: 2px solid transparent;
+      color: var(--quiet);
+      background: transparent;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .tab span { display: block; font-size: 16px; margin-bottom: 2px; }
+    .tab.active { color: var(--teal); border-bottom-color: var(--teal); }
 
-/* ── WORKOUT CARD ── */
-.workout-card{background:linear-gradient(135deg,rgba(240,192,64,.08),rgba(224,92,47,.08));border:1px solid rgba(240,192,64,.2);border-radius:14px;padding:14px;margin-bottom:10px;}
-.wk-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
-.wk-title{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--gold);}
-.wk-day{font-size:11px;color:var(--muted);letter-spacing:1px;}
-.wk-main{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
-.wk-icon{font-size:32px;}
-.wk-info{}
-.wk-name{font-size:15px;font-weight:600;}
-.wk-dur{font-size:12px;color:var(--muted);margin-top:2px;}
-.wk-cb{display:flex;align-items:center;gap:8px;margin-top:4px;}
-.radio-group{display:flex;flex-direction:column;gap:6px;margin-top:8px;border-top:1px solid var(--border);padding-top:8px;}
-.radio-opt{display:flex;align-items:center;gap:9px;cursor:pointer;padding:7px 10px;border-radius:10px;border:1px solid var(--border);background:var(--card);transition:all .2s;}
-.radio-opt.selected{border-color:var(--gold);background:rgba(240,192,64,.08);}
-.radio-dot{width:16px;height:16px;border-radius:50%;border:2px solid var(--muted);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s;}
-.radio-opt.selected .radio-dot{background:var(--gold);border-color:var(--gold);}
-.radio-dot-inner{width:6px;height:6px;border-radius:50%;background:#000;display:none;}
-.radio-opt.selected .radio-dot-inner{display:block;}
-.radio-label{font-size:13px;font-weight:500;}
-.radio-sub{font-size:11px;color:var(--muted);margin-top:1px;}
-.wk-done-badge{background:linear-gradient(135deg,var(--gold),var(--orange));color:#000;font-family:'Bebas Neue',sans-serif;letter-spacing:2px;font-size:13px;padding:4px 12px;border-radius:99px;display:inline-block;}
+    .page { display: none; padding: 14px 13px 0; animation: fadeUp .22s ease; }
+    .page.active { display: block; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: none; } }
 
-/* ── GAMIFICATION ── */
-.xp-toast{position:fixed;top:120px;right:16px;z-index:500;background:linear-gradient(135deg,var(--gold),var(--orange));color:#000;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;padding:8px 16px;border-radius:99px;opacity:0;transform:translateY(10px);transition:all .3s;pointer-events:none;}
-.xp-toast.show{opacity:1;transform:translateY(0);}
-.level-up-overlay{position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.85);display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;}
-.level-up-overlay.show{opacity:1;pointer-events:all;}
-.level-up-box{text-align:center;padding:40px 30px;}
-.level-up-emoji{font-size:60px;margin-bottom:16px;display:block;animation:bounce .6s infinite alternate;}
-@keyframes bounce{from{transform:translateY(0)}to{transform:translateY(-10px)}}
-.level-up-title{font-family:'Bebas Neue',sans-serif;font-size:48px;letter-spacing:4px;background:linear-gradient(135deg,var(--gold),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.level-up-sub{font-size:16px;color:var(--muted2);margin-top:8px;}
-.level-up-btn{margin-top:24px;padding:14px 32px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--gold),var(--orange));color:#000;font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;cursor:pointer;}
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 18px 1px 8px;
+      color: var(--teal);
+      font: 800 9px/1 "DM Mono", monospace;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .section-label::after {
+      content: "";
+      height: 1px;
+      flex: 1;
+      background: linear-gradient(90deg, var(--border-2), transparent);
+    }
 
-/* ── WEEK VIEW ── */
-.week-strip{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:14px;scrollbar-width:none;}
-.week-strip::-webkit-scrollbar{display:none;}
-.day-chip{flex-shrink:0;width:50px;display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 5px;border-radius:13px;cursor:pointer;border:1px solid var(--border);background:var(--card);transition:all .2s;}
-.day-chip.today{border-color:var(--gold);background:rgba(240,192,64,.08);}
-.day-chip.sel{border-color:var(--orange);background:rgba(224,92,47,.1);}
-.dc-name{font-size:9px;font-weight:700;letter-spacing:1px;color:var(--muted);text-transform:uppercase;}
-.dc-num{font-family:'Bebas Neue',sans-serif;font-size:20px;line-height:1;}
-.day-chip.today .dc-num{color:var(--gold);}
-.dc-load{width:30px;height:3px;background:var(--border);border-radius:99px;overflow:hidden;}
-.dc-load-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--orange));border-radius:99px;}
-.wk-task-chip{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:8px 11px;margin-bottom:5px;font-size:13px;display:flex;align-items:center;gap:8px;}
-.wk-task-chip.overdue{border-color:rgba(255,69,69,.3);}
-.chip-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+    .panel, .task-card, .note-card, .photo-card, .timer-panel, .alarm-card {
+      border: 1px solid var(--border);
+      background: var(--card);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+    }
+    .panel { padding: 13px; margin-bottom: 10px; }
+    .panel-soft {
+      border-color: color-mix(in srgb, var(--teal) 22%, var(--border));
+      background: linear-gradient(135deg, color-mix(in srgb, var(--teal) 8%, var(--card)), color-mix(in srgb, var(--amber) 7%, var(--card)));
+    }
 
-/* ── MONTH ── */
-.month-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
-.month-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;}
-.mnav-btn{background:var(--card);border:1px solid var(--border);border-radius:8px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;}
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;}
-.cal-dow{text-align:center;font-size:9px;font-weight:700;letter-spacing:1px;color:var(--muted);padding:3px 0;text-transform:uppercase;}
-.cal-day{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:4px 2px;border-radius:9px;cursor:pointer;border:1px solid transparent;transition:all .15s;position:relative;}
-.cal-day:active{background:var(--card2);}
-.cal-day.today{border-color:var(--gold);background:rgba(240,192,64,.07);}
-.cal-day.has-tasks{border-color:var(--border);background:var(--card);}
-.cal-day.other{opacity:.2;}
-.cal-day-num{font-size:12px;font-weight:500;}
-.cal-day.today .cal-day-num{color:var(--gold);font-weight:700;}
-.cal-dots{display:flex;gap:2px;margin-top:2px;flex-wrap:wrap;justify-content:center;}
-.cal-dot{width:4px;height:4px;border-radius:50%;}
-.cal-od{position:absolute;top:2px;right:2px;width:5px;height:5px;border-radius:50%;background:var(--red);}
+    .dashboard-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; }
+    .metric {
+      border: 1px solid var(--border);
+      background: var(--card-2);
+      border-radius: 10px;
+      padding: 9px 10px;
+      min-height: 62px;
+    }
+    .metric .label {
+      color: var(--quiet);
+      font: 800 8px/1 "DM Mono", monospace;
+      letter-spacing: 1.3px;
+      text-transform: uppercase;
+      margin-bottom: 7px;
+    }
+    .metric .value { font-size: 18px; font-weight: 800; line-height: 1.1; }
+    .metric .sub { color: var(--muted); font-size: 11px; margin-top: 3px; }
 
-/* ── SETTINGS ── */
-.set-section{margin-bottom:22px;}
-.set-title{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:2px;color:var(--muted2);margin-bottom:8px;}
-.set-row{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:12px 14px;margin-bottom:5px;display:flex;align-items:center;justify-content:space-between;}
-.set-lbl{font-size:14px;font-weight:500;}
-.set-sub{font-size:11px;color:var(--muted);margin-top:1px;}
-.toggle{width:42px;height:24px;border-radius:99px;background:var(--border2);position:relative;cursor:pointer;transition:background .25s;flex-shrink:0;}
-.toggle.on{background:var(--gold);}
-.toggle-knob{position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .25s;box-shadow:0 1px 4px rgba(0,0,0,.3);}
-.toggle.on .toggle-knob{transform:translateX(18px);}
+    .progress-wrap { margin-top: 11px; }
+    .progress-top { display: flex; justify-content: space-between; color: var(--muted); font-size: 11px; margin-bottom: 6px; }
+    .progress-bar { height: 7px; border-radius: 99px; background: var(--border); overflow: hidden; }
+    .progress-fill {
+      height: 100%;
+      border-radius: inherit;
+      width: 0%;
+      background: linear-gradient(90deg, var(--teal), var(--amber));
+      box-shadow: 0 0 12px color-mix(in srgb, var(--teal) 40%, transparent);
+      transition: width .45s cubic-bezier(.4, 0, .2, 1);
+    }
 
-/* ── MODAL ── */
-.modal-overlay{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s;}
-.modal-overlay.open{opacity:1;pointer-events:all;}
-.modal{background:var(--surface);border:1px solid var(--border);border-radius:22px 22px 0 0;width:100%;max-width:520px;max-height:88vh;overflow-y:auto;padding:18px 18px 36px;transform:translateY(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);}
-.modal-overlay.open .modal{transform:none;}
-.modal-handle{width:34px;height:4px;border-radius:99px;background:var(--border2);margin:0 auto 16px;}
-.modal-title{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;margin-bottom:16px;}
-.form-group{margin-bottom:12px;}
-.form-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;display:block;}
-.form-input,.form-select,.form-textarea{width:100%;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 13px;font-size:14px;color:var(--text);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;-webkit-appearance:none;}
-.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--gold);}
-.form-textarea{resize:none;min-height:65px;}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
-.pri-row{display:flex;gap:7px;}
-.pri-btn{flex:1;padding:8px 4px;border-radius:10px;border:1px solid var(--border);background:var(--card);font-size:11px;font-weight:700;cursor:pointer;color:var(--muted);transition:all .2s;text-align:center;}
-.pri-btn.sel-high{background:rgba(255,69,69,.15);color:var(--red);border-color:rgba(255,69,69,.3);}
-.pri-btn.sel-medium{background:rgba(240,192,64,.15);color:var(--gold);border-color:rgba(240,192,64,.3);}
-.pri-btn.sel-low{background:rgba(76,175,125,.15);color:var(--green);border-color:rgba(76,175,125,.3);}
-.btn-primary{width:100%;padding:13px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--gold),var(--orange));color:#000;font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:2px;cursor:pointer;transition:all .2s;margin-top:5px;}
-.btn-primary:active{transform:scale(.97);}
-.btn-secondary{width:100%;padding:11px;border-radius:12px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:14px;cursor:pointer;margin-top:7px;}
+    .checkin-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
+    .check-card {
+      border: 1px solid var(--border);
+      background: var(--card);
+      border-radius: 12px;
+      padding: 11px 12px;
+    }
+    .check-title { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 5px; }
+    .check-title strong { font-size: 12px; letter-spacing: .6px; text-transform: uppercase; }
+    .check-time { color: var(--quiet); font: 700 10px/1 "DM Mono", monospace; white-space: nowrap; }
+    .check-card.active { border-color: color-mix(in srgb, var(--teal) 45%, var(--border)); background: color-mix(in srgb, var(--teal) 7%, var(--card)); }
+    .check-card p { color: var(--muted); font-size: 12px; line-height: 1.45; }
 
-/* ── PLAN TOMORROW ── */
-.plan-banner{background:linear-gradient(135deg,rgba(240,192,64,.1),rgba(224,92,47,.1));border:1px solid rgba(240,192,64,.25);border-radius:13px;padding:13px 15px;display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;cursor:pointer;transition:all .2s;}
-.plan-banner:active{transform:scale(.98);}
-.plan-banner-title{font-weight:600;font-size:14px;color:var(--gold);}
-.plan-banner-sub{font-size:12px;color:var(--muted);margin-top:2px;}
+    .task-card {
+      position: relative;
+      display: grid;
+      grid-template-columns: 26px 1fr;
+      gap: 10px;
+      padding: 12px 12px;
+      margin-bottom: 8px;
+      overflow: hidden;
+      transition: transform .15s ease, opacity .2s ease, background .2s ease;
+    }
+    .task-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 3px;
+      background: var(--amber);
+      opacity: .75;
+    }
+    .task-card.priority-high::before { background: var(--red); }
+    .task-card.priority-low::before { background: var(--green); }
+    .task-card.done { opacity: .55; background: color-mix(in srgb, var(--card) 68%, var(--bg)); }
+    .task-card.overdue { border-color: color-mix(in srgb, var(--red) 42%, var(--border)); }
+    .task-check {
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      border: 2px solid var(--border-2);
+      background: transparent;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      font-size: 12px;
+      margin-top: 1px;
+    }
+    .task-card.done .task-check {
+      border-color: transparent;
+      color: #06110f;
+      background: linear-gradient(135deg, var(--teal), var(--amber));
+    }
+    .task-title { font-size: 14px; font-weight: 700; line-height: 1.25; }
+    .task-card.done .task-title { color: var(--quiet); text-decoration: line-through; }
+    .task-desc { color: var(--muted); font-size: 11px; margin-top: 3px; line-height: 1.35; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 7px; }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      border: 1px solid var(--border-2);
+      background: color-mix(in srgb, var(--card-2) 86%, transparent);
+      color: var(--muted);
+      border-radius: 999px;
+      padding: 3px 7px;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: .6px;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .badge.overdue { color: var(--red); border-color: color-mix(in srgb, var(--red) 35%, var(--border)); background: color-mix(in srgb, var(--red) 10%, var(--card)); }
+    .badge.good { color: var(--teal); border-color: color-mix(in srgb, var(--teal) 35%, var(--border)); }
+    .badge.warn { color: var(--amber); border-color: color-mix(in srgb, var(--amber) 35%, var(--border)); }
 
-/* ── WEEKLY EXPORT ── */
-.export-card{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:14px;font-size:12px;line-height:1.7;color:var(--muted2);white-space:pre-wrap;font-family:monospace;margin-top:10px;}
-.export-copy-btn{width:100%;padding:11px;border-radius:10px;background:var(--card2);border:1px solid var(--border2);color:var(--gold);font-size:13px;font-weight:600;cursor:pointer;margin-top:8px;}
+    .toolbar { display: flex; gap: 7px; flex-wrap: wrap; }
+    .btn {
+      min-height: 39px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--card-2);
+      color: var(--text);
+      padding: 9px 12px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .4px;
+    }
+    .btn.primary {
+      border-color: transparent;
+      color: #07110f;
+      background: linear-gradient(135deg, var(--teal), var(--amber));
+      box-shadow: 0 9px 24px color-mix(in srgb, var(--teal) 22%, transparent);
+    }
+    .btn.ghost { background: transparent; color: var(--muted); }
+    .btn.danger { color: var(--red); border-color: color-mix(in srgb, var(--red) 30%, var(--border)); }
+    .btn:active { transform: scale(.98); }
 
-/* ── TOAST ── */
-.toast{position:fixed;top:var(--header-h);left:50%;transform:translateX(-50%) translateY(-20px);background:var(--card2);border:1px solid var(--border2);border-radius:11px;padding:10px 16px;font-size:13px;color:var(--text);z-index:400;opacity:0;pointer-events:none;transition:all .3s;white-space:nowrap;box-shadow:0 8px 30px rgba(0,0,0,.5);}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+    .form-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
+    .field { display: flex; flex-direction: column; gap: 5px; }
+    .field label {
+      color: var(--quiet);
+      font: 800 9px/1 "DM Mono", monospace;
+      letter-spacing: 1.3px;
+      text-transform: uppercase;
+    }
+    .input, .select, .textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      background: var(--card-2);
+      border-radius: 10px;
+      color: var(--text);
+      padding: 10px 11px;
+      outline: none;
+      min-height: 42px;
+      -webkit-appearance: none;
+    }
+    .textarea { min-height: 96px; resize: vertical; line-height: 1.45; }
+    .input:focus, .select:focus, .textarea:focus { border-color: var(--teal); }
 
-/* ── FAB ── */
-.fab{position:fixed;bottom:22px;right:18px;z-index:99;width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--orange));display:flex;align-items:center;justify-content:center;font-size:22px;color:#000;cursor:pointer;box-shadow:0 4px 20px rgba(240,192,64,.35);transition:all .2s;border:none;}
-.fab:active{transform:scale(.92);}
+    .modal-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 500;
+      display: none;
+      align-items: flex-end;
+      background: rgba(0, 0, 0, .76);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .modal-layer.open { display: flex; }
+    .modal {
+      width: 100%;
+      max-width: 680px;
+      max-height: 88vh;
+      overflow-y: auto;
+      margin: 0 auto;
+      border: 1px solid var(--border);
+      border-radius: 22px 22px 0 0;
+      background: var(--surface);
+      padding: 16px 15px 28px;
+      animation: sheetIn .22s ease;
+    }
+    @keyframes sheetIn { from { transform: translateY(60px); opacity: .6; } to { transform: none; opacity: 1; } }
+    .modal-handle { width: 34px; height: 4px; border-radius: 99px; background: var(--border-2); margin: 0 auto 14px; }
+    .modal-title { font-family: "Bebas Neue", Impact, sans-serif; letter-spacing: 2px; font-size: 24px; margin-bottom: 12px; }
 
-/* ── EMPTY ── */
-.empty{text-align:center;padding:36px 16px;color:var(--muted);}
-.empty-icon{font-size:38px;margin-bottom:10px;}
-.empty-title{font-size:15px;font-weight:500;color:var(--muted2);margin-bottom:5px;}
+    .note-card, .photo-card, .alarm-card { padding: 12px; margin-bottom: 9px; }
+    .note-card p, .photo-card p { color: var(--muted); font-size: 12px; line-height: 1.45; margin-top: 5px; white-space: pre-wrap; }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+    .tag { border: 1px solid var(--border); border-radius: 999px; padding: 4px 8px; color: var(--teal); background: color-mix(in srgb, var(--teal) 7%, transparent); font-size: 10px; font-weight: 800; }
+    .tag.active { color: #07110f; background: linear-gradient(135deg, var(--teal), var(--amber)); border-color: transparent; }
 
-/* ── XP BAR ── */
-.xp-bar-wrap{margin:8px 0 14px;}
-.xp-bar-top{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:4px;}
-.xp-bar{background:var(--border);border-radius:99px;height:6px;overflow:hidden;}
-.xp-bar-fill{height:100%;background:linear-gradient(90deg,var(--purple),var(--blue));border-radius:99px;transition:width .6s cubic-bezier(.4,0,.2,1);}
+    .library { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 3px; scrollbar-width: none; }
+    .library::-webkit-scrollbar { display: none; }
+    .library .btn { flex: 0 0 auto; min-height: 34px; padding: 7px 10px; }
 
-/* ── PREVIEW TASK ROW ── */
-.prev-row{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:11px 13px;margin-bottom:7px;display:flex;align-items:center;gap:9px;}
-.drag-handle{font-size:15px;color:var(--muted);cursor:grab;}
-.prev-name{font-size:13px;font-weight:500;flex:1;}
-.prev-time{width:65px;background:var(--card2);border:1px solid var(--border2);border-radius:8px;padding:4px 7px;font-size:12px;color:var(--text);font-family:'DM Sans',sans-serif;outline:none;text-align:center;}
-.prev-rm{font-size:15px;color:var(--muted);cursor:pointer;padding:3px;}
-</style>
+    .photo-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    .photo-card { padding: 0; overflow: hidden; }
+    .photo-card img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; background: var(--bg-soft); }
+    .photo-body { padding: 10px; }
+    .privacy-note {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.45;
+      border: 1px dashed var(--border-2);
+      background: color-mix(in srgb, var(--amber) 6%, transparent);
+      border-radius: 10px;
+      padding: 10px;
+    }
+
+    .timer-display {
+      text-align: center;
+      font: 700 clamp(46px, 17vw, 72px)/1 "DM Mono", monospace;
+      letter-spacing: -2px;
+      color: var(--teal);
+      margin: 14px 0 10px;
+    }
+    .preset-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+    .session-row { display: flex; justify-content: space-between; gap: 10px; border-top: 1px solid var(--border); padding: 8px 0; font-size: 12px; color: var(--muted); }
+
+    .alarm-card { display: flex; align-items: center; gap: 10px; justify-content: space-between; }
+    .toggle {
+      width: 43px;
+      height: 24px;
+      border-radius: 999px;
+      background: var(--border-2);
+      padding: 2px;
+      flex: 0 0 auto;
+      transition: background .2s ease;
+    }
+    .toggle::after {
+      content: "";
+      display: block;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #fff;
+      transition: transform .2s ease;
+      box-shadow: 0 2px 8px rgba(0,0,0,.2);
+    }
+    .toggle.on { background: var(--teal); }
+    .toggle.on::after { transform: translateX(19px); }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      top: 138px;
+      z-index: 800;
+      transform: translate(-50%, -12px);
+      opacity: 0;
+      pointer-events: none;
+      max-width: min(92vw, 430px);
+      border: 1px solid var(--border-2);
+      border-radius: 11px;
+      background: var(--card-2);
+      color: var(--text);
+      padding: 10px 13px;
+      font-size: 13px;
+      box-shadow: var(--shadow);
+      transition: opacity .2s ease, transform .2s ease;
+    }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+    .fab {
+      position: fixed;
+      right: max(15px, calc((100vw - 680px) / 2 + 15px));
+      bottom: 20px;
+      z-index: 120;
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--teal), var(--amber));
+      color: #07110f;
+      display: grid;
+      place-items: center;
+      font-size: 26px;
+      box-shadow: 0 13px 28px color-mix(in srgb, var(--teal) 25%, transparent);
+    }
+
+    .lock-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 22px;
+      background:
+        radial-gradient(520px 280px at 50% 12%, rgba(0, 212, 184, .1), transparent 70%),
+        var(--bg);
+    }
+    body.locked .lock-screen { display: flex; }
+    body.locked .app-shell, body.locked .fab { filter: blur(12px); pointer-events: none; user-select: none; }
+    .lock-card {
+      width: 100%;
+      max-width: 390px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: var(--surface);
+      padding: 22px;
+      box-shadow: var(--shadow);
+    }
+    .lock-card .mission-title { font-size: 42px; margin-bottom: 12px; }
+    .small-text { color: var(--muted); font-size: 11px; line-height: 1.45; }
+    .empty { text-align: center; padding: 28px 12px; color: var(--quiet); font-size: 13px; }
+
+    @media (min-width: 560px) {
+      .dashboard-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .checkin-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .form-grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .photo-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+  </style>
 </head>
-<body>
-
-<!-- XP TOAST -->
-<div class="xp-toast" id="xpToast"></div>
-
-<!-- LEVEL UP OVERLAY -->
-<div class="level-up-overlay" id="levelUpOverlay">
-  <div class="level-up-box">
-    <span class="level-up-emoji">🏆</span>
-    <div class="level-up-title" id="levelUpTitle">LEVEL UP!</div>
-    <div class="level-up-sub" id="levelUpSub"></div>
-    <button class="level-up-btn" onclick="dismissLevelUp()">LET'S GO 🔥</button>
-  </div>
-</div>
-
-<!-- TOAST -->
-<div class="toast" id="toast"></div>
-
-<!-- TOP NAV -->
-<div class="top-nav">
-  <div class="nav-header">
-    <div class="nav-brand">
-      <div class="nav-title">MISSION OS</div>
-      <div class="nav-clock" id="liveClock">1:08:11 AM · THU, MAY 28</div>
-    </div>
-    <div class="nav-stats">
-      <div class="stat-chip streak-chip"><span class="icon">🔥</span><span id="streakVal">1</span></div>
-      <div class="stat-chip xp-chip"><span class="icon">⚡</span><span id="xpVal">120</span></div>
-      <div class="stat-chip level-chip"><span id="levelVal">Lv 2</span></div>
-    </div>
-  </div>
-  <div class="nav-tabs">
-    <div class="nav-tab active" onclick="switchTab('today')" id="tab-today"><span class="t-icon">⚡</span>Today</div>
-    <div class="nav-tab" onclick="switchTab('week')" id="tab-week"><span class="t-icon">📅</span>Week</div>
-    <div class="nav-tab" onclick="switchTab('month')" id="tab-month"><span class="t-icon">🗓</span>Month</div>
-    <div class="nav-tab" onclick="switchTab('export')" id="tab-export"><span class="t-icon">📊</span>Export</div>
-    <div class="nav-tab" onclick="switchTab('settings')" id="tab-settings"><span class="t-icon">⚙️</span>Setup</div>
-  </div>
-</div>
-
-<!-- ════════════ TODAY ════════════ -->
-<div class="page active" id="page-today">
-  <div class="prog-wrap">
-    <div class="prog-top">
-      <div class="prog-label">TODAY'S PROGRESS</div>
-      <div class="prog-right">
-        <div class="prog-count" id="todayCount">0/7</div>
+<body data-theme="night">
+  <div class="lock-screen" id="lockScreen">
+    <div class="lock-card">
+      <div class="eyebrow">Local Privacy Lock</div>
+      <div class="mission-title">MISSION OS</div>
+      <p class="small-text" style="margin-bottom:14px;">This is a local privacy gate for this device. It is not full server authentication.</p>
+      <div class="field">
+        <label for="unlockPin">PIN or password</label>
+        <input class="input" id="unlockPin" type="password" autocomplete="current-password" inputmode="numeric" placeholder="Enter lock code">
       </div>
-    </div>
-    <div class="prog-bar"><div class="prog-fill" id="todayBar" style="width:0%"></div></div>
-  </div>
-  <div class="xp-bar-wrap">
-    <div class="xp-bar-top"><span id="xpLevelLabel">Grinder</span><span id="xpNextLabel">120 / 250 XP</span></div>
-    <div class="xp-bar"><div class="xp-bar-fill" id="xpBarFill" style="width: 13.333333%;"></div></div>
-  </div>
-  <div id="deadlineBannerWrap"></div>
-  <div class="plan-banner" onclick="openPlanModal()">
-    <div><div class="plan-banner-title">🌙 Plan Tomorrow</div><div class="plan-banner-sub">Set up your tasks for the next day</div></div>
-    <span style="color:var(--gold);font-size:20px;">›</span>
-  </div>
-  <div id="todayContainer"><div class="sec-label">WORKOUT</div><div class="workout-card" id="wk-card">
-  <div class="wk-header">
-    <div class="wk-title">BULLYJUICE 45-DAY</div>
-    <div class="wk-day">DAY 11 OF 45</div>
-  </div>
-  <div class="wk-main">
-    <div class="wk-icon">🔥</div>
-    <div class="wk-info">
-      <div class="wk-name">Total-Body HIIT</div>
-      <div class="wk-dur">⏱ 16:28 · iFIT Bodyweight</div>
+      <button class="btn primary" style="width:100%;margin-top:10px;" data-action="unlock">Unlock</button>
+      <button class="btn ghost" style="width:100%;margin-top:7px;" data-action="forgotLock">Reset local lock</button>
     </div>
   </div>
-  <div class="wk-cb" onclick="event.stopPropagation()">
-    <div class="sub-item " onclick="toggleBJDone(11)" id="bj-check">
-      <div class="sub-cb"><span class="sub-chk">✓</span></div>
-      <span class="sub-txt" style="font-size:13px;font-weight:600;">Mark Bullyjuice workout done</span>
-    </div>
-  </div>
-  
-  <div class="radio-group" onclick="event.stopPropagation()">
-    <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:2px;">Add Extra Workout?</div>
-    
-    <div class="radio-opt selected" onclick="selectExtra('none')">
-      <div class="radio-dot"><div class="radio-dot-inner"></div></div>
-      <div>
-        <div class="radio-label">Bullyjuice Only</div>
+
+  <div class="toast" id="toast">Alarm added.</div>
+
+  <main class="app-shell">
+    <header class="top-nav">
+      <div class="hero">
+        <div class="hero-row">
+          <div>
+            <div class="eyebrow" id="greeting">Good Morning</div>
+            <h1 class="mission-title">TODAY'S MISSION</h1>
+            <div class="affirmation-line" id="heroAffirmation">"Gratitude keeps ambition clean."</div>
+          </div>
+          <div class="hero-right">
+            <div class="live-clock" id="clock">4:26:39 AM</div>
+            <div class="quick-actions">
+              <button class="icon-btn" title="Toggle day/night mode" data-action="themeToggle">☀</button>
+              <button class="icon-btn" title="Lock app" data-action="manualLock">🔒</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-pill"><div class="stat-label">Score</div><div class="stat-value good" id="navScore">0%</div></div>
+        <div class="stat-pill"><div class="stat-label">Done</div><div class="stat-value" id="navDone">0/7</div></div>
+        <div class="stat-pill"><div class="stat-label">Overdue</div><div class="stat-value hot" id="navOverdue">0</div></div>
+        <div class="stat-pill"><div class="stat-label">Streak</div><div class="stat-value warn" id="navStreak">0</div></div>
+      </div>
+      <nav class="tabs" aria-label="Primary">
+        <button class="tab" data-tab="today"><span>⚡</span>Today</button>
+        <button class="tab" data-tab="journal"><span>✍</span>Journal</button>
+        <button class="tab" data-tab="progress"><span>📸</span>Progress</button>
+        <button class="tab" data-tab="timer"><span>⏱</span>Timer</button>
+        <button class="tab active" data-tab="alarms"><span>🔔</span>Alarms</button>
+        <button class="tab" data-tab="settings"><span>⚙</span>Setup</button>
+      </nav>
+    </header>
+
+    <section class="page" id="page-today">
+      <div class="panel panel-soft">
+        <div class="dashboard-grid" id="dashboardMetrics">
+        <div class="metric"><div class="label">Date</div><div class="value">Thursday, May 28</div><div class="sub">Today</div></div>
+        <div class="metric"><div class="label">Discipline</div><div class="value">0%</div><div class="sub">0 completed</div></div>
+        <div class="metric"><div class="label">Remaining</div><div class="value">7</div><div class="sub">0 overdue</div></div>
+        <div class="metric"><div class="label">Next</div><div class="value">07:00</div><div class="sub">Morning Activation</div></div>
+      </div>
+        <div class="progress-wrap">
+          <div class="progress-top"><span>Daily progress</span><strong id="progressText">0/7</strong></div>
+          <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 0%;"></div></div>
+        </div>
+      </div>
+      <div id="checkinCards"><div class="section-label">Daily Check-Ins</div><div class="checkin-grid">
+        <article class="check-card active">
+          <div class="check-title"><strong>Morning</strong><span class="check-time">7:00 AM</span></div>
+          <p>No recorded score from yesterday yet. Start clean, protect the morning block, and win the first task.</p>
+        </article>
+      
+        <article class="check-card ">
+          <div class="check-title"><strong>Midday</strong><span class="check-time">12:00 PM</span></div>
+          <p>Today is at 0%. No matching pace from yesterday yet, so compare against the standard instead of the mood.</p>
+        </article>
+      
+        <article class="check-card ">
+          <div class="check-title"><strong>Afternoon</strong><span class="check-time">4:00 PM</span></div>
+          <p>No overdue tasks right now. Stay sharp and protect the afternoon from drift.</p>
+        </article>
+      
+        <article class="check-card ">
+          <div class="check-title"><strong>Evening</strong><span class="check-time">9:00 PM</span></div>
+          <p>Today's discipline score is 0%. Wins: 0. Misses or open loops: 7. Log your reflection and reset for tomorrow.</p>
+        </article>
+      </div></div>
+      <div class="section-label">Affirmations</div>
+      <div id="reminderCards"><div class="checkin-grid">
+          <article class="check-card">
+            <div class="check-title"><strong>Morning Activation</strong><span class="check-time">07:00</span></div>
+            <p>Gratitude keeps ambition clean.</p>
+            <div class="tag-row"><span class="tag">Gratitude</span><span class="tag">Enabled</span></div>
+          </article>
         
+          <article class="check-card">
+            <div class="check-title"><strong>Midday Progress Check</strong><span class="check-time">12:00</span></div>
+            <p>You do not need motivation. You need alignment.</p>
+            <div class="tag-row"><span class="tag">Growth</span><span class="tag">Enabled</span></div>
+          </article>
+        
+          <article class="check-card">
+            <div class="check-title"><strong>Afternoon Accountability Check</strong><span class="check-time">16:00</span></div>
+            <p>Every meal, step, and rep is a vote for the body you are building.</p>
+            <div class="tag-row"><span class="tag">Health</span><span class="tag">Enabled</span></div>
+          </article>
+        
+          <article class="check-card">
+            <div class="check-title"><strong>Evening Reflection / Reset</strong><span class="check-time">21:00</span></div>
+            <p>A focused man is hard to compete with.</p>
+            <div class="tag-row"><span class="tag">Business</span><span class="tag">Enabled</span></div>
+          </article>
+        </div></div>
+      <div class="section-label">Checklist</div>
+      <div id="taskList">
+          <div class="section-label" style="margin-top:14px;">Morning Activation</div>
+          
+        <article class="task-card priority-high  " data-task-id="base-prayer">
+          <button class="task-check" data-action="toggleTask" aria-label="Toggle task"></button>
+          <div>
+            <div class="task-title">Pause, pray, and set the day</div>
+            <div class="task-desc">Faith first. Ask for discipline, wisdom, and clean focus.</div>
+            <div class="meta-row">
+              <span class="badge">Faith</span>
+              <span class="badge">07:00</span>
+              <span class="badge good">daily</span>
+              
+              <span class="badge warn">Base</span>
+              
+            </div>
+          </div>
+        </article>
+      
+        <article class="task-card priority-high  " data-task-id="base-body">
+          <button class="task-check" data-action="toggleTask" aria-label="Toggle task"></button>
+          <div>
+            <div class="task-title">Workout or mobility block</div>
+            <div class="task-desc">Move the body before the day steals the window.</div>
+            <div class="meta-row">
+              <span class="badge">Fitness</span>
+              <span class="badge">08:00</span>
+              <span class="badge good">daily</span>
+              
+              <span class="badge warn">Base</span>
+              
+            </div>
+          </div>
+        </article>
+      
+        
+          <div class="section-label" style="margin-top:14px;">Midday Progress</div>
+          
+        <article class="task-card priority-medium  " data-task-id="base-water">
+          <button class="task-check" data-action="toggleTask" aria-label="Toggle task"></button>
+          <div>
+            <div class="task-title">Water and creatine check</div>
+            <div class="task-desc">Hydration is part of the mission.</div>
+            <div class="meta-row">
+              <span class="badge">Health</span>
+              <span class="badge">12:00</span>
+              <span class="badge good">daily</span>
+              
+              <span class="badge warn">Base</span>
+              
+            </div>
+          </div>
+        </article>
+      
+        <article class="task-card priority-medium  " data-task-id="base-protein">
+          <button class="task-check" data-action="toggleTask" aria-label="Toggle task"></button>
+          <div>
+            <div class="task-title">Protein target check</div>
+            <div class="task-desc">Hit the meal plan before hunger starts making decisions.</div>
+            <div class="meta-row">
+              <span class="badge">Nutrition</span>
+              <span class="badge">14:00</span>
+              <span class="badge good">daily</span>
+              
+              <span class="badge warn">Base</span>
+              
+            </div>
+          </div>
+        </article>
+      
+        
+          <div class="section-label" style="margin-top:14px;">Afternoon Accountability</div>
+          
+        <article class="task-card priority-high  " data-task-id="base-business">
+          <button class="task-check" data-action="toggleTask" aria-label="Toggle task"></button>
+          <div>
+            <div class="task-title">Revenue or skill-building block</div>
+            <div class="task-desc">One focused block for the future you are building.</div>
+            <div class="meta-row">
+              <span class="badge">Business</span>
+              <span class="badge">16:00</span>
+              <span class="badge good">daily</span>
+              
+              <span class="badge warn">Base</span>
+              
+            </div>
+          </div>
+        </article>
+      
+        
+          <div class="section-label" style="margin-top:14px;">Evening Reset</div>
+          
+        <article class="task-card priority-medium  " data-task-id="base-journal">
+          <button class="task-check" data-action="toggleTask" aria-label="Toggle task"></button>
+          <div>
+            <div class="task-title">Evening journal reflection</div>
+            <div class="task-desc">Wins, misses, correction, gratitude, and reset.</div>
+            <div class="meta-row">
+              <span class="badge">Discipline</span>
+              <span class="badge">21:00</span>
+              <span class="badge good">daily</span>
+              
+              <span class="badge warn">Base</span>
+              
+            </div>
+          </div>
+        </article>
+      
+        <article class="task-card priority-medium  " data-task-id="base-plan">
+          <button class="task-check" data-action="toggleTask" aria-label="Toggle task"></button>
+          <div>
+            <div class="task-title">Plan tomorrow</div>
+            <div class="task-desc">Set the first moves before sleep.</div>
+            <div class="meta-row">
+              <span class="badge">Focus</span>
+              <span class="badge">21:15</span>
+              <span class="badge good">daily</span>
+              
+              <span class="badge warn">Base</span>
+              
+            </div>
+          </div>
+        </article>
+      
+        </div>
+    </section>
+
+    <section class="page" id="page-journal">
+      <div class="panel panel-soft">
+        <div class="section-label" style="margin-top:0;">Quick Journal</div>
+        <form id="journalForm" class="form-grid">
+          <div class="field">
+            <label for="journalText">Reflection</label>
+            <textarea class="textarea" id="journalText" placeholder="What happened? What did you avoid? What needs to be corrected tomorrow?"></textarea>
+          </div>
+          <div class="form-grid two">
+            <div class="field"><label for="journalMood">Mood</label><select class="select" id="journalMood"><option>Focused</option><option>Calm</option><option>Grateful</option><option>Driven</option><option>Tired</option><option>Stressed</option><option>Frustrated</option></select></div>
+            <div class="field"><label for="journalEnergy">Energy</label><input class="input" id="journalEnergy" type="range" min="1" max="10" value="7"></div>
+          </div>
+          <div class="field"><label for="journalGratitude">Gratitude</label><input class="input" id="journalGratitude" placeholder="One thing you are grateful for"></div>
+          <div class="field"><label for="journalWins">Wins</label><input class="input" id="journalWins" placeholder="What did you execute today?"></div>
+          <div class="field"><label for="journalLessons">Lessons / correction</label><input class="input" id="journalLessons" placeholder="What needs to change tomorrow?"></div>
+          <div class="field"><label for="journalPrayer">Prayer / spiritual note</label><input class="input" id="journalPrayer" placeholder="Optional"></div>
+          <div class="toolbar">
+            <button class="btn primary" type="submit">Save Entry</button>
+            <button class="btn" type="button" data-action="voiceJournal" id="voiceBtn">Voice</button>
+            <button class="btn" type="button" data-action="exportJournalTxt">Export TXT</button>
+            <button class="btn" type="button" data-action="exportJournalJson">Export JSON</button>
+          </div>
+          <div class="tag-row" id="suggestedTags"></div>
+        </form>
       </div>
-    </div>
-    <div class="radio-opt " onclick="selectExtra('run')">
-      <div class="radio-dot"><div class="radio-dot-inner"></div></div>
-      <div>
-        <div class="radio-label">🏃 Run (30–40 min) after BJ</div>
-        <div class="radio-sub">30 or 40 min outdoor run</div>
+
+      <div class="section-label">Journal Library</div>
+      <div class="library" id="journalLibrary"><button class="btn primary" data-action="filterJournal" data-tag="all">All Entries</button><button class="btn " data-action="filterJournal" data-tag="#fitness">fitness</button><button class="btn " data-action="filterJournal" data-tag="#faith">faith</button><button class="btn " data-action="filterJournal" data-tag="#business">business</button><button class="btn " data-action="filterJournal" data-tag="#discipline">discipline</button><button class="btn " data-action="filterJournal" data-tag="#money">money</button><button class="btn " data-action="filterJournal" data-tag="#relationships">relationships</button><button class="btn " data-action="filterJournal" data-tag="#progress">progress</button><button class="btn " data-action="filterJournal" data-tag="#setback">setback</button><button class="btn " data-action="filterJournal" data-tag="#gratitude">gratitude</button><button class="btn " data-action="filterJournal" data-tag="#work">work</button><button class="btn " data-action="filterJournal" data-tag="#health">health</button><button class="btn " data-action="filterJournal" data-tag="#purpose">purpose</button></div>
+      <div class="field" style="margin-top:8px;">
+        <label for="journalSearch">Search</label>
+        <input class="input" id="journalSearch" placeholder="Search entries or #tags">
       </div>
-    </div>
-    <div class="radio-opt " onclick="selectExtra('gym')">
-      <div class="radio-dot"><div class="radio-dot-inner"></div></div>
-      <div>
-        <div class="radio-label">🏋️ Upper Body Gym after BJ</div>
-        <div class="radio-sub">Upper body strength session</div>
+      <div id="journalEntries" style="margin-top:10px;"><div class="empty">No journal entries match this view.</div></div>
+    </section>
+
+    <section class="page" id="page-progress">
+      <div class="privacy-note">
+        Photos are stored locally in this browser by default. Do not commit personal photos to GitHub. For cloud storage later, use real authentication and private storage rules.
       </div>
-    </div>
-    
-  </div></div><div class="sec-label">BASE DAY</div><div class="task-card"><div class="cb"><span class="cb-check">✓</span></div>
-    <div class="task-body"><div class="task-name">🌅 Morning Routine</div><div class="sub-tasks" onclick="event.stopPropagation()">
-      <div class="sub-item " onclick="toggleBaseSub('morning',0,3)">
-        <div class="sub-cb"><span class="sub-chk">✓</span></div><span class="sub-txt">Wake up &amp; stretch</span></div><div class="sub-item " onclick="toggleBaseSub('morning',1,3)">
-        <div class="sub-cb"><span class="sub-chk">✓</span></div><span class="sub-txt">Shower / freshen up</span></div><div class="sub-item " onclick="toggleBaseSub('morning',2,3)">
-        <div class="sub-cb"><span class="sub-chk">✓</span></div><span class="sub-txt">Skincare</span></div>
-    </div></div></div><div class="task-card"><div class="cb"><span class="cb-check">✓</span></div>
-    <div class="task-body"><div class="task-name">🐾 Dog Walks</div><div class="sub-tasks" onclick="event.stopPropagation()">
-      <div class="sub-item " onclick="toggleBaseSub('dogs',0,2)">
-        <div class="sub-cb"><span class="sub-chk">✓</span></div><span class="sub-txt">Walk Miles (quick)</span></div><div class="sub-item " onclick="toggleBaseSub('dogs',1,2)">
-        <div class="sub-cb"><span class="sub-chk">✓</span></div><span class="sub-txt">Walk Penny (20-30 min)</span></div>
-    </div></div></div><div class="task-card"><div class="cb"><span class="cb-check">✓</span></div>
-    <div class="task-body"><div class="task-name">🍽️ Meals</div><div class="sub-tasks" onclick="event.stopPropagation()">
-      <div class="sub-item " onclick="toggleBaseSub('meals',0,3)">
-        <div class="sub-cb"><span class="sub-chk">✓</span></div><span class="sub-txt">Protein shake / Breakfast</span></div><div class="sub-item " onclick="toggleBaseSub('meals',1,3)">
-        <div class="sub-cb"><span class="sub-chk">✓</span></div><span class="sub-txt">Lunch</span></div><div class="sub-item " onclick="toggleBaseSub('meals',2,3)">
-        <div class="sub-cb"><span class="sub-chk">✓</span></div><span class="sub-txt">Dinner</span></div>
-    </div></div></div><div class="task-card"><div class="cb"><span class="cb-check">✓</span></div>
-    <div class="task-body"><div class="task-name">💊 Creatine</div><div class="tracker-row" onclick="event.stopPropagation()">
-      <div class="t-dot " onclick="toggleBaseDot('creatine',1,4)">1</div><div class="t-dot " onclick="toggleBaseDot('creatine',2,4)">2</div><div class="t-dot " onclick="toggleBaseDot('creatine',3,4)">3</div><div class="t-dot " onclick="toggleBaseDot('creatine',4,4)">4</div>
-      <span class="t-lbl">0/4</span>
-    </div></div></div><div class="task-card"><div class="cb"><span class="cb-check">✓</span></div>
-    <div class="task-body"><div class="task-name">💧 Water (1 gallon)</div><div class="tracker-row" onclick="event.stopPropagation()">
-      <span class="t-emoji on" onclick="toggleBaseWater('water',1,8)">💧</span><span class="t-emoji on" onclick="toggleBaseWater('water',2,8)">💧</span><span class="t-emoji on" onclick="toggleBaseWater('water',3,8)">💧</span><span class="t-emoji on" onclick="toggleBaseWater('water',4,8)">💧</span><span class="t-emoji on" onclick="toggleBaseWater('water',5,8)">💧</span><span class="t-emoji on" onclick="toggleBaseWater('water',6,8)">💧</span><span class="t-emoji on" onclick="toggleBaseWater('water',7,8)">💧</span><span class="t-emoji " onclick="toggleBaseWater('water',8,8)">💧</span>
-      <span class="t-lbl">7/8 glasses</span>
-    </div></div></div><div class="task-card"><div class="cb"><span class="cb-check">✓</span></div>
-    <div class="task-body"><div class="task-name">🌙 Evening Routine</div><div class="sub-tasks" onclick="event.stopPropagation()">
-      <div class="sub-item " onclick="toggleBaseSub('evening',0,3)">
-        <div class="sub-cb"><span class="sub-chk">✓</span></div><span class="sub-txt">Plan tomorrow</span></div><div class="sub-item " onclick="toggleBaseSub('evening',1,3)">
-        <div class="sub-cb"><span class="sub-chk">✓</span></div><span class="sub-txt">Wind down</span></div><div class="sub-item " onclick="toggleBaseSub('evening',2,3)">
-        <div class="sub-cb"><span class="sub-chk">✓</span></div><span class="sub-txt">Sleep by target time</span></div>
-    </div></div></div></div>
-</div>
-
-<!-- ════════════ WEEK ════════════ -->
-<div class="page" id="page-week">
-  <div class="week-strip" id="weekStrip"></div>
-  <div id="weekDayView"></div>
-</div>
-
-<!-- ════════════ MONTH ════════════ -->
-<div class="page" id="page-month">
-  <div class="month-hdr">
-    <div class="month-title" id="monthTitle"></div>
-    <div style="display:flex;gap:6px;">
-      <div class="mnav-btn" onclick="changeMonth(-1)">‹</div>
-      <div class="mnav-btn" onclick="changeMonth(1)">›</div>
-    </div>
-  </div>
-  <div class="cal-grid" id="calGrid"></div>
-  <div id="monthDayDetail" style="margin-top:14px;"></div>
-</div>
-
-<!-- ════════════ EXPORT ════════════ -->
-<div class="page" id="page-export">
-  <div class="sec-label">WEEKLY PROGRESS REPORT</div>
-  <div style="font-size:13px;color:var(--muted);margin-bottom:12px;">Copy and paste this into your weekly tracker or share it anywhere.</div>
-  <button class="btn-primary" onclick="generateExport()" style="margin-bottom:10px;">⚡ GENERATE THIS WEEK'S REPORT</button>
-  <div id="exportOutput"></div>
-</div>
-
-<!-- ════════════ SETTINGS ════════════ -->
-<div class="page" id="page-settings">
-  <div class="set-section">
-    <div class="set-title">BASE DAY ITEMS</div>
-    <div id="baseSettingsEl"></div>
-  </div>
-  <div class="set-section">
-    <div class="set-title">WORK DEADLINE</div>
-    <div class="set-row">
-      <div><div class="set-lbl">7 PM Work Cutoff</div><div class="set-sub">Warn when work tasks unfinished after 5 PM</div></div>
-      <div class="toggle on" id="tgl-workDeadline" onclick="toggleSetting('workDeadline')"><div class="toggle-knob"></div></div>
-    </div>
-  </div>
-  <div class="set-section">
-    <div class="set-title">NOTIFICATIONS</div>
-    <div class="set-row">
-      <div><div class="set-lbl">Plan Tomorrow Reminder</div><div class="set-sub">Evening alert to plan next day</div></div>
-      <div class="toggle" id="tgl-planReminder" onclick="toggleSetting('planReminder')"><div class="toggle-knob"></div></div>
-    </div>
-    <div class="set-row">
-      <div><div class="set-lbl">Reminder Time</div></div>
-      <input type="time" class="form-input" id="planTime" value="21:00" style="width:100px;padding:5px 9px;" onchange="saveSetting('planReminderTime',this.value)">
-    </div>
-    <div class="set-row">
-      <div><div class="set-lbl">Task Alarms</div><div class="set-sub">Alert at task reminder time</div></div>
-      <div class="toggle" id="tgl-taskAlarms" onclick="toggleSetting('taskAlarms')"><div class="toggle-knob"></div></div>
-    </div>
-    <button class="btn-primary" style="margin-top:8px;" onclick="requestNotif()">🔔 ENABLE NOTIFICATIONS</button>
-  </div>
-  <div class="set-section">
-    <div class="set-title">DATA</div>
-    <div class="set-row" onclick="exportJSON()" style="cursor:pointer"><div class="set-lbl">Export Backup (JSON)</div><span style="color:var(--muted)">→</span></div>
-    <div class="set-row" onclick="confirmClear()" style="cursor:pointer"><div class="set-lbl" style="color:var(--red)">Clear All Data</div><span style="color:var(--muted)">→</span></div>
-  </div>
-  <div style="text-align:center;color:var(--muted);font-size:11px;letter-spacing:1px;margin-top:10px;">MISSION OS v2.0 · Built for Champions 🔥</div>
-</div>
-
-<!-- FAB -->
-<button class="fab" onclick="openModal('addTaskModal')">＋</button>
-
-<!-- ════════════ ADD TASK MODAL ════════════ -->
-<div class="modal-overlay" id="addTaskModal" onclick="closeOverlay(event,'addTaskModal')">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-title">ADD TASK</div>
-    <div class="form-group"><label class="form-label">Title *</label><input class="form-input" id="at-title" placeholder="Task name..." type="text"></div>
-    <div class="form-group"><label class="form-label">Description</label><textarea class="form-textarea" id="at-desc" placeholder="Notes..."></textarea></div>
-    <div class="form-row">
-      <div class="form-group"><label class="form-label">Due Date</label><input class="form-input" id="at-date" type="date"></div>
-      <div class="form-group"><label class="form-label">Est. Time</label><input class="form-input" id="at-time" placeholder="30 min" type="text"></div>
-    </div>
-    <div class="form-row">
-      <div class="form-group"><label class="form-label">Alarm</label><input class="form-input" id="at-alarm" type="time"></div>
-      <div class="form-group"><label class="form-label">Category</label>
-        <select class="form-select" id="at-cat">
-          <option value="business">💼 Business</option>
-          <option value="health">💪 Health</option>
-          <option value="personal">🧠 Personal</option>
-          <option value="errands">🛒 Errands</option>
-          <option value="home">🏠 Home</option>
-          <option value="finance">💰 Finance</option>
-        </select>
+      <div class="panel" style="margin-top:10px;">
+        <div class="section-label" style="margin-top:0;">Add Progress Proof</div>
+        <form id="photoForm" class="form-grid">
+          <div class="field"><label for="photoFile">Photo</label><input class="input" id="photoFile" type="file" accept="image/*"></div>
+          <div class="form-grid two">
+            <div class="field"><label for="photoType">Type</label><select class="select" id="photoType"><option value="progress">Progress Photo</option><option value="weigh-in">Weigh-In</option><option value="meal">Meal</option><option value="workout">Workout Proof</option><option value="front">Front</option><option value="side">Side</option><option value="back">Back</option></select></div>
+            <div class="field"><label for="photoWeight">Weight</label><input class="input" id="photoWeight" type="number" step="0.1" placeholder="lbs"></div>
+          </div>
+          <div class="field"><label for="photoNotes">Notes</label><input class="input" id="photoNotes" placeholder="Optional notes"></div>
+          <button class="btn primary" type="submit">Save Photo Locally</button>
+        </form>
       </div>
-    </div>
-    <div class="form-group"><label class="form-label">Priority</label>
-      <div class="pri-row">
-        <div class="pri-btn" id="pb-high" onclick="selPri('high')">🔴 High</div>
-        <div class="pri-btn sel-medium" id="pb-medium" onclick="selPri('medium')">🟡 Medium</div>
-        <div class="pri-btn" id="pb-low" onclick="selPri('low')">🟢 Low</div>
+      <div class="section-label">Progress Gallery</div>
+      <div class="library" id="photoFilters"><button class="btn " data-action="filterPhotos" data-filter="all">All</button><button class="btn " data-action="filterPhotos" data-filter="progress">progress</button><button class="btn " data-action="filterPhotos" data-filter="weigh-in">weigh-in</button><button class="btn " data-action="filterPhotos" data-filter="meal">meal</button><button class="btn " data-action="filterPhotos" data-filter="workout">workout</button><button class="btn primary" data-action="filterPhotos" data-filter="front">front</button><button class="btn " data-action="filterPhotos" data-filter="side">side</button><button class="btn " data-action="filterPhotos" data-filter="back">back</button></div>
+      <div class="photo-grid" id="photoGallery"><div class="empty" style="grid-column:1/-1;">No photos saved in this filter yet.</div></div>
+    </section>
+
+    <section class="page" id="page-timer">
+      <div class="timer-panel panel-soft">
+        <div class="section-label" style="margin-top:0;">Active Timer</div>
+        <div class="field"><label for="timerLabel">Session label</label><input class="input" id="timerLabel" placeholder="Focus, workout, prayer, deep work"></div>
+        <div class="field" style="margin-top:8px;"><label for="timerTask">Attach task</label><select class="select" id="timerTask"><option value="">No attached task</option><option value="base-prayer">Pause, pray, and set the day</option><option value="base-body">Workout or mobility block</option><option value="base-water">Water and creatine check</option><option value="base-protein">Protein target check</option><option value="base-business">Revenue or skill-building block</option><option value="base-journal">Evening journal reflection</option><option value="base-plan">Plan tomorrow</option></select></div>
+        <div class="timer-display" id="timerDisplay">25:00</div>
+        <div class="preset-grid" id="timerPresets"><button class="btn" data-action="timerPreset" data-minutes="5">5m</button><button class="btn" data-action="timerPreset" data-minutes="10">10m</button><button class="btn" data-action="timerPreset" data-minutes="15">15m</button><button class="btn" data-action="timerPreset" data-minutes="20">20m</button><button class="btn" data-action="timerPreset" data-minutes="25">25m</button><button class="btn" data-action="timerPreset" data-minutes="30">30m</button><button class="btn" data-action="timerPreset" data-minutes="45">45m</button><button class="btn" data-action="timerPreset" data-minutes="60">60m</button></div>
+        <div class="toolbar" style="margin-top:10px;justify-content:center;">
+          <button class="btn primary" data-action="timerStart">Start</button>
+          <button class="btn" data-action="timerPause">Pause</button>
+          <button class="btn" data-action="timerReset">Reset</button>
+        </div>
       </div>
-    </div>
-    <div class="form-group"><label class="form-label">Repeat</label>
-      <select class="form-select" id="at-repeat"><option value="once">Once</option><option value="daily">Daily</option><option value="weekly">Weekly</option></select>
-    </div>
-    <div class="form-group"><label class="form-label">Add to</label>
-      <select class="form-select" id="at-day"><option value="today">Today</option><option value="tomorrow">Tomorrow</option><option value="custom">Date above</option></select>
-    </div>
-    <button class="btn-primary" onclick="saveTask()">ADD TASK</button>
-    <button class="btn-secondary" onclick="closeModal('addTaskModal')">Cancel</button>
-  </div>
-</div>
+      <div class="section-label">Completed Sessions</div>
+      <div id="timerHistory"><div class="empty">Completed timer sessions will appear here.</div></div>
+    </section>
 
-<!-- ════════════ PLAN TOMORROW MODAL ════════════ -->
-<div class="modal-overlay" id="planModal" onclick="closeOverlay(event,'planModal')">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-title">🌙 PLAN TOMORROW</div>
-    <div style="font-size:13px;color:var(--muted);margin-bottom:14px;">Review, reorder and adjust tomorrow's tasks.</div>
-    <div id="planList"></div>
-    <div class="form-group" style="margin-top:10px;">
-      <label class="form-label">Quick Add Task</label>
-      <div style="display:flex;gap:8px;">
-        <input class="form-input" id="plan-quick" placeholder="Quick task..." style="flex:1">
-        <button class="btn-primary" style="width:auto;padding:0 14px;font-size:13px;letter-spacing:1px;" onclick="addQuickPlan()">ADD</button>
+    <section class="page active" id="page-alarms">
+      <div class="panel">
+        <div class="section-label" style="margin-top:0;">Create Alarm</div>
+        <form id="alarmForm" class="form-grid two">
+          <div class="field"><label for="alarmTitle">Title</label><input class="input" id="alarmTitle" placeholder="Prayer, weigh-in, review"></div>
+          <div class="field"><label for="alarmTime">Time</label><input class="input" id="alarmTime" type="time"></div>
+          <div class="field"><label for="alarmRepeat">Repeat</label><select class="select" id="alarmRepeat"><option value="none">Once</option><option value="daily">Daily</option></select></div>
+          <button class="btn primary" type="submit" style="align-self:end;">Add Alarm</button>
+        </form>
       </div>
-    </div>
-    <button class="btn-primary" onclick="lockDay()">🔒 LOCK IN TOMORROW</button>
-    <button class="btn-secondary" onclick="closeModal('planModal')">Close</button>
-  </div>
-</div>
+      <div class="section-label">Reminders</div>
+      <div id="alarmList">
+          <article class="alarm-card" data-alarm-id="alarm_1779956772838_35iv0i">
+            <div>
+              <strong>Mission reminder</strong>
+              <div class="small-text">04:26 - 2026-05-28</div>
+              
+            </div>
+            <div class="toolbar">
+              <button class="toggle on" data-action="toggleAlarm" aria-label="Toggle alarm"></button>
+              <button class="badge" data-action="deleteAlarm">Delete</button>
+            </div>
+          </article>
+        </div>
+    </section>
 
-<!-- ════════════ DAY DETAIL MODAL ════════════ -->
-<div class="modal-overlay" id="dayModal" onclick="closeOverlay(event,'dayModal')">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-title" id="dayModalTitle">Tasks</div>
-    <div id="dayModalList"></div>
-    <button class="btn-primary" onclick="addForDay()">+ ADD TASK FOR THIS DAY</button>
-    <button class="btn-secondary" onclick="closeModal('dayModal')">Close</button>
-  </div>
-</div>
-
-<script>
-// ═══════════════════════════════
-//  DATA & STORAGE
-// ═══════════════════════════════
-const S={get:k=>{try{return JSON.parse(localStorage.getItem('mos2_'+k));}catch{return null;}},set:(k,v)=>localStorage.setItem('mos2_'+k,JSON.stringify(v))};
-
-const BULLYJUICE=[
-  {day:1,name:'Total-Body Burn',dur:'11:00'},{day:2,name:'Core Activation',dur:'10:59'},
-  {day:3,name:'Chest and Core',dur:'10:48'},{day:4,name:'Lower Body Blast',dur:'15:53'},
-  {day:5,name:'Total-Body HIIT',dur:'16:35'},{day:6,name:'Mobility',dur:'14:46'},
-  {day:7,name:'Upper Body',dur:'21:09'},{day:8,name:'Lower Body Power',dur:'11:39'},
-  {day:9,name:'Total-Body Burn',dur:'10:42'},{day:10,name:'Core',dur:'10:59'},
-  {day:11,name:'Total-Body HIIT',dur:'16:28'},{day:12,name:'Lower-Body HIIT',dur:'15:45'},
-  {day:13,name:'Upper Body Burn',dur:'16:15'},{day:14,name:'Mobility Movements',dur:'21:05'},
-  {day:15,name:'Total-Body Burn',dur:'10:42'},{day:16,name:'Back Strength',dur:'11:04'},
-  {day:17,name:'Total-Body HIIT',dur:'16:28'},{day:18,name:'Lower Body Burn',dur:'16:04'},
-  {day:19,name:'Core Routine',dur:'21:01'},{day:20,name:'Total-Body Blast',dur:'20:23'},
-  {day:21,name:'Mobility',dur:'21:07'},{day:22,name:'Upper Body Burn',dur:'11:09'},
-  {day:23,name:'Total-Body Burn',dur:'10:51'},{day:24,name:'Upper Body Routine',dur:'16:03'},
-  {day:25,name:'Total-Body HIIT',dur:'16:28'},{day:26,name:'Lower Body HIIT',dur:'21:11'},
-  {day:27,name:'Upper Body Burn',dur:'21:06'},{day:28,name:'Total-Body Stretch',dur:'21:11'},
-  {day:29,name:'Total-Body Burn',dur:'10:52'},{day:30,name:'Total-Body HIIT',dur:'15:58'},
-  {day:31,name:'Total-Body HIIT',dur:'16:28'},{day:32,name:'Lower Body Routine',dur:'16:05'},
-  {day:33,name:'Total-Body Blast',dur:'20:09'},{day:34,name:'Chest and Back',dur:'21:11'},
-  {day:35,name:'Core Activation',dur:'21:07'},{day:36,name:'Total-Body Stretch',dur:'11:13'},
-  {day:37,name:'Upper Body Burn',dur:'15:59'},{day:38,name:'Lower Body Burn',dur:'16:09'},
-  {day:39,name:'Total-Body HIIT',dur:'16:28'},{day:40,name:'Total-Body Stretch',dur:'20:56'},
-  {day:41,name:'Upper Body and Cardio',dur:'21:13'},{day:42,name:'Total-Body Blast',dur:'20:08'},
-  {day:43,name:'Total-Body Obliterator',dur:'10:53'},{day:44,name:'Final Core Crusher',dur:'20:21'},
-  {day:45,name:'Ultimate Total-Body Routine',dur:'30:45'}
-];
-
-const CAT_COLORS={business:'#4a90d9',health:'#4caf7d',personal:'#9b6dff',errands:'#f0c040',home:'#e05c2f',finance:'#4caf7d'};
-const CAT_ICONS={business:'💼',health:'💪',personal:'🧠',errands:'🛒',home:'🏠',finance:'💰'};
-
-const LEVELS=[
-  {name:'Rookie',xp:0},{name:'Grinder',xp:100},{name:'Warrior',xp:250},
-  {name:'Champion',xp:500},{name:'Elite',xp:1000},{name:'Legend',xp:2000},{name:'GOAT',xp:5000}
-];
-
-const BASE_ITEMS=[
-  {id:'morning',label:'🌅 Morning Routine',sub:['Wake up & stretch','Shower / freshen up','Skincare'],type:'sub'},
-  {id:'dogs',label:'🐾 Dog Walks',sub:['Walk Miles (quick)','Walk Penny (20-30 min)'],type:'sub'},
-  {id:'meals',label:'🍽️ Meals',sub:['Protein shake / Breakfast','Lunch','Dinner'],type:'sub'},
-  {id:'creatine',label:'💊 Creatine',count:4,type:'dots'},
-  {id:'water',label:'💧 Water (1 gallon)',count:8,type:'water'},
-  {id:'evening',label:'🌙 Evening Routine',sub:['Plan tomorrow','Wind down','Sleep by target time'],type:'sub'},
-];
-
-// STATE
-const now0=new Date(); now0.setHours(0,0,0,0);
-const todayStr=fmt(now0);
-let tasks=S.get('tasks')||[];
-let todayChecks=S.get('tc_'+todayStr)||{};
-let baseState=S.get('bs_'+todayStr)||{};
-let workoutState=S.get('ws_'+todayStr)||{bjDay:11,bjDone:false,extraType:'none',extraDone:false};
-let settings=S.get('settings')||{planReminder:true,taskAlarms:true,planReminderTime:'21:00',workDeadline:true};
-let baseEnabled=S.get('baseEnabled')||BASE_ITEMS.reduce((a,b)=>{a[b.id]=true;return a;},{});
-let xpData=S.get('xp')||{total:0,level:0,streak:0,lastDate:''};
-let selPriority='medium';
-let selMonthDay=null;
-let curMonth=new Date(now0.getFullYear(),now0.getMonth(),1);
-let selWeekDay=todayStr;
-let activeTimers={};
-let timerIntervals={};
-let alarmInt=null;
-
-// ── COMPUTED CURRENT BJ DAY ──
-// User said they're on day 11 as of May 28. Calculate offset.
-const BJ_START_DAY=11;
-const BJ_START_DATE=new Date(2026,4,28); // May 28, 2026
-function getCurrentBJDay(){
-  const diff=Math.floor((now0-BJ_START_DATE)/(1000*60*60*24));
-  return Math.min(45,Math.max(1,BJ_START_DAY+diff));
-}
-
-function fmt(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
-function parseD(s){const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d);}
-function dispDate(s){if(!s)return'';return parseD(s).toLocaleDateString('en-US',{month:'short',day:'numeric'});}
-
-// ═══════════════════════════════
-//  LIVE CLOCK
-// ═══════════════════════════════
-function updateClock(){
-  const n=new Date();
-  const t=n.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',second:'2-digit',hour12:true});
-  const d=n.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
-  document.getElementById('liveClock').textContent=t+' · '+d.toUpperCase();
-  checkDeadlineBanner();
-}
-setInterval(updateClock,1000);
-updateClock();
-
-// ═══════════════════════════════
-//  XP & LEVELS
-// ═══════════════════════════════
-function addXP(pts,label=''){
-  const prev=xpData.level;
-  xpData.total+=pts;
-  // determine level
-  let lv=0;
-  for(let i=LEVELS.length-1;i>=0;i--){if(xpData.total>=LEVELS[i].xp){lv=i;break;}}
-  const leveled=lv>prev;
-  xpData.level=lv;
-  S.set('xp',xpData);
-  // toast
-  const t=document.getElementById('xpToast');
-  t.textContent='+'+(pts)+' XP'+(label?' · '+label:'');
-  t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2000);
-  if(navigator.vibrate)navigator.vibrate(30);
-  updateXPUI();
-  if(leveled){
-    setTimeout(()=>{
-      document.getElementById('levelUpTitle').textContent='LEVEL UP! '+LEVELS[lv].name.toUpperCase();
-      document.getElementById('levelUpSub').textContent='You reached '+LEVELS[lv].name+' · Keep going! 🔥';
-      document.getElementById('levelUpOverlay').classList.add('show');
-    },500);
-  }
-}
-
-function updateXPUI(){
-  document.getElementById('xpVal').textContent=xpData.total;
-  document.getElementById('streakVal').textContent=xpData.streak;
-  const lv=xpData.level;
-  const lvName=LEVELS[lv].name;
-  document.getElementById('levelVal').textContent='Lv '+(lv+1);
-  document.getElementById('xpLevelLabel').textContent=lvName;
-  const nextXP=lv<LEVELS.length-1?LEVELS[lv+1].xp:9999;
-  const prevXP=LEVELS[lv].xp;
-  const pct=Math.min(100,((xpData.total-prevXP)/(nextXP-prevXP))*100);
-  document.getElementById('xpBarFill').style.width=pct+'%';
-  document.getElementById('xpNextLabel').textContent=xpData.total+' / '+nextXP+' XP';
-}
-
-function dismissLevelUp(){document.getElementById('levelUpOverlay').classList.remove('show');}
-
-function checkStreak(){
-  const yesterday=new Date(now0);yesterday.setDate(now0.getDate()-1);
-  const ys=fmt(yesterday);
-  if(xpData.lastDate===ys){// continuing streak
-  }else if(xpData.lastDate!==todayStr){xpData.streak=0;}// broken
-  if(xpData.lastDate!==todayStr){xpData.streak++;xpData.lastDate=todayStr;S.set('xp',xpData);}
-  updateXPUI();
-}
-
-// ═══════════════════════════════
-//  TABS
-// ═══════════════════════════════
-function switchTab(tab){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById('page-'+tab).classList.add('active');
-  document.getElementById('tab-'+tab).classList.add('active');
-  if(tab==='today')renderToday();
-  if(tab==='week')renderWeek();
-  if(tab==='month')renderMonth();
-  if(tab==='settings')renderSettings();
-  if(tab==='export'){}
-}
-
-// ═══════════════════════════════
-//  MODALS
-// ═══════════════════════════════
-function openModal(id){document.getElementById(id).classList.add('open');document.body.style.overflow='hidden';}
-function closeModal(id){document.getElementById(id).classList.remove('open');document.body.style.overflow='';}
-function closeOverlay(e,id){if(e.target===document.getElementById(id))closeModal(id);}
-
-// ═══════════════════════════════
-//  TOAST
-// ═══════════════════════════════
-function showToast(msg,dur=2500){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),dur);
-}
-
-// ═══════════════════════════════
-//  DEADLINE BANNER
-// ═══════════════════════════════
-function checkDeadlineBanner(){
-  if(!settings.workDeadline)return;
-  const h=new Date().getHours();
-  const wrap=document.getElementById('deadlineBannerWrap');
-  if(!wrap)return;
-  const workTasks=getTasksForDay(todayStr).filter(t=>t.category==='business'&&!todayChecks[t.id]);
-  if(h>=17&&h<19&&workTasks.length>0){
-    wrap.innerHTML=`<div class="deadline-banner"><span class="db-icon">⚠️</span><div><strong style="color:var(--red)">7 PM Work Deadline!</strong><div style="font-size:12px;color:var(--muted);margin-top:2px;">${workTasks.length} work task${workTasks.length>1?'s':''} still open. Finish by 7 PM!</div></div></div>`;
-  }else if(h>=19&&workTasks.length>0){
-    wrap.innerHTML=`<div class="deadline-banner"><span class="db-icon">🔴</span><div><strong style="color:var(--red)">Past 7 PM</strong><div style="font-size:12px;color:var(--muted);margin-top:2px;">${workTasks.length} work task${workTasks.length>1?'s':''} incomplete. Time for your partner! 💙</div></div></div>`;
-  }else{wrap.innerHTML='';}
-}
-
-// ═══════════════════════════════
-//  TODAY PAGE
-// ═══════════════════════════════
-function renderToday(){
-  checkStreak();
-  updateXPUI();
-  const container=document.getElementById('todayContainer');
-  container.innerHTML='';
-
-  // WORKOUT SECTION
-  const bjDay=getCurrentBJDay();
-  const wkState=S.get('ws_'+todayStr)||{bjDone:false,extraType:'none',extraDone:false};
-  container.innerHTML+=`<div class="sec-label">WORKOUT</div>`;
-  container.appendChild(renderWorkoutCard(bjDay,wkState));
-
-  // BASE DAY
-  const enabled=BASE_ITEMS.filter(b=>baseEnabled[b.id]!==false);
-  if(enabled.length){
-    container.innerHTML+=`<div class="sec-label">BASE DAY</div>`;
-    enabled.forEach(item=>container.appendChild(renderBaseItem(item)));
-  }
-
-  // CUSTOM TASKS
-  const dayTasks=getTasksForDay(todayStr);
-  if(dayTasks.length){
-    container.innerHTML+=`<div class="sec-label">TASKS</div>`;
-    dayTasks.forEach(t=>container.appendChild(renderTaskCard(t)));
-  }
-
-  if(!enabled.length&&!dayTasks.length){
-    container.innerHTML+=`<div class="empty"><div class="empty-icon">✨</div><div class="empty-title">All clear!</div><div style="font-size:13px;color:var(--muted)">Tap + to add tasks</div></div>`;
-  }
-
-  updateTodayProg();
-  checkDeadlineBanner();
-}
-
-// ── WORKOUT CARD ──
-function renderWorkoutCard(bjDay,wkState){
-  const wk=BULLYJUICE[bjDay-1]||BULLYJUICE[0];
-  const div=document.createElement('div');
-  div.className='workout-card';
-  div.id='wk-card';
-
-  const prevCompleted=bjDay>BJ_START_DAY&&!wkState.bjDone;// days 1-10 already done
-  const alreadyDone=wkState.bjDone||(bjDay<BJ_START_DAY);
-
-  const radioHTML=!alreadyDone?`
-  <div class="radio-group" onclick="event.stopPropagation()">
-    <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:2px;">Add Extra Workout?</div>
-    ${['none','run','gym'].map(opt=>`
-    <div class="radio-opt ${(wkState.extraType||'none')===opt?'selected':''}" onclick="selectExtra('${opt}')">
-      <div class="radio-dot"><div class="radio-dot-inner"></div></div>
-      <div>
-        <div class="radio-label">${opt==='none'?'Bullyjuice Only':opt==='run'?'🏃 Run (30–40 min) after BJ':'🏋️ Upper Body Gym after BJ'}</div>
-        ${opt!=='none'?`<div class="radio-sub">${opt==='run'?'30 or 40 min outdoor run':'Upper body strength session'}</div>`:''}
+    <section class="page" id="page-settings">
+      <div class="panel panel-soft">
+        <div class="section-label" style="margin-top:0;">Notification Setup</div>
+        <p class="small-text">
+          Browser notifications work best while the app is open or installed as a PWA. On iPhone, web push requires adding the site to the Home Screen and allowing notifications. True background push and server scheduling require a backend.
+        </p>
+        <div class="toolbar" style="margin-top:10px;">
+          <button class="btn primary" data-action="requestNotifications">Enable Notifications</button>
+          <button class="btn" data-action="toggleNotifications" id="notifyToggleBtn">Toggle Notifications</button>
+        </div>
+        <div id="reminderSettings" style="margin-top:10px;"></div>
       </div>
-    </div>`).join('')}
-    ${wkState.extraType&&wkState.extraType!=='none'?`
-    <div style="margin-top:4px;display:flex;align-items:center;gap:8px;">
-      <div class="sub-item ${wkState.extraDone?'done':''}" onclick="toggleExtraDone()" style="flex:1;">
-        <div class="sub-cb"><span class="sub-chk">✓</span></div>
-        <span class="sub-txt">${wkState.extraType==='run'?'🏃 Run completed':'🏋️ Gym session completed'}</span>
-      </div>
-    </div>`:''}
-  </div>`:alreadyDone&&bjDay<BJ_START_DAY?`<div style="margin-top:6px;"><span class="wk-done-badge">✓ COMPLETED (PRE-CHALLENGE)</span></div>`:wkState.bjDone?`<div style="margin-top:6px;"><span class="wk-done-badge">✓ CRUSHED IT TODAY</span></div>`:'';
 
-  div.innerHTML=`
-  <div class="wk-header">
-    <div class="wk-title">BULLYJUICE 45-DAY</div>
-    <div class="wk-day">DAY ${bjDay} OF 45</div>
-  </div>
-  <div class="wk-main">
-    <div class="wk-icon">🔥</div>
-    <div class="wk-info">
-      <div class="wk-name">${wk.name}</div>
-      <div class="wk-dur">⏱ ${wk.dur} · iFIT Bodyweight</div>
+      <div class="panel">
+        <div class="section-label" style="margin-top:0;">Privacy Lock</div>
+        <p class="small-text">This protects casual access on this device only. For true privacy, add backend authentication and private database/storage rules.</p>
+        <div class="form-grid two" style="margin-top:10px;">
+          <div class="field"><label for="newPin">Set PIN/password</label><input class="input" id="newPin" type="password" placeholder="New local lock code"></div>
+          <div class="field"><label for="inactivityMinutes">Auto-lock minutes</label><input class="input" id="inactivityMinutes" type="number" min="1" max="120" value="15"></div>
+        </div>
+        <div class="toolbar" style="margin-top:10px;">
+          <button class="btn primary" data-action="saveLock">Save Lock</button>
+          <button class="btn" data-action="toggleRemember">Remember Device</button>
+          <button class="btn danger" data-action="clearLock">Clear Lock</button>
+        </div>
+        <div class="small-text" id="lockStatus" style="margin-top:8px;"></div>
+      </div>
+
+      <div class="panel">
+        <div class="section-label" style="margin-top:0;">Data and Deployment</div>
+        <div class="toolbar">
+          <button class="btn" data-action="exportBackup">Export Backup</button>
+          <button class="btn danger" data-action="clearData">Clear Data</button>
+        </div>
+        <p class="small-text" style="margin-top:10px;">
+          A private GitHub repo hides code, but it does not automatically make the deployed website private. Personal data should stay out of GitHub commits. Secrets belong in environment variables and real backend services.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <button class="fab" data-action="openTaskModal" aria-label="Add task">+</button>
+
+  <div class="modal-layer" id="taskModal">
+    <div class="modal">
+      <div class="modal-handle"></div>
+      <div class="modal-title">Add Task</div>
+      <form id="taskForm" class="form-grid">
+        <div class="field"><label for="taskTitle">Title</label><input class="input" id="taskTitle" required="" placeholder="Task name"></div>
+        <div class="field"><label for="taskDescription">Description</label><textarea class="textarea" id="taskDescription" placeholder="Optional notes"></textarea></div>
+        <div class="form-grid two">
+          <div class="field"><label for="taskCategory">Category</label><select class="select" id="taskCategory"><option>Discipline</option><option>Faith</option><option>Fitness</option><option>Business</option><option>Money</option><option>Health</option><option>Family</option><option>Focus</option></select></div>
+          <div class="field"><label for="taskPriority">Priority</label><select class="select" id="taskPriority"><option value="high">High</option><option value="medium" selected="">Medium</option><option value="low">Low</option></select></div>
+        </div>
+        <div class="form-grid two">
+          <div class="field"><label for="taskDate">Date</label><input class="input" id="taskDate" type="date"></div>
+          <div class="field"><label for="taskTime">Time</label><input class="input" id="taskTime" type="time"></div>
+        </div>
+        <div class="form-grid two">
+          <div class="field"><label for="taskBlock">Block</label><select class="select" id="taskBlock"><option value="morning">Morning</option><option value="midday">Midday</option><option value="afternoon">Afternoon</option><option value="evening">Evening</option><option value="anytime">Anytime</option></select></div>
+          <div class="field"><label for="taskRepeat">Repeat</label><select class="select" id="taskRepeat"><option value="once">Once</option><option value="daily">Daily</option><option value="weekly">Weekly</option></select></div>
+        </div>
+        <button class="btn primary" type="submit">Add Task</button>
+        <button class="btn ghost" type="button" data-action="closeModal">Cancel</button>
+      </form>
     </div>
   </div>
-  <div class="wk-cb" onclick="event.stopPropagation()">
-    <div class="sub-item ${alreadyDone?'done':''}" onclick="toggleBJDone(${bjDay})" id="bj-check">
-      <div class="sub-cb"><span class="sub-chk">✓</span></div>
-      <span class="sub-txt" style="font-size:13px;font-weight:600;">${alreadyDone?'Workout complete!':'Mark Bullyjuice workout done'}</span>
-    </div>
-  </div>
-  ${radioHTML}`;
-  return div;
-}
 
-function toggleBJDone(bjDay){
-  const wkState=S.get('ws_'+todayStr)||{bjDone:false,extraType:'none',extraDone:false};
-  if(bjDay<BJ_START_DAY)return;// pre-completed
-  wkState.bjDone=!wkState.bjDone;
-  S.set('ws_'+todayStr,wkState);
-  if(wkState.bjDone){addXP(25,'Bullyjuice Day '+bjDay);}
-  renderToday();
-}
+  <script type="module">
+    const STORE_KEY = "mission_os_v4";
+    const LEGACY_PREFIX = "mos3_";
+    const todayKey = (d = new Date()) => {
+      const copy = new Date(d);
+      copy.setHours(0, 0, 0, 0);
+      return `${copy.getFullYear()}-${String(copy.getMonth() + 1).padStart(2, "0")}-${String(copy.getDate()).padStart(2, "0")}`;
+    };
+    const nowDate = () => new Date();
+    const today = () => todayKey();
+    const $ = (sel, root = document) => root.querySelector(sel);
+    const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+    const esc = (value = "") => String(value).replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[char]));
+    const uid = (prefix = "id") => `${prefix}_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+    const minuteOfDay = (time = "23:59") => {
+      const [h = 23, m = 59] = time.split(":").map(Number);
+      return h * 60 + m;
+    };
+    const formatTime = (date = new Date()) => date.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", second: "2-digit", hour12: true });
+    const formatDateLong = (date = new Date()) => date.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" });
+    const parseLocalDate = value => {
+      const [y, m, d] = String(value).split("-").map(Number);
+      return new Date(y, (m || 1) - 1, d || 1);
+    };
 
-function selectExtra(type){
-  const wkState=S.get('ws_'+todayStr)||{bjDone:false,extraType:'none',extraDone:false};
-  wkState.extraType=type;
-  S.set('ws_'+todayStr,wkState);
-  renderToday();
-}
+    const AFFIRMATIONS = [
+      { category: "Discipline", text: "You said you wanted a different life. Move like it." },
+      { category: "Discipline", text: "Discipline is the receipt. Results are the delivery." },
+      { category: "Faith", text: "Pause. Pray. Refocus. Then execute." },
+      { category: "Faith", text: "Small obedience compounds into major transformation." },
+      { category: "Fitness", text: "The body changes when the standard stops negotiating." },
+      { category: "Wealth", text: "Build the man who can carry the business." },
+      { category: "Focus", text: "Handle the next task. The mountain moves one stone at a time." },
+      { category: "Self-Respect", text: "Self-respect is built when you keep promises to yourself." },
+      { category: "Consistency", text: "Do the simple thing again. That is where the separation happens." },
+      { category: "Emotional Control", text: "Do not let a mood become a mission commander." },
+      { category: "Leadership", text: "Lead your day before the day starts leading you." },
+      { category: "Purpose", text: "Your future self is watching what you negotiate with today." },
+      { category: "Gratitude", text: "Gratitude keeps ambition clean." },
+      { category: "Growth", text: "You do not need motivation. You need alignment." },
+      { category: "Health", text: "Every meal, step, and rep is a vote for the body you are building." },
+      { category: "Business", text: "A focused man is hard to compete with." }
+    ];
 
-function toggleExtraDone(){
-  const wkState=S.get('ws_'+todayStr)||{bjDone:false,extraType:'none',extraDone:false};
-  wkState.extraDone=!wkState.extraDone;
-  S.set('ws_'+todayStr,wkState);
-  if(wkState.extraDone){addXP(15,wkState.extraType==='run'?'Run complete':'Gym complete');}
-  renderToday();
-}
+    const TAG_RULES = {
+      "#fitness": ["gym", "workout", "run", "lift", "cardio", "protein", "body", "scale", "weight"],
+      "#discipline": ["discipline", "executed", "promise", "task", "consistent", "routine"],
+      "#faith": ["god", "faith", "pray", "prayed", "prayer", "scripture", "obedience"],
+      "#money": ["money", "wealth", "budget", "save", "invest", "debt", "income"],
+      "#business": ["business", "client", "sale", "revenue", "motivo", "work", "company"],
+      "#relationships": ["relationship", "partner", "friend", "family", "communication"],
+      "#stress": ["stress", "anxious", "overwhelmed", "pressure", "angry"],
+      "#gratitude": ["grateful", "gratitude", "thankful", "blessed"],
+      "#progress": ["progress", "win", "better", "improved", "completed", "finished"],
+      "#setback": ["missed", "failed", "setback", "avoided", "slipped", "late"],
+      "#focus": ["focus", "deep work", "locked", "attention", "distracted"],
+      "#health": ["health", "sleep", "water", "meal", "nutrition", "sick"],
+      "#purpose": ["purpose", "future", "vision", "calling", "mission"],
+      "#mindset": ["mindset", "thought", "identity", "belief", "mental"],
+      "#work": ["work", "job", "shift", "deadline", "meeting"],
+      "#family": ["family", "mom", "dad", "child", "home"],
+      "#nutrition": ["food", "meal", "protein", "calories", "nutrition"],
+      "#sleep": ["sleep", "tired", "rest", "bed", "wake"],
+      "#prayer": ["prayer", "pray", "prayed", "god", "spiritual"]
+    };
 
-// ── BASE ITEMS ──
-function renderBaseItem(item){
-  const div=document.createElement('div');
-  div.className='task-card';
-  const bs=S.get('bs_'+todayStr)||{};
+    const LIBRARY_TAGS = ["all", "#fitness", "#faith", "#business", "#discipline", "#money", "#relationships", "#progress", "#setback", "#gratitude", "#work", "#health", "#purpose"];
+    const PHOTO_FILTERS = ["all", "progress", "weigh-in", "meal", "workout", "front", "side", "back"];
+    const BLOCK_LABELS = { morning: "Morning Activation", midday: "Midday Progress", afternoon: "Afternoon Accountability", evening: "Evening Reset", anytime: "Anytime" };
+    const BLOCK_TIME = { morning: "09:00", midday: "13:00", afternoon: "17:00", evening: "22:00", anytime: "23:59" };
+    const TIMER_PRESETS = [5, 10, 15, 20, 25, 30, 45, 60];
 
-  let trackerHTML='';
-  if(item.type==='sub'){
-    const subs=bs[item.id+'_subs']||[];
-    trackerHTML=`<div class="sub-tasks" onclick="event.stopPropagation()">
-      ${item.sub.map((s,i)=>`<div class="sub-item ${subs[i]?'done':''}" onclick="toggleBaseSub('${item.id}',${i},${item.sub.length})">
-        <div class="sub-cb"><span class="sub-chk">✓</span></div><span class="sub-txt">${s}</span></div>`).join('')}
-    </div>`;
-  }else if(item.type==='dots'){
-    const cnt=bs[item.id]||0;
-    trackerHTML=`<div class="tracker-row" onclick="event.stopPropagation()">
-      ${Array.from({length:item.count},(_,i)=>`<div class="t-dot ${i<cnt?'on':''}" onclick="toggleBaseDot('${item.id}',${i+1},${item.count})">${i+1}</div>`).join('')}
-      <span class="t-lbl">${cnt}/${item.count}</span>
-    </div>`;
-  }else if(item.type==='water'){
-    const cnt=bs[item.id]||0;
-    trackerHTML=`<div class="tracker-row" onclick="event.stopPropagation()">
-      ${Array.from({length:item.count},(_,i)=>`<span class="t-emoji ${i<cnt?'on':''}" onclick="toggleBaseWater('${item.id}',${i+1},${item.count})">💧</span>`).join('')}
-      <span class="t-lbl">${cnt}/${item.count} glasses</span>
-    </div>`;
-  }
+    const DEFAULT_TASKS = [
+      { id: "base-prayer", title: "Pause, pray, and set the day", description: "Faith first. Ask for discipline, wisdom, and clean focus.", category: "Faith", priority: "high", block: "morning", time: "07:00", repeat: "daily", system: true },
+      { id: "base-body", title: "Workout or mobility block", description: "Move the body before the day steals the window.", category: "Fitness", priority: "high", block: "morning", time: "08:00", repeat: "daily", system: true },
+      { id: "base-water", title: "Water and creatine check", description: "Hydration is part of the mission.", category: "Health", priority: "medium", block: "midday", time: "12:00", repeat: "daily", system: true },
+      { id: "base-protein", title: "Protein target check", description: "Hit the meal plan before hunger starts making decisions.", category: "Nutrition", priority: "medium", block: "midday", time: "14:00", repeat: "daily", system: true },
+      { id: "base-business", title: "Revenue or skill-building block", description: "One focused block for the future you are building.", category: "Business", priority: "high", block: "afternoon", time: "16:00", repeat: "daily", system: true },
+      { id: "base-journal", title: "Evening journal reflection", description: "Wins, misses, correction, gratitude, and reset.", category: "Discipline", priority: "medium", block: "evening", time: "21:00", repeat: "daily", system: true },
+      { id: "base-plan", title: "Plan tomorrow", description: "Set the first moves before sleep.", category: "Focus", priority: "medium", block: "evening", time: "21:15", repeat: "daily", system: true }
+    ];
 
-  const isDone=item.type==='sub'?(bs[item.id+'_subs']||[]).filter(Boolean).length===item.sub.length
-    :(item.type==='dots'||item.type==='water')?bs[item.id+'_done']:bs[item.id];
-  if(isDone)div.classList.add('done');
+    const DEFAULT_REMINDERS = [
+      { id: "morning", title: "Morning Activation", time: "07:00", enabled: true },
+      { id: "midday", title: "Midday Progress Check", time: "12:00", enabled: true },
+      { id: "afternoon", title: "Afternoon Accountability Check", time: "16:00", enabled: true },
+      { id: "evening", title: "Evening Reflection / Reset", time: "21:00", enabled: true }
+    ];
 
-  div.innerHTML=`<div class="cb"><span class="cb-check">✓</span></div>
-    <div class="task-body"><div class="task-name">${item.label}</div>${trackerHTML}</div>`;
-  if(item.type==='simple')div.onclick=()=>toggleBaseSimple(item.id);
-  return div;
-}
+    const defaultState = () => ({
+      tasks: migrateLegacyTasks(),
+      completions: migrateLegacyCompletions(),
+      journal: [],
+      photos: [],
+      timerSessions: [],
+      alarms: [],
+      reminders: DEFAULT_REMINDERS,
+      notified: {},
+      history: {},
+      preferences: {
+        theme: null,
+        notificationsEnabled: false,
+        selectedJournalTag: "all",
+        selectedPhotoFilter: "all"
+      },
+      lock: {
+        pinHash: null,
+        rememberDevice: true,
+        inactivityMinutes: 15
+      }
+    });
 
-function toggleBaseSimple(id){
-  const bs=S.get('bs_'+todayStr)||{};
-  bs[id]=!bs[id];S.set('bs_'+todayStr,bs);
-  if(bs[id])addXP(10);
-  renderToday();
-}
-function toggleBaseSub(id,idx,total){
-  const bs=S.get('bs_'+todayStr)||{};
-  if(!bs[id+'_subs'])bs[id+'_subs']=[];
-  bs[id+'_subs'][idx]=!bs[id+'_subs'][idx];
-  const all=bs[id+'_subs'].filter(Boolean).length===total;
-  if(all&&!bs[id])addXP(10);
-  bs[id]=all;S.set('bs_'+todayStr,bs);
-  renderToday();updateTodayProg();
-}
-function toggleBaseDot(id,n,total){
-  const bs=S.get('bs_'+todayStr)||{};
-  bs[id]=(bs[id]===n)?n-1:n;
-  const wasDone=bs[id+'_done'];
-  bs[id+'_done']=bs[id]>=total;
-  if(bs[id+'_done']&&!wasDone)addXP(10);
-  S.set('bs_'+todayStr,bs);renderToday();updateTodayProg();
-}
-function toggleBaseWater(id,n,total){
-  const bs=S.get('bs_'+todayStr)||{};
-  const wasDone=bs[id+'_done'];
-  bs[id]=n;bs[id+'_done']=n>=total;
-  if(bs[id+'_done']&&!wasDone)addXP(10);
-  S.set('bs_'+todayStr,bs);renderToday();updateTodayProg();
-}
-
-// ── TASK CARDS ──
-function renderTaskCard(task){
-  const div=document.createElement('div');
-  div.className='task-card pri-'+(task.priority||'medium');
-  if(todayChecks[task.id])div.classList.add('done');
-
-  const isOverdue=task.dueDate&&task.dueDate<todayStr&&!todayChecks[task.id];
-  const isWork=task.category==='business';
-  const catColor=CAT_COLORS[task.category]||'#888';
-
-  let deadBadge='';
-  if(isOverdue)deadBadge=`<span class="badge b-overdue">⚠ Overdue</span>`;
-  else if(task.dueDate===todayStr)deadBadge=`<span class="badge b-deadline">Due Today</span>`;
-  else if(task.dueDate)deadBadge=`<span class="badge b-deadline">${dispDate(task.dueDate)}</span>`;
-
-  const workBadge=isWork?`<span class="badge b-7pm">🕖 Before 7PM</span>`:'';
-
-  // Timer state
-  const tSec=activeTimers[task.id]||0;
-  const timerFmt=s=>{const m=Math.floor(s/60),sec=s%60;return String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0');};
-  const isRunning=!!timerIntervals[task.id];
-
-  div.innerHTML=`
-    <div class="cb" onclick="event.stopPropagation();toggleTask('${task.id}',this.closest('.task-card'))"><span class="cb-check">✓</span></div>
-    <div class="task-body">
-      <div class="task-name">${task.title}</div>
-      ${task.description?`<div class="task-desc">${task.description}</div>`:''}
-      <div class="task-meta">
-        ${task.category?`<span class="badge b-cat" style="color:${catColor};border-color:${catColor}33;background:${catColor}18">${CAT_ICONS[task.category]||''} ${task.category}</span>`:''}
-        ${task.estTime?`<span class="badge b-time">⏱ ${task.estTime}</span>`:''}
-        ${deadBadge}${workBadge}
-      </div>
-      <div class="task-timer">
-        <div class="timer-display" id="timer-${task.id}">${timerFmt(tSec)}</div>
-        <div class="timer-btn ${isRunning?'running':''}" onclick="event.stopPropagation();toggleTimer('${task.id}')">${isRunning?'⏸ Pause':'▶ Start'}</div>
-        <div class="timer-btn" onclick="event.stopPropagation();resetTimer('${task.id}')">↺</div>
-      </div>
-    </div>`;
-  return div;
-}
-
-function toggleTask(taskId,cardEl){
-  todayChecks[taskId]=!todayChecks[taskId];
-  cardEl.classList.toggle('done',todayChecks[taskId]);
-  S.set('tc_'+todayStr,todayChecks);
-  if(todayChecks[taskId]){
-    addXP(20,'Task complete');
-    if(navigator.vibrate)navigator.vibrate([30,20,30]);
-  }
-  updateTodayProg();
-}
-
-// ── TIMERS ──
-function toggleTimer(taskId){
-  if(timerIntervals[taskId]){
-    clearInterval(timerIntervals[taskId]);
-    delete timerIntervals[taskId];
-  }else{
-    timerIntervals[taskId]=setInterval(()=>{
-      activeTimers[taskId]=(activeTimers[taskId]||0)+1;
-      const el=document.getElementById('timer-'+taskId);
-      if(el){const s=activeTimers[taskId];const m=Math.floor(s/60),sec=s%60;el.textContent=String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0');}
-    },1000);
-  }
-  renderToday();
-}
-function resetTimer(taskId){
-  if(timerIntervals[taskId]){clearInterval(timerIntervals[taskId]);delete timerIntervals[taskId];}
-  activeTimers[taskId]=0;
-  const el=document.getElementById('timer-'+taskId);
-  if(el)el.textContent='00:00';
-  renderToday();
-}
-
-function updateTodayProg(){
-  const dayTasks=getTasksForDay(todayStr);
-  const bs=S.get('bs_'+todayStr)||{};
-  const enabled=BASE_ITEMS.filter(b=>baseEnabled[b.id]!==false);
-  const wkState=S.get('ws_'+todayStr)||{};
-  const bjDay=getCurrentBJDay();
-
-  let total=dayTasks.length+enabled.length+1;// +1 for workout
-  let done=dayTasks.filter(t=>todayChecks[t.id]).length;
-  done+=wkState.bjDone||(bjDay<BJ_START_DAY)?1:0;
-  enabled.forEach(item=>{
-    if(item.type==='simple'&&bs[item.id])done++;
-    else if(item.type==='sub'&&(bs[item.id+'_subs']||[]).filter(Boolean).length===item.sub.length)done++;
-    else if((item.type==='dots'||item.type==='water')&&bs[item.id+'_done'])done++;
-  });
-
-  const pct=total?(done/total*100):0;
-  document.getElementById('todayBar').style.width=pct+'%';
-  document.getElementById('todayCount').textContent=done+'/'+total;
-}
-
-function getTasksForDay(ds){
-  return tasks.filter(t=>{
-    if(t.repeat==='daily')return true;
-    if(t.repeat==='weekly'){const td=parseD(t.dueDate||t.addedDate),cd=parseD(ds);return td.getDay()===cd.getDay();}
-    return t.dueDate===ds||t.addedDate===ds;
-  }).sort((a,b)=>{
-    const pm={high:0,medium:1,low:2};
-    if(a.dueDate&&!b.dueDate)return-1;if(!a.dueDate&&b.dueDate)return 1;
-    return(pm[a.priority]||1)-(pm[b.priority]||1);
-  });
-}
-
-// ═══════════════════════════════
-//  WEEK PAGE
-// ═══════════════════════════════
-function renderWeek(){
-  const strip=document.getElementById('weekStrip');strip.innerHTML='';
-  const days=[];const dow=now0.getDay();
-  const start=new Date(now0);start.setDate(now0.getDate()-(dow===0?6:dow-1));
-  for(let i=0;i<7;i++){const d=new Date(start);d.setDate(start.getDate()+i);days.push(d);}
-  days.forEach(d=>{
-    const ds=fmt(d);const dt=getTasksForDay(ds);const pct=Math.min(100,dt.length*15);
-    const isT=ds===todayStr;const isSel=ds===selWeekDay;
-    const names=['MON','TUE','WED','THU','FRI','SAT','SUN'];
-    const dn=names[d.getDay()===0?6:d.getDay()-1];
-    const chip=document.createElement('div');
-    chip.className=`day-chip ${isT?'today':''} ${isSel?'sel':''}`;
-    chip.innerHTML=`<div class="dc-name">${dn}</div><div class="dc-num">${d.getDate()}</div><div class="dc-load"><div class="dc-load-fill" style="width:${pct}%"></div></div>`;
-    chip.onclick=()=>{selWeekDay=ds;renderWeek();};
-    strip.appendChild(chip);
-  });
-  renderWeekDay();
-}
-
-function renderWeekDay(){
-  const c=document.getElementById('weekDayView');c.innerHTML='';
-  const sd=parseD(selWeekDay);
-  const lbl=sd.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
-  const isT=selWeekDay===todayStr;
-  c.innerHTML+=`<div style="font-size:12px;font-weight:700;color:var(--muted2);margin-bottom:10px;letter-spacing:1px;">${lbl.toUpperCase()}${isT?' · <span style="color:var(--gold)">TODAY</span>':''}</div>`;
-
-  // BJ workout for that day
-  const diff=Math.floor((parseD(selWeekDay)-BJ_START_DATE)/(1000*60*60*24));
-  const bjDay=Math.min(45,Math.max(1,BJ_START_DAY+diff));
-  const wk=BULLYJUICE[bjDay-1];
-  c.innerHTML+=`<div class="wk-task-chip"><div class="chip-dot" style="background:var(--gold)"></div><span style="flex:1">🔥 BJ Day ${bjDay}: ${wk.name}</span><span style="font-size:11px;color:var(--muted)">${wk.dur}</span></div>`;
-
-  const dt=getTasksForDay(selWeekDay);
-  if(dt.length){dt.forEach(t=>{
-    const isOd=t.dueDate&&t.dueDate<todayStr;
-    const cc=CAT_COLORS[t.category]||'#888';
-    const chip=document.createElement('div');
-    chip.className=`wk-task-chip ${isOd?'overdue':''}`;
-    chip.innerHTML=`<div class="chip-dot" style="background:${cc}"></div><span style="flex:1">${t.title}</span>${t.estTime?`<span style="font-size:11px;color:var(--muted)">⏱ ${t.estTime}</span>`:''}${isOd?'<span style="color:var(--red);font-size:11px;">overdue</span>':''}`;
-    c.appendChild(chip);
-  });}else{c.innerHTML+=`<div class="empty" style="padding:20px;"><div class="empty-icon">📋</div><div class="empty-title">No tasks</div></div>`;}
-}
-
-// ═══════════════════════════════
-//  MONTH PAGE
-// ═══════════════════════════════
-function renderMonth(){
-  const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
-  document.getElementById('monthTitle').textContent=months[curMonth.getMonth()]+' '+curMonth.getFullYear();
-  const grid=document.getElementById('calGrid');grid.innerHTML='';
-  ['M','T','W','T','F','S','S'].forEach(d=>{const el=document.createElement('div');el.className='cal-dow';el.textContent=d;grid.appendChild(el);});
-  const first=new Date(curMonth.getFullYear(),curMonth.getMonth(),1);
-  const last=new Date(curMonth.getFullYear(),curMonth.getMonth()+1,0);
-  let sdow=first.getDay();if(sdow===0)sdow=7;sdow--;
-  for(let i=0;i<sdow;i++){const d=new Date(first);d.setDate(d.getDate()-(sdow-i));grid.appendChild(makeDayCell(d,true));}
-  for(let d=1;d<=last.getDate();d++){grid.appendChild(makeDayCell(new Date(curMonth.getFullYear(),curMonth.getMonth(),d),false));}
-  const tot=sdow+last.getDate();const rem=tot%7===0?0:7-tot%7;
-  for(let i=1;i<=rem;i++){const d=new Date(last);d.setDate(last.getDate()+i);grid.appendChild(makeDayCell(d,true));}
-  document.getElementById('monthDayDetail').innerHTML='';
-}
-
-function makeDayCell(date,other){
-  const ds=fmt(date);
-  const dt=tasks.filter(t=>t.dueDate===ds||t.addedDate===ds);
-  const isT=ds===todayStr;const hasOd=dt.some(t=>t.dueDate&&t.dueDate<todayStr);
-  const cell=document.createElement('div');
-  cell.className=`cal-day ${isT?'today':''} ${dt.length?'has-tasks':''} ${other?'other':''}`;
-  const dots=dt.slice(0,3).map(t=>`<div class="cal-dot" style="background:${CAT_COLORS[t.category]||'#666'}"></div>`).join('');
-  cell.innerHTML=`<div class="cal-day-num">${date.getDate()}</div>${dots?`<div class="cal-dots">${dots}</div>`:''}${hasOd?'<div class="cal-od"></div>':''}`;
-  cell.onclick=()=>openDayModal(ds,date);
-  return cell;
-}
-
-function changeMonth(dir){curMonth.setMonth(curMonth.getMonth()+dir);renderMonth();}
-
-function openDayModal(ds,date){
-  selMonthDay=ds;
-  const lbl=date.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
-  document.getElementById('dayModalTitle').textContent=lbl;
-  const dt=tasks.filter(t=>t.dueDate===ds||t.addedDate===ds);
-  const list=document.getElementById('dayModalList');
-  if(!dt.length){list.innerHTML=`<div class="empty" style="padding:16px;"><div class="empty-icon">📋</div><div class="empty-title">No tasks</div></div>`;}
-  else{list.innerHTML=dt.map(t=>`<div class="prev-row"><span style="flex:1;font-size:13px;">${CAT_ICONS[t.category]||'📌'} ${t.title}</span>${t.estTime?`<span class="badge b-time">⏱ ${t.estTime}</span>`:''}<span onclick="removeTask('${t.id}')" class="prev-rm">🗑</span></div>`).join('');}
-  openModal('dayModal');
-}
-
-function addForDay(){if(selMonthDay){document.getElementById('at-date').value=selMonthDay;document.getElementById('at-day').value='custom';}closeModal('dayModal');openModal('addTaskModal');}
-
-// ═══════════════════════════════
-//  PLAN TOMORROW MODAL
-// ═══════════════════════════════
-function openPlanModal(){
-  const tm=new Date(now0);tm.setDate(now0.getDate()+1);
-  const tms=fmt(tm);
-  const tt=getTasksForDay(tms);
-  const list=document.getElementById('planList');
-  if(!tt.length){list.innerHTML=`<div style="color:var(--muted);font-size:13px;text-align:center;padding:14px 0;">No tasks yet. Add below!</div>`;}
-  else{list.innerHTML=tt.map(t=>`<div class="prev-row"><span class="drag-handle">⠿</span><span class="prev-name">${t.title}</span>
-    <select onchange="chgPri('${t.id}',this.value)" style="background:var(--card2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:11px;padding:3px 6px;-webkit-appearance:none;">
-      <option ${t.priority==='high'?'selected':''} value="high">🔴</option>
-      <option ${t.priority==='medium'?'selected':''} value="medium">🟡</option>
-      <option ${t.priority==='low'?'selected':''} value="low">🟢</option>
-    </select>
-    <input class="prev-time" value="${t.estTime||''}" placeholder="Time" onchange="chgTime('${t.id}',this.value)">
-    <span class="prev-rm" onclick="pushTask('${t.id}')">→</span>
-    <span class="prev-rm" onclick="removeTask('${t.id}');openPlanModal()">🗑</span>
-  </div>`).join('');}
-  openModal('planModal');
-}
-
-function chgPri(id,val){const t=tasks.find(t=>t.id===id);if(t){t.priority=val;S.set('tasks',tasks);}}
-function chgTime(id,val){const t=tasks.find(t=>t.id===id);if(t){t.estTime=val;S.set('tasks',tasks);}}
-function pushTask(id){const t=tasks.find(t=>t.id===id);if(t){const d=t.dueDate?parseD(t.dueDate):new Date(now0);d.setDate(d.getDate()+1);t.dueDate=fmt(d);S.set('tasks',tasks);showToast('Task pushed to '+dispDate(t.dueDate));openPlanModal();}}
-function addQuickPlan(){
-  const v=document.getElementById('plan-quick').value.trim();if(!v)return;
-  const tm=new Date(now0);tm.setDate(now0.getDate()+1);
-  tasks.push({id:'t'+Date.now(),title:v,description:'',category:'personal',priority:'medium',dueDate:fmt(tm),addedDate:todayStr,estTime:'',repeat:'once',alarm:''});
-  S.set('tasks',tasks);document.getElementById('plan-quick').value='';openPlanModal();showToast('Added for tomorrow!');
-}
-function lockDay(){closeModal('planModal');showToast('🔒 Tomorrow locked in! 🔥');if(navigator.vibrate)navigator.vibrate([30,50,30]);}
-
-// ═══════════════════════════════
-//  ADD TASK
-// ═══════════════════════════════
-function selPri(p){
-  selPriority=p;
-  document.querySelectorAll('.pri-btn').forEach(b=>b.className='pri-btn');
-  document.getElementById('pb-'+p).className='pri-btn sel-'+p;
-}
-
-function saveTask(){
-  const title=document.getElementById('at-title').value.trim();
-  if(!title){showToast('⚠️ Enter a title');return;}
-  const dayChoice=document.getElementById('at-day').value;
-  const rawDate=document.getElementById('at-date').value;
-  let dueDate=rawDate||null;let addedDate=todayStr;
-  if(dayChoice==='today')addedDate=todayStr;
-  else if(dayChoice==='tomorrow'){const tm=new Date(now0);tm.setDate(now0.getDate()+1);addedDate=fmt(tm);if(!dueDate)dueDate=addedDate;}
-  else if(rawDate){addedDate=rawDate;dueDate=rawDate;}
-  const task={id:'t'+Date.now(),title,description:document.getElementById('at-desc').value.trim(),dueDate,addedDate,estTime:document.getElementById('at-time').value.trim(),alarm:document.getElementById('at-alarm').value,category:document.getElementById('at-cat').value,priority:selPriority,repeat:document.getElementById('at-repeat').value};
-  tasks.push(task);S.set('tasks',tasks);
-  ['at-title','at-desc','at-date','at-time','at-alarm'].forEach(id=>document.getElementById(id).value='');
-  selPri('medium');closeModal('addTaskModal');showToast('✅ Task added!');if(navigator.vibrate)navigator.vibrate(30);renderToday();
-}
-
-function removeTask(id){tasks=tasks.filter(t=>t.id!==id);S.set('tasks',tasks);showToast('Task removed');renderToday();}
-
-// ═══════════════════════════════
-//  SETTINGS
-// ═══════════════════════════════
-function renderSettings(){
-  const el=document.getElementById('baseSettingsEl');
-  el.innerHTML=BASE_ITEMS.map(item=>`<div class="set-row"><div><div class="set-lbl">${item.label}</div></div>
-    <div class="toggle ${baseEnabled[item.id]!==false?'on':''}" onclick="toggleBase('${item.id}')"><div class="toggle-knob"></div></div></div>`).join('');
-  ['planReminder','taskAlarms','workDeadline'].forEach(k=>{
-    const el=document.getElementById('tgl-'+k);if(el){el.className='toggle '+(settings[k]?'on':'');}
-  });
-  const pt=document.getElementById('planTime');if(pt)pt.value=settings.planReminderTime||'21:00';
-}
-
-function toggleBase(id){baseEnabled[id]=baseEnabled[id]===false;S.set('baseEnabled',baseEnabled);renderSettings();}
-function toggleSetting(k){settings[k]=!settings[k];S.set('settings',settings);renderSettings();}
-function saveSetting(k,v){settings[k]=v;S.set('settings',settings);}
-
-function exportJSON(){
-  const data={tasks,settings,baseEnabled,xpData};
-  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-  const url=URL.createObjectURL(blob);const a=document.createElement('a');
-  a.href=url;a.download='mission-os-backup.json';a.click();showToast('📦 Exported!');
-}
-function confirmClear(){if(confirm('Clear ALL data?')){localStorage.clear();location.reload();}}
-
-// ═══════════════════════════════
-//  WEEKLY EXPORT
-// ═══════════════════════════════
-function generateExport(){
-  const out=document.getElementById('exportOutput');
-  const now=new Date();
-  const weekStart=new Date(now0);weekStart.setDate(now0.getDate()-(now0.getDay()===0?6:now0.getDay()-1));
-  const weekEnd=new Date(weekStart);weekEnd.setDate(weekStart.getDate()+6);
-
-  let totalTasks=0,doneTasks=0,workoutDays=0;
-  const days=[];
-  for(let i=0;i<7;i++){const d=new Date(weekStart);d.setDate(weekStart.getDate()+i);days.push(d);}
-
-  let report=`╔══════════════════════════════════╗\n`;
-  report+=`║     MISSION OS · WEEKLY REPORT   ║\n`;
-  report+=`╚══════════════════════════════════╝\n\n`;
-  report+=`📅 Week: ${weekStart.toLocaleDateString('en-US',{month:'short',day:'numeric'})} – ${weekEnd.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}\n`;
-  report+=`🔥 Streak: ${xpData.streak} days\n`;
-  report+=`⚡ Total XP: ${xpData.total}\n`;
-  report+=`🏆 Level: ${LEVELS[xpData.level].name}\n\n`;
-  report+=`─────────────────────────────────\n`;
-  report+=`BULLYJUICE 45-DAY PROGRESS\n`;
-  report+=`─────────────────────────────────\n`;
-
-  days.forEach(d=>{
-    const ds=fmt(d);
-    const diff=Math.floor((parseD(ds)-BJ_START_DATE)/(1000*60*60*24));
-    const bjDay=Math.min(45,Math.max(1,BJ_START_DAY+diff));
-    const wkState=S.get('ws_'+ds)||{};
-    const wk=BULLYJUICE[bjDay-1];
-    const done=wkState.bjDone||(bjDay<BJ_START_DAY);
-    if(done)workoutDays++;
-    const dayName=d.toLocaleDateString('en-US',{weekday:'short',month:'numeric',day:'numeric'});
-    report+=`${done?'✅':'⬜'} ${dayName} · Day ${bjDay}: ${wk.name} (${wk.dur})`;
-    if(wkState.extraType&&wkState.extraType!=='none'){report+=` + ${wkState.extraType==='run'?'Run':'Gym'}${wkState.extraDone?' ✅':''}`;}
-    report+='\n';
-  });
-
-  report+=`\n─────────────────────────────────\n`;
-  report+=`TASKS COMPLETED THIS WEEK\n`;
-  report+=`─────────────────────────────────\n`;
-
-  days.forEach(d=>{
-    const ds=fmt(d);
-    const dt=getTasksForDay(ds);
-    const tc=S.get('tc_'+ds)||{};
-    const dayDone=dt.filter(t=>tc[t.id]);
-    totalTasks+=dt.length;doneTasks+=dayDone.length;
-    if(dayDone.length){
-      report+=`\n${d.toLocaleDateString('en-US',{weekday:'short',month:'numeric',day:'numeric'})}:\n`;
-      dayDone.forEach(t=>report+=`  ✅ ${t.title}\n`);
+    function migrateLegacyTasks() {
+      const legacy = safeJson(localStorage.getItem(`${LEGACY_PREFIX}tasks`));
+      if (!Array.isArray(legacy) || !legacy.length) return [...DEFAULT_TASKS];
+      const converted = legacy.map(task => ({
+        id: task.id || uid("legacy"),
+        title: task.title || "Legacy task",
+        description: task.description || "",
+        category: normalizeCategory(task.category),
+        priority: task.priority || "medium",
+        block: inferBlock(task.alarm, task.category),
+        time: task.alarm || "",
+        date: task.dueDate || task.addedDate || today(),
+        repeat: task.repeat || "once",
+        system: false
+      }));
+      return [...DEFAULT_TASKS, ...converted];
     }
-  });
 
-  report+=`\n─────────────────────────────────\n`;
-  report+=`SUMMARY\n`;
-  report+=`─────────────────────────────────\n`;
-  report+=`💪 Workouts: ${workoutDays}/7 days\n`;
-  report+=`✅ Tasks: ${doneTasks}/${totalTasks} completed\n`;
-  report+=`🎯 Completion Rate: ${totalTasks?Math.round(doneTasks/totalTasks*100):0}%\n`;
-  report+=`\nGenerated by Mission OS · ${now.toLocaleDateString()}\n`;
-
-  out.innerHTML=`<div class="export-card">${report}</div><button class="export-copy-btn" onclick="copyExport()">📋 COPY TO CLIPBOARD</button>`;
-  out.dataset.report=report;
-}
-
-function copyExport(){
-  const report=document.getElementById('exportOutput').dataset.report;
-  if(navigator.clipboard){navigator.clipboard.writeText(report).then(()=>showToast('📋 Copied!'));}
-  else{const ta=document.createElement('textarea');ta.value=report;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);showToast('📋 Copied!');}
-}
-
-// ═══════════════════════════════
-//  NOTIFICATIONS
-// ═══════════════════════════════
-async function requestNotif(){
-  if(!('Notification'in window)){showToast('Not supported in this browser');return;}
-  const p=await Notification.requestPermission();
-  if(p==='granted'){showToast('🔔 Notifications on!');new Notification('Mission OS',{body:'Notifications enabled! 🔥'});}
-  else showToast('Enable notifications in phone settings');
-}
-
-function startAlarms(){
-  if(alarmInt)clearInterval(alarmInt);
-  alarmInt=setInterval(()=>{
-    if(!settings.taskAlarms)return;
-    const n=new Date();const ns=String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0');
-    const alarms=S.get('alarms')||[];let changed=false;
-    alarms.forEach(a=>{if(a.fired)return;if(a.date===todayStr&&a.time===ns){fireNotif('⏰ '+a.title,'Reminder!');a.fired=true;changed=true;}});
-    if(changed)S.set('alarms',alarms);
-    if(settings.planReminder&&ns===settings.planReminderTime){
-      const last=S.get('lastPlanFire');if(last!==todayStr){fireNotif('🌙 Plan Tomorrow','Time to set up your tasks!');S.set('lastPlanFire',todayStr);}
+    function migrateLegacyCompletions() {
+      const out = {};
+      Object.keys(localStorage)
+        .filter(key => key.startsWith(`${LEGACY_PREFIX}tc_`))
+        .forEach(key => {
+          const date = key.replace(`${LEGACY_PREFIX}tc_`, "");
+          const value = safeJson(localStorage.getItem(key)) || {};
+          out[date] = Object.fromEntries(Object.entries(value).filter(([, done]) => Boolean(done)));
+        });
+      return out;
     }
-  },30000);
-}
 
-function fireNotif(title,body){
-  showToast('🔔 '+title+': '+body,4000);
-  if(navigator.vibrate)navigator.vibrate([100,100,100]);
-  if('Notification'in window&&Notification.permission==='granted'){try{new Notification(title,{body});}catch(e){}}
-}
+    function normalizeCategory(category = "Discipline") {
+      const text = String(category).toLowerCase();
+      const map = { business: "Business", health: "Health", personal: "Discipline", errands: "Focus", home: "Family", finance: "Money" };
+      return map[text] || category.charAt(0).toUpperCase() + category.slice(1);
+    }
 
-// ═══════════════════════════════
-//  INIT
-// ═══════════════════════════════
-function init(){
-  selPri('medium');
-  document.getElementById('at-date').value=todayStr;
-  checkStreak();updateXPUI();renderToday();startAlarms();
-  if('serviceWorker'in navigator){
-    const swCode=`self.addEventListener('install',e=>self.skipWaiting());self.addEventListener('activate',e=>e.waitUntil(clients.claim()));self.addEventListener('fetch',e=>e.respondWith(fetch(e.request).catch(()=>new Response('Offline'))));`;
-    const blob=new Blob([swCode],{type:'application/javascript'});
-    navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(()=>{});
-  }
-}
-init();
-</script>
+    function inferBlock(time = "", category = "") {
+      if (time) {
+        const mins = minuteOfDay(time);
+        if (mins < 11 * 60) return "morning";
+        if (mins < 15 * 60) return "midday";
+        if (mins < 19 * 60) return "afternoon";
+      }
+      return String(category).toLowerCase() === "business" ? "afternoon" : "anytime";
+    }
+
+    function safeJson(raw) {
+      try { return JSON.parse(raw); } catch { return null; }
+    }
+
+    let state = loadState();
+    let activeTab = "today";
+    let journalDraftTags = [];
+    let timer = {
+      duration: 25 * 60,
+      remaining: 25 * 60,
+      running: false,
+      interval: null,
+      startedAt: null
+    };
+    let lastSchedulerMinute = "";
+    let inactivityTimer = null;
+    let mediaDbPromise = null;
+
+    function loadState() {
+      const raw = safeJson(localStorage.getItem(STORE_KEY));
+      const base = raw || defaultState();
+      base.tasks = Array.isArray(base.tasks) && base.tasks.length ? base.tasks : [...DEFAULT_TASKS];
+      base.completions ||= {};
+      base.journal ||= [];
+      base.photos ||= [];
+      base.timerSessions ||= [];
+      base.alarms ||= [];
+      base.reminders = Array.isArray(base.reminders) ? mergeReminders(base.reminders) : DEFAULT_REMINDERS;
+      base.notified ||= {};
+      base.history ||= {};
+      base.preferences ||= {};
+      base.lock ||= {};
+      base.preferences.notificationsEnabled = Boolean(base.preferences.notificationsEnabled);
+      base.preferences.selectedJournalTag ||= "all";
+      base.preferences.selectedPhotoFilter ||= "all";
+      base.lock.rememberDevice = base.lock.rememberDevice !== false;
+      base.lock.inactivityMinutes ||= 15;
+      return base;
+    }
+
+    function mergeReminders(existing) {
+      return DEFAULT_REMINDERS.map(def => ({ ...def, ...(existing.find(item => item.id === def.id) || {}) }));
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORE_KEY, JSON.stringify(state));
+      } catch (error) {
+        showToast("Storage is full. Export data or remove old photos.");
+        console.error(error);
+      }
+    }
+
+    function applyTheme() {
+      const chosen = state.preferences.theme;
+      const systemDay = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches;
+      const theme = chosen || (systemDay ? "day" : "night");
+      document.body.dataset.theme = theme;
+      $("meta[name='theme-color']").setAttribute("content", theme === "day" ? "#f7f3ea" : "#080c12");
+    }
+
+    function currentAffirmation(offset = 0) {
+      const index = (parseLocalDate(today()).getDate() + offset) % AFFIRMATIONS.length;
+      return AFFIRMATIONS[index];
+    }
+
+    function getTasksForDate(dateKey = today()) {
+      const target = parseLocalDate(dateKey);
+      return state.tasks
+        .filter(task => {
+          if (task.archived) return false;
+          if (task.repeat === "daily") return true;
+          if (task.repeat === "weekly") {
+            const source = parseLocalDate(task.date || today());
+            return source.getDay() === target.getDay();
+          }
+          return (task.date || today()) === dateKey;
+        })
+        .sort((a, b) => {
+          const priority = { high: 0, medium: 1, low: 2 };
+          const block = { morning: 0, midday: 1, afternoon: 2, evening: 3, anytime: 4 };
+          return (block[a.block] ?? 4) - (block[b.block] ?? 4) || minuteOfDay(a.time || BLOCK_TIME[a.block]) - minuteOfDay(b.time || BLOCK_TIME[b.block]) || (priority[a.priority] ?? 1) - (priority[b.priority] ?? 1);
+        });
+    }
+
+    function completionsFor(dateKey = today()) {
+      state.completions[dateKey] ||= {};
+      return state.completions[dateKey];
+    }
+
+    function isTaskDone(task, dateKey = today()) {
+      return Boolean(completionsFor(dateKey)[task.id]);
+    }
+
+    function isTaskOverdue(task, dateKey = today(), now = new Date()) {
+      if (isTaskDone(task, dateKey)) return false;
+      if (dateKey < today()) return true;
+      if (dateKey > today()) return false;
+      const deadline = task.time || BLOCK_TIME[task.block] || "";
+      if (!deadline) return false;
+      return minuteOfDay(deadline) < now.getHours() * 60 + now.getMinutes();
+    }
+
+    function dayStats(dateKey = today()) {
+      const tasks = getTasksForDate(dateKey);
+      const done = tasks.filter(task => isTaskDone(task, dateKey)).length;
+      const overdue = tasks.filter(task => isTaskOverdue(task, dateKey)).length;
+      const journalCount = state.journal.filter(entry => entry.date === dateKey).length;
+      const photoCount = state.photos.filter(photo => photo.date === dateKey).length;
+      const pct = tasks.length ? Math.round((done / tasks.length) * 100) : 0;
+      return { tasks, total: tasks.length, done, remaining: Math.max(0, tasks.length - done), overdue, pct, journalCount, photoCount };
+    }
+
+    function streakCount() {
+      let streak = 0;
+      const cursor = parseLocalDate(today());
+      for (let i = 0; i < 365; i += 1) {
+        const key = todayKey(cursor);
+        const stats = dayStats(key);
+        if (!stats.total || stats.pct < 70) break;
+        streak += 1;
+        cursor.setDate(cursor.getDate() - 1);
+      }
+      return streak;
+    }
+
+    function updateHistory() {
+      const date = today();
+      const stats = dayStats(date);
+      const now = new Date();
+      const period = now.getHours() < 11 ? "morning" : now.getHours() < 15 ? "midday" : now.getHours() < 20 ? "afternoon" : "evening";
+      state.history[date] ||= { checkpoints: {} };
+      state.history[date] = {
+        ...state.history[date],
+        date,
+        total: stats.total,
+        done: stats.done,
+        pct: stats.pct,
+        overdue: stats.overdue,
+        journalCount: stats.journalCount,
+        photoCount: stats.photoCount,
+        updatedAt: new Date().toISOString(),
+        checkpoints: {
+          ...(state.history[date].checkpoints || {}),
+          [period]: stats.pct
+        }
+      };
+      saveState();
+    }
+
+    function render() {
+      applyTheme();
+      renderHeader();
+      renderActivePage();
+      renderModalSelects();
+    }
+
+    function renderHeader() {
+      const stats = dayStats();
+      const aff = currentAffirmation();
+      $("#heroAffirmation").textContent = `"${aff.text}"`;
+      $("#navScore").textContent = `${stats.pct}%`;
+      $("#navDone").textContent = `${stats.done}/${stats.total}`;
+      $("#navOverdue").textContent = stats.overdue;
+      $("#navStreak").textContent = streakCount();
+      $("#progressText").textContent = `${stats.done}/${stats.total}`;
+      $("#progressFill").style.width = `${stats.pct}%`;
+    }
+
+    function renderActivePage() {
+      if (activeTab === "today") renderToday();
+      if (activeTab === "journal") renderJournal();
+      if (activeTab === "progress") renderProgress();
+      if (activeTab === "timer") renderTimer();
+      if (activeTab === "alarms") renderAlarms();
+      if (activeTab === "settings") renderSettings();
+    }
+
+    function renderToday() {
+      const stats = dayStats();
+      const next = nextReminder();
+      $("#dashboardMetrics").innerHTML = `
+        <div class="metric"><div class="label">Date</div><div class="value">${esc(formatDateLong())}</div><div class="sub">Today</div></div>
+        <div class="metric"><div class="label">Discipline</div><div class="value">${stats.pct}%</div><div class="sub">${stats.done} completed</div></div>
+        <div class="metric"><div class="label">Remaining</div><div class="value">${stats.remaining}</div><div class="sub">${stats.overdue} overdue</div></div>
+        <div class="metric"><div class="label">Next</div><div class="value">${esc(next ? next.time : "--")}</div><div class="sub">${esc(next ? next.title : "No reminder")}</div></div>
+      `;
+      renderCheckins();
+      renderReminderCards();
+      renderTasks();
+      $("#progressText").textContent = `${stats.done}/${stats.total}`;
+      $("#progressFill").style.width = `${stats.pct}%`;
+    }
+
+    function renderCheckins() {
+      const cards = [
+        { id: "morning", time: "7:00 AM", title: "Morning", message: morningMessage() },
+        { id: "midday", time: "12:00 PM", title: "Midday", message: paceMessage("midday") },
+        { id: "afternoon", time: "4:00 PM", title: "Afternoon", message: afternoonMessage() },
+        { id: "evening", time: "9:00 PM", title: "Evening", message: eveningMessage() }
+      ];
+      const hour = new Date().getHours();
+      const active = hour < 11 ? "morning" : hour < 15 ? "midday" : hour < 20 ? "afternoon" : "evening";
+      $("#checkinCards").innerHTML = `<div class="section-label">Daily Check-Ins</div><div class="checkin-grid">${cards.map(card => `
+        <article class="check-card ${card.id === active ? "active" : ""}">
+          <div class="check-title"><strong>${esc(card.title)}</strong><span class="check-time">${esc(card.time)}</span></div>
+          <p>${esc(card.message)}</p>
+        </article>
+      `).join("")}</div>`;
+    }
+
+    function yesterdayKey() {
+      const d = parseLocalDate(today());
+      d.setDate(d.getDate() - 1);
+      return todayKey(d);
+    }
+
+    function morningMessage() {
+      const y = state.history[yesterdayKey()];
+      if (!y) return "No recorded score from yesterday yet. Start clean, protect the morning block, and win the first task.";
+      return `Yesterday finished at ${y.pct || 0}%. Today starts with focus, prayer, movement, and the next clean execution.`;
+    }
+
+    function paceMessage(period) {
+      const stats = dayStats();
+      const y = state.history[yesterdayKey()];
+      const yPct = y?.checkpoints?.[period] ?? y?.pct;
+      if (typeof yPct !== "number") return `Today is at ${stats.pct}%. No matching pace from yesterday yet, so compare against the standard instead of the mood.`;
+      if (stats.pct >= yPct) return `You are ahead of yesterday's pace: ${stats.pct}% vs ${yPct}%. Do not coast. Stack the win.`;
+      return `Yesterday was ${yPct}% here. Today is ${stats.pct}%. You are behind, but still in control. Execute the next task.`;
+    }
+
+    function afternoonMessage() {
+      const stats = dayStats();
+      if (!stats.overdue) return `No overdue tasks right now. Stay sharp and protect the afternoon from drift.`;
+      return `You have ${stats.overdue} overdue task${stats.overdue === 1 ? "" : "s"}. Overdue does not mean failed. It means respond.`;
+    }
+
+    function eveningMessage() {
+      const stats = dayStats();
+      return `Today's discipline score is ${stats.pct}%. Wins: ${stats.done}. Misses or open loops: ${stats.remaining}. Log your reflection and reset for tomorrow.`;
+    }
+
+    function renderReminderCards() {
+      const cards = state.reminders.map((reminder, index) => {
+        const aff = currentAffirmation(index);
+        return `
+          <article class="check-card">
+            <div class="check-title"><strong>${esc(reminder.title)}</strong><span class="check-time">${esc(reminder.time)}</span></div>
+            <p>${esc(aff.text)}</p>
+            <div class="tag-row"><span class="tag">${esc(aff.category)}</span><span class="tag">${reminder.enabled ? "Enabled" : "Paused"}</span></div>
+          </article>
+        `;
+      }).join("");
+      $("#reminderCards").innerHTML = `<div class="checkin-grid">${cards}</div>`;
+    }
+
+    function renderTasks() {
+      const tasks = getTasksForDate();
+      if (!tasks.length) {
+        $("#taskList").innerHTML = `<div class="empty">No tasks for today. Add one with the + button.</div>`;
+        return;
+      }
+      const grouped = tasks.reduce((acc, task) => {
+        const block = task.block || "anytime";
+        acc[block] ||= [];
+        acc[block].push(task);
+        return acc;
+      }, {});
+      $("#taskList").innerHTML = Object.keys(BLOCK_LABELS)
+        .filter(block => grouped[block]?.length)
+        .map(block => `
+          <div class="section-label" style="margin-top:14px;">${esc(BLOCK_LABELS[block])}</div>
+          ${grouped[block].map(taskTemplate).join("")}
+        `).join("");
+    }
+
+    function taskTemplate(task) {
+      const done = isTaskDone(task);
+      const overdue = isTaskOverdue(task);
+      const time = task.time || BLOCK_TIME[task.block] || "";
+      return `
+        <article class="task-card priority-${esc(task.priority || "medium")} ${done ? "done" : ""} ${overdue ? "overdue" : ""}" data-task-id="${esc(task.id)}">
+          <button class="task-check" data-action="toggleTask" aria-label="Toggle task">${done ? "✓" : ""}</button>
+          <div>
+            <div class="task-title">${esc(task.title)}</div>
+            ${task.description ? `<div class="task-desc">${esc(task.description)}</div>` : ""}
+            <div class="meta-row">
+              <span class="badge">${esc(task.category || "Task")}</span>
+              ${time ? `<span class="badge">${esc(time)}</span>` : ""}
+              ${task.repeat && task.repeat !== "once" ? `<span class="badge good">${esc(task.repeat)}</span>` : ""}
+              ${overdue ? `<span class="badge overdue">Overdue</span>` : ""}
+              ${task.system ? `<span class="badge warn">Base</span>` : ""}
+              ${!task.system ? `<button class="badge" data-action="deleteTask">Delete</button>` : ""}
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderJournal() {
+      journalDraftTags = detectTags([
+        $("#journalText").value,
+        $("#journalGratitude").value,
+        $("#journalWins").value,
+        $("#journalLessons").value,
+        $("#journalPrayer").value
+      ].join(" "));
+      $("#suggestedTags").innerHTML = journalDraftTags.map(tag => `<span class="tag">${esc(tag)}</span>`).join("");
+      $("#journalLibrary").innerHTML = LIBRARY_TAGS.map(tag => `<button class="btn ${state.preferences.selectedJournalTag === tag ? "primary" : ""}" data-action="filterJournal" data-tag="${esc(tag)}">${esc(tag === "all" ? "All Entries" : tag.replace("#", ""))}</button>`).join("");
+      renderJournalEntries();
+    }
+
+    function detectTags(text) {
+      const lower = String(text).toLowerCase();
+      const explicit = Array.from(new Set((String(text).match(/#[a-z0-9-]+/gi) || []).map(tag => tag.toLowerCase())));
+      const detected = Object.entries(TAG_RULES)
+        .filter(([, words]) => words.some(word => lower.includes(word)))
+        .map(([tag]) => tag);
+      return Array.from(new Set([...explicit, ...detected]));
+    }
+
+    function renderJournalEntries() {
+      const search = ($("#journalSearch").value || "").trim().toLowerCase();
+      const filter = state.preferences.selectedJournalTag;
+      const entries = state.journal
+        .filter(entry => filter === "all" || entry.tags.includes(filter))
+        .filter(entry => !search || JSON.stringify(entry).toLowerCase().includes(search))
+        .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+      $("#journalEntries").innerHTML = entries.length ? entries.map(entry => `
+        <article class="note-card" data-entry-id="${esc(entry.id)}">
+          <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start;">
+            <div><strong>${esc(entry.date)}</strong><div class="small-text">Mood: ${esc(entry.mood)} - Energy ${esc(entry.energy)}/10</div></div>
+            <div class="toolbar">
+              <button class="badge" data-action="copyEntry">Copy</button>
+              <button class="badge" data-action="shareEntry">Share</button>
+              <button class="badge" data-action="downloadEntry">TXT</button>
+              <button class="badge" data-action="deleteEntry">Delete</button>
+            </div>
+          </div>
+          <p>${esc(formatEntry(entry))}</p>
+          <div class="tag-row">${entry.tags.map(tag => `<span class="tag">${esc(tag)}</span>`).join("")}</div>
+        </article>
+      `).join("") : `<div class="empty">No journal entries match this view.</div>`;
+    }
+
+    function formatEntry(entry) {
+      return [
+        entry.text,
+        entry.gratitude ? `Gratitude: ${entry.gratitude}` : "",
+        entry.wins ? `Wins: ${entry.wins}` : "",
+        entry.lessons ? `Correction: ${entry.lessons}` : "",
+        entry.prayer ? `Prayer: ${entry.prayer}` : ""
+      ].filter(Boolean).join("\n");
+    }
+
+    async function renderProgress() {
+      $("#photoFilters").innerHTML = PHOTO_FILTERS.map(filter => `<button class="btn ${state.preferences.selectedPhotoFilter === filter ? "primary" : ""}" data-action="filterPhotos" data-filter="${esc(filter)}">${esc(filter === "all" ? "All" : filter)}</button>`).join("");
+      const filter = state.preferences.selectedPhotoFilter;
+      const photos = state.photos
+        .filter(photo => filter === "all" || photo.type === filter)
+        .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+      if (!photos.length) {
+        $("#photoGallery").innerHTML = `<div class="empty" style="grid-column:1/-1;">No photos saved in this filter yet.</div>`;
+        return;
+      }
+      const cards = await Promise.all(photos.map(async photo => {
+        const dataUrl = photo.dataUrl || await getPhotoData(photo.id);
+        return `
+          <article class="photo-card" data-photo-id="${esc(photo.id)}">
+            ${dataUrl ? `<img src="${dataUrl}" alt="${esc(photo.type)} progress photo">` : `<div class="empty">Photo unavailable</div>`}
+            <div class="photo-body">
+              <strong>${esc(photo.type)}</strong>
+              <p>${esc(photo.date)}${photo.weight ? ` - ${esc(photo.weight)} lbs` : ""}${photo.notes ? `\n${esc(photo.notes)}` : ""}</p>
+              <div class="toolbar"><button class="badge" data-action="deletePhoto">Delete</button></div>
+            </div>
+          </article>
+        `;
+      }));
+      $("#photoGallery").innerHTML = cards.join("");
+    }
+
+    function renderTimer() {
+      $("#timerDisplay").textContent = formatDuration(timer.remaining);
+      $("#timerPresets").innerHTML = TIMER_PRESETS.map(min => `<button class="btn" data-action="timerPreset" data-minutes="${min}">${min}m</button>`).join("");
+      $("#timerHistory").innerHTML = state.timerSessions.length
+        ? state.timerSessions.slice().reverse().slice(0, 12).map(session => `
+          <div class="session-row"><span>${esc(session.label || "Timer")} - ${esc(session.date)}</span><strong>${Math.round(session.duration / 60)}m</strong></div>
+        `).join("")
+        : `<div class="empty">Completed timer sessions will appear here.</div>`;
+    }
+
+    function renderAlarms() {
+      const currentMinute = new Date().getHours() * 60 + new Date().getMinutes();
+      $("#alarmList").innerHTML = state.alarms.length ? state.alarms.map(alarm => {
+        const overdue = alarm.enabled && alarm.repeat === "none" && alarm.date === today() && minuteOfDay(alarm.time) < currentMinute && alarm.lastFired !== today();
+        return `
+          <article class="alarm-card" data-alarm-id="${esc(alarm.id)}">
+            <div>
+              <strong>${esc(alarm.title)}</strong>
+              <div class="small-text">${esc(alarm.time)} - ${esc(alarm.repeat === "daily" ? "Repeats daily" : alarm.date || today())}</div>
+              ${overdue ? `<span class="badge overdue" style="margin-top:6px;">Missed / overdue</span>` : ""}
+            </div>
+            <div class="toolbar">
+              <button class="toggle ${alarm.enabled ? "on" : ""}" data-action="toggleAlarm" aria-label="Toggle alarm"></button>
+              <button class="badge" data-action="deleteAlarm">Delete</button>
+            </div>
+          </article>
+        `;
+      }).join("") : `<div class="empty">No alarms yet.</div>`;
+    }
+
+    function renderSettings() {
+      $("#notifyToggleBtn").textContent = state.preferences.notificationsEnabled ? "Notifications On" : "Notifications Off";
+      $("#reminderSettings").innerHTML = state.reminders.map(reminder => `
+        <div class="alarm-card" data-reminder-id="${esc(reminder.id)}">
+          <div>
+            <strong>${esc(reminder.title)}</strong>
+            <div class="small-text">${reminder.enabled ? "Enabled" : "Paused"}</div>
+          </div>
+          <input class="input" style="width:112px;" type="time" value="${esc(reminder.time)}" data-action="changeReminderTime">
+          <button class="toggle ${reminder.enabled ? "on" : ""}" data-action="toggleReminder" aria-label="Toggle reminder"></button>
+        </div>
+      `).join("");
+      $("#inactivityMinutes").value = state.lock.inactivityMinutes || 15;
+      $("#lockStatus").textContent = `${state.lock.pinHash ? "Local lock is set." : "No local lock set."} Remember device: ${state.lock.rememberDevice ? "on" : "off"}.`;
+    }
+
+    function renderModalSelects() {
+      if ($("#taskDate")) $("#taskDate").value ||= today();
+      const options = getTasksForDate().map(task => `<option value="${esc(task.id)}">${esc(task.title)}</option>`).join("");
+      $("#timerTask").innerHTML = `<option value="">No attached task</option>${options}`;
+    }
+
+    function nextReminder() {
+      const nowMinute = new Date().getHours() * 60 + new Date().getMinutes();
+      return state.reminders
+        .filter(reminder => reminder.enabled && minuteOfDay(reminder.time) >= nowMinute)
+        .sort((a, b) => minuteOfDay(a.time) - minuteOfDay(b.time))[0] || state.reminders.find(reminder => reminder.enabled);
+    }
+
+    function switchTab(tab) {
+      activeTab = tab;
+      $$(".page").forEach(page => page.classList.toggle("active", page.id === `page-${tab}`));
+      $$(".tab").forEach(button => button.classList.toggle("active", button.dataset.tab === tab));
+      renderActivePage();
+    }
+
+    function showToast(message, delay = 2600) {
+      const toast = $("#toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => toast.classList.remove("show"), delay);
+    }
+
+    function toggleTask(id) {
+      const done = completionsFor();
+      done[id] = !done[id];
+      if (!done[id]) delete done[id];
+      saveState();
+      updateHistory();
+      render();
+      if (navigator.vibrate && done[id]) navigator.vibrate([20, 15, 20]);
+    }
+
+    function addTask(event) {
+      event.preventDefault();
+      const title = $("#taskTitle").value.trim();
+      if (!title) return;
+      state.tasks.push({
+        id: uid("task"),
+        title,
+        description: $("#taskDescription").value.trim(),
+        category: $("#taskCategory").value,
+        priority: $("#taskPriority").value,
+        date: $("#taskDate").value || today(),
+        time: $("#taskTime").value,
+        block: $("#taskBlock").value,
+        repeat: $("#taskRepeat").value,
+        system: false
+      });
+      saveState();
+      $("#taskForm").reset();
+      $("#taskDate").value = today();
+      closeModal();
+      showToast("Task added.");
+      render();
+    }
+
+    function deleteTask(id) {
+      state.tasks = state.tasks.filter(task => task.id !== id);
+      Object.values(state.completions).forEach(day => delete day[id]);
+      saveState();
+      render();
+      showToast("Task deleted.");
+    }
+
+    function saveJournal(event) {
+      event.preventDefault();
+      const text = $("#journalText").value.trim();
+      const fields = {
+        gratitude: $("#journalGratitude").value.trim(),
+        wins: $("#journalWins").value.trim(),
+        lessons: $("#journalLessons").value.trim(),
+        prayer: $("#journalPrayer").value.trim()
+      };
+      if (!text && !Object.values(fields).some(Boolean)) {
+        showToast("Write a quick reflection first.");
+        return;
+      }
+      const tags = detectTags([text, ...Object.values(fields)].join(" "));
+      state.journal.push({
+        id: uid("journal"),
+        date: today(),
+        createdAt: new Date().toISOString(),
+        text,
+        mood: $("#journalMood").value,
+        energy: $("#journalEnergy").value,
+        ...fields,
+        tags
+      });
+      saveState();
+      updateHistory();
+      $("#journalForm").reset();
+      $("#journalEnergy").value = 7;
+      showToast("Journal entry saved.");
+      renderJournal();
+      renderHeader();
+    }
+
+    async function savePhoto(event) {
+      event.preventDefault();
+      const file = $("#photoFile").files?.[0];
+      if (!file) {
+        showToast("Choose a photo first.");
+        return;
+      }
+      const id = uid("photo");
+      const dataUrl = await resizeImage(file);
+      const photo = {
+        id,
+        date: today(),
+        createdAt: new Date().toISOString(),
+        type: $("#photoType").value,
+        weight: $("#photoWeight").value.trim(),
+        notes: $("#photoNotes").value.trim(),
+        tags: detectTags(`${$("#photoType").value} ${$("#photoNotes").value}`)
+      };
+      const stored = await putPhotoData(id, dataUrl);
+      if (!stored) photo.dataUrl = dataUrl;
+      state.photos.push(photo);
+      saveState();
+      updateHistory();
+      $("#photoForm").reset();
+      showToast("Photo saved locally.");
+      renderProgress();
+      renderHeader();
+    }
+
+    function resizeImage(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onerror = reject;
+        reader.onload = () => {
+          const img = new Image();
+          img.onerror = reject;
+          img.onload = () => {
+            const max = 1400;
+            const ratio = Math.min(1, max / Math.max(img.width, img.height));
+            const canvas = document.createElement("canvas");
+            canvas.width = Math.max(1, Math.round(img.width * ratio));
+            canvas.height = Math.max(1, Math.round(img.height * ratio));
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            resolve(canvas.toDataURL("image/jpeg", .82));
+          };
+          img.src = reader.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function openMediaDb() {
+      if (!("indexedDB" in window)) return Promise.resolve(null);
+      if (mediaDbPromise) return mediaDbPromise;
+      mediaDbPromise = new Promise(resolve => {
+        const request = indexedDB.open("mission_os_media", 1);
+        request.onupgradeneeded = () => request.result.createObjectStore("photos", { keyPath: "id" });
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => resolve(null);
+      });
+      return mediaDbPromise;
+    }
+
+    async function putPhotoData(id, dataUrl) {
+      const db = await openMediaDb();
+      if (!db) return false;
+      return new Promise(resolve => {
+        const tx = db.transaction("photos", "readwrite");
+        tx.objectStore("photos").put({ id, dataUrl });
+        tx.oncomplete = () => resolve(true);
+        tx.onerror = () => resolve(false);
+      });
+    }
+
+    async function getPhotoData(id) {
+      const db = await openMediaDb();
+      if (!db) return "";
+      return new Promise(resolve => {
+        const tx = db.transaction("photos", "readonly");
+        const request = tx.objectStore("photos").get(id);
+        request.onsuccess = () => resolve(request.result?.dataUrl || "");
+        request.onerror = () => resolve("");
+      });
+    }
+
+    async function deletePhotoData(id) {
+      const db = await openMediaDb();
+      if (!db) return;
+      const tx = db.transaction("photos", "readwrite");
+      tx.objectStore("photos").delete(id);
+    }
+
+    function formatDuration(seconds) {
+      const safe = Math.max(0, Math.round(seconds));
+      return `${String(Math.floor(safe / 60)).padStart(2, "0")}:${String(safe % 60).padStart(2, "0")}`;
+    }
+
+    function setTimerMinutes(minutes) {
+      timer.duration = Number(minutes) * 60;
+      timer.remaining = timer.duration;
+      timer.running = false;
+      clearInterval(timer.interval);
+      timer.interval = null;
+      renderTimer();
+    }
+
+    function startTimer() {
+      if (timer.running) return;
+      timer.running = true;
+      timer.startedAt = Date.now();
+      timer.interval = setInterval(() => {
+        timer.remaining -= 1;
+        $("#timerDisplay").textContent = formatDuration(timer.remaining);
+        if (timer.remaining <= 0) completeTimer();
+      }, 1000);
+      showToast("Timer started.");
+    }
+
+    function pauseTimer() {
+      timer.running = false;
+      clearInterval(timer.interval);
+      timer.interval = null;
+      renderTimer();
+    }
+
+    function resetTimer() {
+      pauseTimer();
+      timer.remaining = timer.duration;
+      renderTimer();
+    }
+
+    function completeTimer() {
+      const label = $("#timerLabel").value.trim() || "Completed session";
+      const attachedTaskId = $("#timerTask").value;
+      pauseTimer();
+      state.timerSessions.push({ id: uid("timer"), date: today(), createdAt: new Date().toISOString(), label, taskId: attachedTaskId, duration: timer.duration });
+      saveState();
+      timer.remaining = timer.duration;
+      playTone();
+      notify("Timer complete", `${label} is done. Log the win and move cleanly.`);
+      showToast("Timer complete.");
+      renderTimer();
+    }
+
+    function playTone() {
+      try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+        const ctx = new AudioContext();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.frequency.value = 720;
+        gain.gain.value = .08;
+        osc.connect(gain).connect(ctx.destination);
+        osc.start();
+        setTimeout(() => { osc.stop(); ctx.close(); }, 420);
+      } catch {}
+    }
+
+    function addAlarm(event) {
+      event.preventDefault();
+      const title = $("#alarmTitle").value.trim() || "Mission reminder";
+      const time = $("#alarmTime").value;
+      if (!time) {
+        showToast("Choose an alarm time.");
+        return;
+      }
+      state.alarms.push({ id: uid("alarm"), title, time, repeat: $("#alarmRepeat").value, date: today(), enabled: true, lastFired: "" });
+      saveState();
+      $("#alarmForm").reset();
+      renderAlarms();
+      showToast("Alarm added.");
+    }
+
+    async function notify(title, body, tag = "mission-os") {
+      showToast(title, 3600);
+      if (!state.preferences.notificationsEnabled || !("Notification" in window) || Notification.permission !== "granted") return;
+      try {
+        const registration = await navigator.serviceWorker?.ready?.catch(() => null);
+        if (registration?.showNotification) {
+          await registration.showNotification(title, { body, tag, icon: "assets/icon.svg", badge: "assets/icon.svg" });
+        } else {
+          new Notification(title, { body, tag, icon: "assets/icon.svg" });
+        }
+      } catch (error) {
+        console.warn(error);
+      }
+    }
+
+    async function requestNotifications() {
+      if (!("Notification" in window)) {
+        showToast("Notifications are not supported in this browser.");
+        return;
+      }
+      const permission = await Notification.requestPermission();
+      state.preferences.notificationsEnabled = permission === "granted";
+      saveState();
+      renderSettings();
+      if (permission === "granted") notify("Mission OS ready", currentAffirmation().text);
+      else showToast("Notification permission was not granted.");
+    }
+
+    function runScheduler() {
+      const now = new Date();
+      const minuteKey = `${today()}-${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+      if (minuteKey === lastSchedulerMinute) return;
+      lastSchedulerMinute = minuteKey;
+      updateHistory();
+      checkReminders(now);
+      checkOverdue(now);
+      checkAlarms(now);
+      if (activeTab === "today" || activeTab === "alarms") render();
+    }
+
+    function checkReminders(now) {
+      const time = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+      state.reminders.forEach((reminder, index) => {
+        const key = `reminder:${today()}:${reminder.id}`;
+        if (!reminder.enabled || reminder.time !== time || state.notified[key]) return;
+        state.notified[key] = Date.now();
+        const aff = currentAffirmation(index);
+        notify(reminder.title, `${aff.text} (${aff.category})`, key);
+      });
+      saveState();
+    }
+
+    function checkOverdue(now) {
+      getTasksForDate().forEach(task => {
+        if (!isTaskOverdue(task, today(), now)) return;
+        const key = `overdue:${today()}:${task.id}`;
+        const last = state.notified[key] || 0;
+        const sixHours = 6 * 60 * 60 * 1000;
+        if (Date.now() - last < sixHours) return;
+        state.notified[key] = Date.now();
+        notify("Overdue task", `${task.title}. Overdue does not mean failed. Recover now.`, key);
+      });
+      saveState();
+    }
+
+    function checkAlarms(now) {
+      const time = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+      let changed = false;
+      state.alarms.forEach(alarm => {
+        if (!alarm.enabled || alarm.time !== time || alarm.lastFired === today()) return;
+        if (alarm.repeat !== "daily" && alarm.date !== today()) return;
+        alarm.lastFired = today();
+        changed = true;
+        playTone();
+        notify(`Alarm: ${alarm.title}`, "Respond now. Handle the next move.", `alarm:${alarm.id}:${today()}`);
+      });
+      if (changed) saveState();
+    }
+
+    function downloadFile(filename, content, type = "text/plain") {
+      const blob = new Blob([content], { type });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function exportJournal(kind) {
+      if (kind === "json") {
+        downloadFile(`mission-os-journal-${today()}.json`, JSON.stringify(state.journal, null, 2), "application/json");
+        return;
+      }
+      const text = state.journal
+        .sort((a, b) => a.createdAt.localeCompare(b.createdAt))
+        .map(entry => `${entry.date}\nMood: ${entry.mood} | Energy: ${entry.energy}/10\nTags: ${entry.tags.join(" ")}\n${formatEntry(entry)}\n`)
+        .join("\n---\n\n");
+      downloadFile(`mission-os-journal-${today()}.txt`, text || "No journal entries yet.");
+    }
+
+    function entryText(id) {
+      const entry = state.journal.find(item => item.id === id);
+      return entry ? `${entry.date}\n${formatEntry(entry)}\n${entry.tags.join(" ")}` : "";
+    }
+
+    async function copyText(text) {
+      if (navigator.clipboard?.writeText) await navigator.clipboard.writeText(text);
+      else {
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        ta.remove();
+      }
+      showToast("Copied.");
+    }
+
+    async function startVoiceJournal() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        showToast("Voice-to-text is not supported in this browser.");
+        return;
+      }
+      const recognition = new SpeechRecognition();
+      recognition.lang = "en-US";
+      recognition.interimResults = false;
+      recognition.onresult = event => {
+        $("#journalText").value = `${$("#journalText").value} ${event.results[0][0].transcript}`.trim();
+        renderJournal();
+      };
+      recognition.onerror = () => showToast("Voice capture stopped.");
+      recognition.start();
+      showToast("Listening...");
+    }
+
+    async function hashText(text) {
+      if (crypto?.subtle) {
+        const data = new TextEncoder().encode(text);
+        const hash = await crypto.subtle.digest("SHA-256", data);
+        return Array.from(new Uint8Array(hash)).map(byte => byte.toString(16).padStart(2, "0")).join("");
+      }
+      return btoa(unescape(encodeURIComponent(text)));
+    }
+
+    async function saveLock() {
+      const pin = $("#newPin").value;
+      if (!pin || pin.length < 4) {
+        showToast("Use at least 4 characters for the local lock.");
+        return;
+      }
+      state.lock.pinHash = await hashText(pin);
+      state.lock.inactivityMinutes = Math.max(1, Number($("#inactivityMinutes").value) || 15);
+      saveState();
+      $("#newPin").value = "";
+      sessionStorage.setItem("mission_os_unlocked", "1");
+      renderSettings();
+      resetInactivityTimer();
+      showToast("Local lock saved.");
+    }
+
+    async function unlock() {
+      const pin = $("#unlockPin").value;
+      if (!state.lock.pinHash || await hashText(pin) === state.lock.pinHash) {
+        document.body.classList.remove("locked");
+        $("#unlockPin").value = "";
+        if (state.lock.rememberDevice) localStorage.setItem("mission_os_remembered", "1");
+        sessionStorage.setItem("mission_os_unlocked", "1");
+        resetInactivityTimer();
+        showToast("Unlocked.");
+        return;
+      }
+      showToast("Incorrect lock code.");
+    }
+
+    function lockApp() {
+      if (!state.lock.pinHash) {
+        showToast("Set a local lock in Setup first.");
+        return;
+      }
+      sessionStorage.removeItem("mission_os_unlocked");
+      localStorage.removeItem("mission_os_remembered");
+      document.body.classList.add("locked");
+      setTimeout(() => $("#unlockPin")?.focus(), 100);
+    }
+
+    function maybeLockOnStart() {
+      const remembered = state.lock.rememberDevice && localStorage.getItem("mission_os_remembered") === "1";
+      const session = sessionStorage.getItem("mission_os_unlocked") === "1";
+      if (state.lock.pinHash && !remembered && !session) document.body.classList.add("locked");
+    }
+
+    function resetInactivityTimer() {
+      clearTimeout(inactivityTimer);
+      if (!state.lock.pinHash) return;
+      inactivityTimer = setTimeout(() => lockApp(), Math.max(1, state.lock.inactivityMinutes || 15) * 60 * 1000);
+    }
+
+    function closeModal() {
+      $("#taskModal").classList.remove("open");
+      document.body.style.overflow = "";
+    }
+
+    async function handleAction(event) {
+      const target = event.target.closest("[data-action]");
+      if (!target) return;
+      const action = target.dataset.action;
+      const taskCard = target.closest("[data-task-id]");
+      const noteCard = target.closest("[data-entry-id]");
+      const photoCard = target.closest("[data-photo-id]");
+      const alarmCard = target.closest("[data-alarm-id]");
+      const reminderRow = target.closest("[data-reminder-id]");
+
+      if (action === "openTaskModal") { $("#taskModal").classList.add("open"); document.body.style.overflow = "hidden"; }
+      if (action === "closeModal") closeModal();
+      if (action === "toggleTask" && taskCard) toggleTask(taskCard.dataset.taskId);
+      if (action === "deleteTask" && taskCard) deleteTask(taskCard.dataset.taskId);
+      if (action === "themeToggle") {
+        state.preferences.theme = document.body.dataset.theme === "day" ? "night" : "day";
+        saveState();
+        render();
+      }
+      if (action === "manualLock") lockApp();
+      if (action === "requestNotifications") requestNotifications();
+      if (action === "toggleNotifications") { state.preferences.notificationsEnabled = !state.preferences.notificationsEnabled; saveState(); renderSettings(); }
+      if (action === "toggleReminder" && reminderRow) {
+        const item = state.reminders.find(rem => rem.id === reminderRow.dataset.reminderId);
+        item.enabled = !item.enabled;
+        saveState();
+        renderSettings();
+      }
+      if (action === "filterJournal") {
+        state.preferences.selectedJournalTag = target.dataset.tag;
+        saveState();
+        renderJournal();
+      }
+      if (action === "voiceJournal") startVoiceJournal();
+      if (action === "exportJournalTxt") exportJournal("txt");
+      if (action === "exportJournalJson") exportJournal("json");
+      if (action === "copyEntry" && noteCard) copyText(entryText(noteCard.dataset.entryId));
+      if (action === "shareEntry" && noteCard) {
+        const text = entryText(noteCard.dataset.entryId);
+        if (navigator.share) navigator.share({ title: "Mission OS Journal", text });
+        else copyText(text);
+      }
+      if (action === "downloadEntry" && noteCard) downloadFile(`journal-${noteCard.dataset.entryId}.txt`, entryText(noteCard.dataset.entryId));
+      if (action === "deleteEntry" && noteCard) {
+        state.journal = state.journal.filter(entry => entry.id !== noteCard.dataset.entryId);
+        saveState();
+        renderJournal();
+      }
+      if (action === "filterPhotos") {
+        state.preferences.selectedPhotoFilter = target.dataset.filter;
+        saveState();
+        renderProgress();
+      }
+      if (action === "deletePhoto" && photoCard) {
+        await deletePhotoData(photoCard.dataset.photoId);
+        state.photos = state.photos.filter(photo => photo.id !== photoCard.dataset.photoId);
+        saveState();
+        renderProgress();
+      }
+      if (action === "timerPreset") setTimerMinutes(target.dataset.minutes);
+      if (action === "timerStart") startTimer();
+      if (action === "timerPause") pauseTimer();
+      if (action === "timerReset") resetTimer();
+      if (action === "toggleAlarm" && alarmCard) {
+        const alarm = state.alarms.find(item => item.id === alarmCard.dataset.alarmId);
+        alarm.enabled = !alarm.enabled;
+        saveState();
+        renderAlarms();
+      }
+      if (action === "deleteAlarm" && alarmCard) {
+        state.alarms = state.alarms.filter(item => item.id !== alarmCard.dataset.alarmId);
+        saveState();
+        renderAlarms();
+      }
+      if (action === "saveLock") saveLock();
+      if (action === "toggleRemember") {
+        state.lock.rememberDevice = !state.lock.rememberDevice;
+        saveState();
+        renderSettings();
+      }
+      if (action === "clearLock") {
+        state.lock.pinHash = null;
+        localStorage.removeItem("mission_os_remembered");
+        sessionStorage.removeItem("mission_os_unlocked");
+        saveState();
+        document.body.classList.remove("locked");
+        renderSettings();
+      }
+      if (action === "unlock") unlock();
+      if (action === "forgotLock") {
+        if (confirm("Reset the local lock on this device? This does not delete journal or task data.")) {
+          state.lock.pinHash = null;
+          saveState();
+          document.body.classList.remove("locked");
+          showToast("Local lock reset.");
+        }
+      }
+      if (action === "exportBackup") downloadFile(`mission-os-backup-${today()}.json`, JSON.stringify(state, null, 2), "application/json");
+      if (action === "clearData" && confirm("Clear all Mission OS data in this browser?")) {
+        localStorage.removeItem(STORE_KEY);
+        location.reload();
+      }
+    }
+
+    function handleReminderTimeChange(event) {
+      const input = event.target.closest("[data-action='changeReminderTime']");
+      if (!input) return;
+      const row = input.closest("[data-reminder-id]");
+      const item = state.reminders.find(reminder => reminder.id === row.dataset.reminderId);
+      item.time = input.value;
+      saveState();
+    }
+
+    function initClock() {
+      const tick = () => {
+        const now = new Date();
+        $("#clock").textContent = formatTime(now);
+        const h = now.getHours();
+        $("#greeting").textContent = h < 12 ? "Good Morning" : h < 17 ? "Good Afternoon" : "Good Evening";
+        runScheduler();
+      };
+      tick();
+      setInterval(tick, 1000);
+    }
+
+    function registerServiceWorker() {
+      if (!("serviceWorker" in navigator)) return;
+      navigator.serviceWorker.register("./sw.js").catch(error => console.warn("Service worker registration failed", error));
+    }
+
+    function initEvents() {
+      document.addEventListener("click", handleAction);
+      document.addEventListener("input", event => {
+        if (event.target.closest("#journalForm")) renderJournal();
+      });
+      document.addEventListener("change", handleReminderTimeChange);
+      $("#taskForm").addEventListener("submit", addTask);
+      $("#journalForm").addEventListener("submit", saveJournal);
+      $("#photoForm").addEventListener("submit", savePhoto);
+      $("#alarmForm").addEventListener("submit", addAlarm);
+      $("#journalSearch").addEventListener("input", renderJournalEntries);
+      $("#taskModal").addEventListener("click", event => {
+        if (event.target === $("#taskModal")) closeModal();
+      });
+      $$(".tab").forEach(button => button.addEventListener("click", () => switchTab(button.dataset.tab)));
+      ["pointerdown", "keydown", "scroll", "touchstart"].forEach(name => document.addEventListener(name, resetInactivityTimer, { passive: true }));
+    }
+
+    function init() {
+      applyTheme();
+      maybeLockOnStart();
+      initEvents();
+      initClock();
+      registerServiceWorker();
+      updateHistory();
+      render();
+      resetInactivityTimer();
+      if (!((window.SpeechRecognition || window.webkitSpeechRecognition))) $("#voiceBtn").disabled = true;
+    }
+
+    init();
+  </script>
 
 
 </body></html>
