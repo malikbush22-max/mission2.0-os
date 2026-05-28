@@ -1,4 +1,6 @@
-<html lang="en"><head>
+<!doctype html>
+<html lang="en">
+<head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -11,8 +13,8 @@
   <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=DM+Mono:wght@400;500&amp;family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       color-scheme: dark;
@@ -520,9 +522,115 @@
       .form-grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .photo-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     }
+    /* ── PLAN BANNER ── */
+    .plan-banner {
+      display: flex; align-items: center; justify-content: space-between;
+      background: linear-gradient(135deg, color-mix(in srgb, var(--teal) 8%, var(--card)), color-mix(in srgb, var(--amber) 6%, var(--card)));
+      border: 1px solid color-mix(in srgb, var(--teal) 28%, var(--border));
+      border-radius: 12px; padding: 13px 15px; margin: 14px 0 4px; cursor: pointer;
+      transition: transform .15s ease;
+    }
+    .plan-banner:active { transform: scale(.98); }
+    .plan-banner-title { font-size: 14px; font-weight: 700; color: var(--teal); }
+    .plan-banner-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .plan-banner-arrow { font-size: 22px; color: var(--teal); }
+
+    /* ── WORKOUT CARD ── */
+    .workout-card {
+      border: 1px solid color-mix(in srgb, var(--teal) 28%, var(--border));
+      background: linear-gradient(135deg, color-mix(in srgb, var(--teal) 6%, var(--card)), color-mix(in srgb, var(--amber) 5%, var(--card)));
+      border-radius: 12px; padding: 14px; margin-bottom: 8px; position: relative; overflow: hidden;
+    }
+    .workout-card::before {
+      content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--teal), var(--amber), transparent); opacity: .5;
+    }
+    .wk-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+    .wk-eyebrow { font: 700 9px/1 "DM Mono", monospace; letter-spacing: 2px; text-transform: uppercase; color: var(--teal); }
+    .wk-day-badge { font: 700 10px/1 "DM Mono", monospace; color: var(--teal); border: 1px solid color-mix(in srgb, var(--teal) 30%, var(--border)); border-radius: 99px; padding: 3px 9px; background: color-mix(in srgb, var(--teal) 8%, transparent); }
+    .wk-main { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .wk-icon { width: 46px; height: 46px; border-radius: 11px; background: color-mix(in srgb, var(--teal) 12%, var(--card-2)); border: 1px solid color-mix(in srgb, var(--teal) 20%, var(--border)); display: grid; place-items: center; font-size: 22px; flex-shrink: 0; }
+    .wk-name { font-size: 16px; font-weight: 700; }
+    .wk-dur { font: 400 11px/1 "DM Mono", monospace; color: var(--muted); margin-top: 3px; }
+    .wk-check-row { margin-bottom: 10px; }
+    .wk-check-row .task-card { margin-bottom: 0; }
+    .radio-group { border-top: 1px solid var(--border); padding-top: 10px; display: flex; flex-direction: column; gap: 6px; }
+    .radio-group-label { font: 700 9px/1 "DM Mono", monospace; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 2px; }
+    .radio-opt {
+      display: flex; align-items: center; gap: 10px; cursor: pointer;
+      padding: 8px 11px; border-radius: 10px; border: 1px solid var(--border);
+      background: color-mix(in srgb, var(--card-2) 60%, transparent); transition: all .2s;
+    }
+    .radio-opt.sel { border-color: color-mix(in srgb, var(--teal) 40%, var(--border)); background: color-mix(in srgb, var(--teal) 7%, var(--card)); }
+    .radio-circle { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--border-2); flex-shrink: 0; display: grid; place-items: center; transition: all .2s; }
+    .radio-opt.sel .radio-circle { background: var(--teal); border-color: var(--teal); box-shadow: 0 0 6px color-mix(in srgb, var(--teal) 35%, transparent); }
+    .radio-dot { width: 6px; height: 6px; border-radius: 50%; background: #000; display: none; }
+    .radio-opt.sel .radio-dot { display: block; }
+    .radio-label { font-size: 13px; font-weight: 600; }
+    .radio-sublabel { font-size: 11px; color: var(--muted); margin-top: 1px; }
+    .wk-done-badge { display: inline-flex; align-items: center; gap: 5px; background: color-mix(in srgb, var(--teal) 12%, var(--card)); border: 1px solid color-mix(in srgb, var(--teal) 25%, var(--border)); color: var(--teal); font: 700 10px/1 "DM Mono", monospace; letter-spacing: 1px; text-transform: uppercase; padding: 5px 11px; border-radius: 99px; margin-top: 8px; }
+
+    /* ── BASE DAY CARDS ── */
+    .base-card {
+      border: 1px solid var(--border); background: var(--card);
+      border-radius: 12px; padding: 12px 13px; margin-bottom: 8px;
+      display: grid; grid-template-columns: 26px 1fr; gap: 10px;
+    }
+    .base-check {
+      width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--border-2);
+      background: transparent; display: grid; place-items: center; font-weight: 900; font-size: 12px;
+      cursor: pointer; flex-shrink: 0; transition: all .2s; margin-top: 1px;
+    }
+    .base-card.done .base-check { background: linear-gradient(135deg, var(--teal), var(--amber)); border-color: transparent; color: #07110f; }
+    .base-card.done .base-title { color: var(--quiet); text-decoration: line-through; }
+    .base-card.done { opacity: .55; background: color-mix(in srgb, var(--card) 68%, var(--bg)); }
+    .base-title { font-size: 14px; font-weight: 700; line-height: 1.25; margin-bottom: 7px; }
+    .sub-items { display: flex; flex-direction: column; gap: 5px; }
+    .sub-item { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+    .sub-check { width: 15px; height: 15px; border-radius: 4px; border: 1.5px solid var(--border-2); flex-shrink: 0; display: grid; place-items: center; transition: all .2s; font-size: 9px; font-weight: 700; }
+    .sub-item.done .sub-check { background: var(--teal); border-color: var(--teal); color: #000; }
+    .sub-item.done .sub-label { text-decoration: line-through; color: var(--quiet); }
+    .sub-label { font-size: 12px; color: var(--muted); }
+    .dot-tracker { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+    .tracker-dot { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--border-2); display: grid; place-items: center; cursor: pointer; font: 700 10px/1 "DM Mono", monospace; color: var(--muted); transition: all .2s; }
+    .tracker-dot.on { background: linear-gradient(135deg, var(--teal), var(--amber)); border-color: transparent; color: #000; box-shadow: 0 0 8px color-mix(in srgb, var(--teal) 30%, transparent); }
+    .tracker-label { font: 400 10px/1 "DM Mono", monospace; color: var(--muted); margin-left: 2px; }
+    .water-drop { font-size: 19px; cursor: pointer; opacity: .25; transition: all .2s; }
+    .water-drop.on { opacity: 1; transform: scale(1.12); filter: drop-shadow(0 0 3px color-mix(in srgb, var(--teal) 50%, transparent)); }
+
+    /* ── PROTEIN TRACKER ── */
+    .protein-card { border: 1px solid var(--border); background: var(--card); border-radius: 12px; padding: 13px; margin-bottom: 8px; }
+    .protein-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 11px; }
+    .protein-title { font-size: 13px; font-weight: 700; }
+    .protein-range { font: 400 10px/1 "DM Mono", monospace; color: var(--muted); }
+    .protein-ring-wrap { display: flex; align-items: center; gap: 13px; margin-bottom: 12px; }
+    .protein-ring { position: relative; width: 68px; height: 68px; flex-shrink: 0; }
+    .protein-ring svg { transform: rotate(-90deg); }
+    .ring-track { fill: none; stroke: var(--border-2); stroke-width: 5; }
+    .ring-prog { fill: none; stroke-width: 5; stroke-linecap: round; transition: stroke-dashoffset .5s cubic-bezier(.4,0,.2,1); }
+    .ring-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .ring-val { font: 700 15px/1 "DM Mono", monospace; color: var(--teal); }
+    .ring-unit { font-size: 8px; color: var(--muted); letter-spacing: 1px; margin-top: 1px; }
+    .protein-info {}
+    .protein-stat { font-size: 11px; color: var(--muted); margin-bottom: 3px; }
+    .protein-stat strong { color: var(--text); }
+    .meal-rows { display: flex; flex-direction: column; gap: 6px; }
+    .meal-row { display: flex; align-items: center; gap: 8px; background: var(--card-2); border: 1px solid var(--border); border-radius: 10px; padding: 7px 10px; }
+    .meal-ico { font-size: 15px; flex-shrink: 0; }
+    .meal-lbl { font-size: 12px; font-weight: 600; flex: 1; }
+    .meal-input { width: 50px; background: var(--surface); border: 1px solid var(--border-2); border-radius: 7px; padding: 4px 6px; font: 700 13px/1 "DM Mono", monospace; color: var(--teal); outline: none; text-align: center; }
+    .meal-input:focus { border-color: var(--teal); }
+    .meal-unit { font-size: 10px; color: var(--muted); font-weight: 600; }
+    .add-snack-btn { width: 100%; margin-top: 7px; padding: 8px; background: transparent; border: 1px dashed var(--border-2); border-radius: 9px; color: var(--muted); font-size: 12px; font-weight: 600; cursor: pointer; transition: all .2s; }
+    .add-snack-btn:hover { border-color: var(--teal); color: var(--teal); }
+    .protein-status { margin-top: 9px; padding: 7px 10px; border-radius: 9px; font-size: 12px; font-weight: 600; text-align: center; }
+    .ps-low { background: color-mix(in srgb, var(--red) 10%, transparent); color: var(--red); border: 1px solid color-mix(in srgb, var(--red) 20%, var(--border)); }
+    .ps-good { background: color-mix(in srgb, var(--teal) 10%, transparent); color: var(--teal); border: 1px solid color-mix(in srgb, var(--teal) 20%, var(--border)); }
+    .ps-over { background: color-mix(in srgb, var(--amber) 10%, transparent); color: var(--amber); border: 1px solid color-mix(in srgb, var(--amber) 20%, var(--border)); }
+
   </style>
 </head>
-<body data-theme="night">
+<body>
   <div class="lock-screen" id="lockScreen">
     <div class="lock-card">
       <div class="eyebrow">Local Privacy Lock</div>
@@ -537,7 +645,7 @@
     </div>
   </div>
 
-  <div class="toast" id="toast">Alarm added.</div>
+  <div class="toast" id="toast"></div>
 
   <main class="app-shell">
     <header class="top-nav">
@@ -546,10 +654,10 @@
           <div>
             <div class="eyebrow" id="greeting">Good Morning</div>
             <h1 class="mission-title">TODAY'S MISSION</h1>
-            <div class="affirmation-line" id="heroAffirmation">"Gratitude keeps ambition clean."</div>
+            <div class="affirmation-line" id="heroAffirmation"></div>
           </div>
           <div class="hero-right">
-            <div class="live-clock" id="clock">4:26:39 AM</div>
+            <div class="live-clock" id="clock">--:--</div>
             <div class="quick-actions">
               <button class="icon-btn" title="Toggle day/night mode" data-action="themeToggle">☀</button>
               <button class="icon-btn" title="Lock app" data-action="manualLock">🔒</button>
@@ -559,207 +667,72 @@
       </div>
       <div class="stat-row">
         <div class="stat-pill"><div class="stat-label">Score</div><div class="stat-value good" id="navScore">0%</div></div>
-        <div class="stat-pill"><div class="stat-label">Done</div><div class="stat-value" id="navDone">0/7</div></div>
+        <div class="stat-pill"><div class="stat-label">Done</div><div class="stat-value" id="navDone">0/0</div></div>
         <div class="stat-pill"><div class="stat-label">Overdue</div><div class="stat-value hot" id="navOverdue">0</div></div>
         <div class="stat-pill"><div class="stat-label">Streak</div><div class="stat-value warn" id="navStreak">0</div></div>
       </div>
       <nav class="tabs" aria-label="Primary">
-        <button class="tab" data-tab="today"><span>⚡</span>Today</button>
+        <button class="tab active" data-tab="today"><span>⚡</span>Today</button>
         <button class="tab" data-tab="journal"><span>✍</span>Journal</button>
         <button class="tab" data-tab="progress"><span>📸</span>Progress</button>
         <button class="tab" data-tab="timer"><span>⏱</span>Timer</button>
-        <button class="tab active" data-tab="alarms"><span>🔔</span>Alarms</button>
+        <button class="tab" data-tab="alarms"><span>🔔</span>Alarms</button>
         <button class="tab" data-tab="settings"><span>⚙</span>Setup</button>
       </nav>
     </header>
 
-    <section class="page" id="page-today">
+    <section class="page active" id="page-today">
       <div class="panel panel-soft">
-        <div class="dashboard-grid" id="dashboardMetrics">
-        <div class="metric"><div class="label">Date</div><div class="value">Thursday, May 28</div><div class="sub">Today</div></div>
-        <div class="metric"><div class="label">Discipline</div><div class="value">0%</div><div class="sub">0 completed</div></div>
-        <div class="metric"><div class="label">Remaining</div><div class="value">7</div><div class="sub">0 overdue</div></div>
-        <div class="metric"><div class="label">Next</div><div class="value">07:00</div><div class="sub">Morning Activation</div></div>
-      </div>
+        <div class="dashboard-grid" id="dashboardMetrics"></div>
         <div class="progress-wrap">
-          <div class="progress-top"><span>Daily progress</span><strong id="progressText">0/7</strong></div>
-          <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 0%;"></div></div>
+          <div class="progress-top"><span>Daily progress</span><strong id="progressText">0/0</strong></div>
+          <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
         </div>
       </div>
-      <div id="checkinCards"><div class="section-label">Daily Check-Ins</div><div class="checkin-grid">
-        <article class="check-card active">
-          <div class="check-title"><strong>Morning</strong><span class="check-time">7:00 AM</span></div>
-          <p>No recorded score from yesterday yet. Start clean, protect the morning block, and win the first task.</p>
-        </article>
-      
-        <article class="check-card ">
-          <div class="check-title"><strong>Midday</strong><span class="check-time">12:00 PM</span></div>
-          <p>Today is at 0%. No matching pace from yesterday yet, so compare against the standard instead of the mood.</p>
-        </article>
-      
-        <article class="check-card ">
-          <div class="check-title"><strong>Afternoon</strong><span class="check-time">4:00 PM</span></div>
-          <p>No overdue tasks right now. Stay sharp and protect the afternoon from drift.</p>
-        </article>
-      
-        <article class="check-card ">
-          <div class="check-title"><strong>Evening</strong><span class="check-time">9:00 PM</span></div>
-          <p>Today's discipline score is 0%. Wins: 0. Misses or open loops: 7. Log your reflection and reset for tomorrow.</p>
-        </article>
-      </div></div>
+      <div id="checkinCards"></div>
+
+      <!-- Plan Tomorrow Banner -->
+      <div class="plan-banner" id="planBanner" data-action="openPlanModal">
+        <div><div class="plan-banner-title">🌙 Plan Tomorrow</div><div class="plan-banner-sub">Set up your tasks for the next day</div></div>
+        <span class="plan-banner-arrow">›</span>
+      </div>
+
+      <!-- Bullyjuice Workout -->
+      <div class="section-label">Workout</div>
+      <div id="bjWorkoutCard"></div>
+
+      <!-- Protein Tracker -->
+      <div class="section-label">Nutrition</div>
+      <div id="proteinTracker"></div>
+
+      <!-- Base Day -->
+      <div class="section-label">Base Day</div>
+      <div id="baseDayList"></div>
+
       <div class="section-label">Affirmations</div>
-      <div id="reminderCards"><div class="checkin-grid">
-          <article class="check-card">
-            <div class="check-title"><strong>Morning Activation</strong><span class="check-time">07:00</span></div>
-            <p>Gratitude keeps ambition clean.</p>
-            <div class="tag-row"><span class="tag">Gratitude</span><span class="tag">Enabled</span></div>
-          </article>
-        
-          <article class="check-card">
-            <div class="check-title"><strong>Midday Progress Check</strong><span class="check-time">12:00</span></div>
-            <p>You do not need motivation. You need alignment.</p>
-            <div class="tag-row"><span class="tag">Growth</span><span class="tag">Enabled</span></div>
-          </article>
-        
-          <article class="check-card">
-            <div class="check-title"><strong>Afternoon Accountability Check</strong><span class="check-time">16:00</span></div>
-            <p>Every meal, step, and rep is a vote for the body you are building.</p>
-            <div class="tag-row"><span class="tag">Health</span><span class="tag">Enabled</span></div>
-          </article>
-        
-          <article class="check-card">
-            <div class="check-title"><strong>Evening Reflection / Reset</strong><span class="check-time">21:00</span></div>
-            <p>A focused man is hard to compete with.</p>
-            <div class="tag-row"><span class="tag">Business</span><span class="tag">Enabled</span></div>
-          </article>
-        </div></div>
+      <div id="reminderCards"></div>
       <div class="section-label">Checklist</div>
-      <div id="taskList">
-          <div class="section-label" style="margin-top:14px;">Morning Activation</div>
-          
-        <article class="task-card priority-high  " data-task-id="base-prayer">
-          <button class="task-check" data-action="toggleTask" aria-label="Toggle task"></button>
-          <div>
-            <div class="task-title">Pause, pray, and set the day</div>
-            <div class="task-desc">Faith first. Ask for discipline, wisdom, and clean focus.</div>
-            <div class="meta-row">
-              <span class="badge">Faith</span>
-              <span class="badge">07:00</span>
-              <span class="badge good">daily</span>
-              
-              <span class="badge warn">Base</span>
-              
-            </div>
-          </div>
-        </article>
-      
-        <article class="task-card priority-high  " data-task-id="base-body">
-          <button class="task-check" data-action="toggleTask" aria-label="Toggle task"></button>
-          <div>
-            <div class="task-title">Workout or mobility block</div>
-            <div class="task-desc">Move the body before the day steals the window.</div>
-            <div class="meta-row">
-              <span class="badge">Fitness</span>
-              <span class="badge">08:00</span>
-              <span class="badge good">daily</span>
-              
-              <span class="badge warn">Base</span>
-              
-            </div>
-          </div>
-        </article>
-      
-        
-          <div class="section-label" style="margin-top:14px;">Midday Progress</div>
-          
-        <article class="task-card priority-medium  " data-task-id="base-water">
-          <button class="task-check" data-action="toggleTask" aria-label="Toggle task"></button>
-          <div>
-            <div class="task-title">Water and creatine check</div>
-            <div class="task-desc">Hydration is part of the mission.</div>
-            <div class="meta-row">
-              <span class="badge">Health</span>
-              <span class="badge">12:00</span>
-              <span class="badge good">daily</span>
-              
-              <span class="badge warn">Base</span>
-              
-            </div>
-          </div>
-        </article>
-      
-        <article class="task-card priority-medium  " data-task-id="base-protein">
-          <button class="task-check" data-action="toggleTask" aria-label="Toggle task"></button>
-          <div>
-            <div class="task-title">Protein target check</div>
-            <div class="task-desc">Hit the meal plan before hunger starts making decisions.</div>
-            <div class="meta-row">
-              <span class="badge">Nutrition</span>
-              <span class="badge">14:00</span>
-              <span class="badge good">daily</span>
-              
-              <span class="badge warn">Base</span>
-              
-            </div>
-          </div>
-        </article>
-      
-        
-          <div class="section-label" style="margin-top:14px;">Afternoon Accountability</div>
-          
-        <article class="task-card priority-high  " data-task-id="base-business">
-          <button class="task-check" data-action="toggleTask" aria-label="Toggle task"></button>
-          <div>
-            <div class="task-title">Revenue or skill-building block</div>
-            <div class="task-desc">One focused block for the future you are building.</div>
-            <div class="meta-row">
-              <span class="badge">Business</span>
-              <span class="badge">16:00</span>
-              <span class="badge good">daily</span>
-              
-              <span class="badge warn">Base</span>
-              
-            </div>
-          </div>
-        </article>
-      
-        
-          <div class="section-label" style="margin-top:14px;">Evening Reset</div>
-          
-        <article class="task-card priority-medium  " data-task-id="base-journal">
-          <button class="task-check" data-action="toggleTask" aria-label="Toggle task"></button>
-          <div>
-            <div class="task-title">Evening journal reflection</div>
-            <div class="task-desc">Wins, misses, correction, gratitude, and reset.</div>
-            <div class="meta-row">
-              <span class="badge">Discipline</span>
-              <span class="badge">21:00</span>
-              <span class="badge good">daily</span>
-              
-              <span class="badge warn">Base</span>
-              
-            </div>
-          </div>
-        </article>
-      
-        <article class="task-card priority-medium  " data-task-id="base-plan">
-          <button class="task-check" data-action="toggleTask" aria-label="Toggle task"></button>
-          <div>
-            <div class="task-title">Plan tomorrow</div>
-            <div class="task-desc">Set the first moves before sleep.</div>
-            <div class="meta-row">
-              <span class="badge">Focus</span>
-              <span class="badge">21:15</span>
-              <span class="badge good">daily</span>
-              
-              <span class="badge warn">Base</span>
-              
-            </div>
-          </div>
-        </article>
-      
-        </div>
+      <div id="taskList"></div>
     </section>
+
+    <!-- Plan Tomorrow Modal -->
+    <div class="modal-layer" id="planModal">
+      <div class="modal">
+        <div class="modal-handle"></div>
+        <div class="modal-title">🌙 Plan Tomorrow</div>
+        <p class="small-text" style="margin-bottom:14px;">Review and adjust tomorrow's tasks.</p>
+        <div id="planModalList"></div>
+        <div class="field" style="margin-top:10px;">
+          <label>Quick Add Task</label>
+          <div style="display:flex;gap:8px;">
+            <input class="input" id="planQuickInput" placeholder="Quick task..." style="flex:1">
+            <button class="btn primary" style="padding:0 14px;" data-action="addPlanQuick">Add</button>
+          </div>
+        </div>
+        <button class="btn primary" style="width:100%;margin-top:10px;" data-action="lockPlanDay">🔒 Lock In Tomorrow</button>
+        <button class="btn ghost" style="width:100%;margin-top:7px;" data-action="closePlanModal">Close</button>
+      </div>
+    </div>
 
     <section class="page" id="page-journal">
       <div class="panel panel-soft">
@@ -788,12 +761,12 @@
       </div>
 
       <div class="section-label">Journal Library</div>
-      <div class="library" id="journalLibrary"><button class="btn primary" data-action="filterJournal" data-tag="all">All Entries</button><button class="btn " data-action="filterJournal" data-tag="#fitness">fitness</button><button class="btn " data-action="filterJournal" data-tag="#faith">faith</button><button class="btn " data-action="filterJournal" data-tag="#business">business</button><button class="btn " data-action="filterJournal" data-tag="#discipline">discipline</button><button class="btn " data-action="filterJournal" data-tag="#money">money</button><button class="btn " data-action="filterJournal" data-tag="#relationships">relationships</button><button class="btn " data-action="filterJournal" data-tag="#progress">progress</button><button class="btn " data-action="filterJournal" data-tag="#setback">setback</button><button class="btn " data-action="filterJournal" data-tag="#gratitude">gratitude</button><button class="btn " data-action="filterJournal" data-tag="#work">work</button><button class="btn " data-action="filterJournal" data-tag="#health">health</button><button class="btn " data-action="filterJournal" data-tag="#purpose">purpose</button></div>
+      <div class="library" id="journalLibrary"></div>
       <div class="field" style="margin-top:8px;">
         <label for="journalSearch">Search</label>
         <input class="input" id="journalSearch" placeholder="Search entries or #tags">
       </div>
-      <div id="journalEntries" style="margin-top:10px;"><div class="empty">No journal entries match this view.</div></div>
+      <div id="journalEntries" style="margin-top:10px;"></div>
     </section>
 
     <section class="page" id="page-progress">
@@ -813,17 +786,17 @@
         </form>
       </div>
       <div class="section-label">Progress Gallery</div>
-      <div class="library" id="photoFilters"><button class="btn " data-action="filterPhotos" data-filter="all">All</button><button class="btn " data-action="filterPhotos" data-filter="progress">progress</button><button class="btn " data-action="filterPhotos" data-filter="weigh-in">weigh-in</button><button class="btn " data-action="filterPhotos" data-filter="meal">meal</button><button class="btn " data-action="filterPhotos" data-filter="workout">workout</button><button class="btn primary" data-action="filterPhotos" data-filter="front">front</button><button class="btn " data-action="filterPhotos" data-filter="side">side</button><button class="btn " data-action="filterPhotos" data-filter="back">back</button></div>
-      <div class="photo-grid" id="photoGallery"><div class="empty" style="grid-column:1/-1;">No photos saved in this filter yet.</div></div>
+      <div class="library" id="photoFilters"></div>
+      <div class="photo-grid" id="photoGallery"></div>
     </section>
 
     <section class="page" id="page-timer">
       <div class="timer-panel panel-soft">
         <div class="section-label" style="margin-top:0;">Active Timer</div>
         <div class="field"><label for="timerLabel">Session label</label><input class="input" id="timerLabel" placeholder="Focus, workout, prayer, deep work"></div>
-        <div class="field" style="margin-top:8px;"><label for="timerTask">Attach task</label><select class="select" id="timerTask"><option value="">No attached task</option><option value="base-prayer">Pause, pray, and set the day</option><option value="base-body">Workout or mobility block</option><option value="base-water">Water and creatine check</option><option value="base-protein">Protein target check</option><option value="base-business">Revenue or skill-building block</option><option value="base-journal">Evening journal reflection</option><option value="base-plan">Plan tomorrow</option></select></div>
+        <div class="field" style="margin-top:8px;"><label for="timerTask">Attach task</label><select class="select" id="timerTask"></select></div>
         <div class="timer-display" id="timerDisplay">25:00</div>
-        <div class="preset-grid" id="timerPresets"><button class="btn" data-action="timerPreset" data-minutes="5">5m</button><button class="btn" data-action="timerPreset" data-minutes="10">10m</button><button class="btn" data-action="timerPreset" data-minutes="15">15m</button><button class="btn" data-action="timerPreset" data-minutes="20">20m</button><button class="btn" data-action="timerPreset" data-minutes="25">25m</button><button class="btn" data-action="timerPreset" data-minutes="30">30m</button><button class="btn" data-action="timerPreset" data-minutes="45">45m</button><button class="btn" data-action="timerPreset" data-minutes="60">60m</button></div>
+        <div class="preset-grid" id="timerPresets"></div>
         <div class="toolbar" style="margin-top:10px;justify-content:center;">
           <button class="btn primary" data-action="timerStart">Start</button>
           <button class="btn" data-action="timerPause">Pause</button>
@@ -831,10 +804,10 @@
         </div>
       </div>
       <div class="section-label">Completed Sessions</div>
-      <div id="timerHistory"><div class="empty">Completed timer sessions will appear here.</div></div>
+      <div id="timerHistory"></div>
     </section>
 
-    <section class="page active" id="page-alarms">
+    <section class="page" id="page-alarms">
       <div class="panel">
         <div class="section-label" style="margin-top:0;">Create Alarm</div>
         <form id="alarmForm" class="form-grid two">
@@ -845,19 +818,7 @@
         </form>
       </div>
       <div class="section-label">Reminders</div>
-      <div id="alarmList">
-          <article class="alarm-card" data-alarm-id="alarm_1779956772838_35iv0i">
-            <div>
-              <strong>Mission reminder</strong>
-              <div class="small-text">04:26 - 2026-05-28</div>
-              
-            </div>
-            <div class="toolbar">
-              <button class="toggle on" data-action="toggleAlarm" aria-label="Toggle alarm"></button>
-              <button class="badge" data-action="deleteAlarm">Delete</button>
-            </div>
-          </article>
-        </div>
+      <div id="alarmList"></div>
     </section>
 
     <section class="page" id="page-settings">
@@ -908,11 +869,11 @@
       <div class="modal-handle"></div>
       <div class="modal-title">Add Task</div>
       <form id="taskForm" class="form-grid">
-        <div class="field"><label for="taskTitle">Title</label><input class="input" id="taskTitle" required="" placeholder="Task name"></div>
+        <div class="field"><label for="taskTitle">Title</label><input class="input" id="taskTitle" required placeholder="Task name"></div>
         <div class="field"><label for="taskDescription">Description</label><textarea class="textarea" id="taskDescription" placeholder="Optional notes"></textarea></div>
         <div class="form-grid two">
           <div class="field"><label for="taskCategory">Category</label><select class="select" id="taskCategory"><option>Discipline</option><option>Faith</option><option>Fitness</option><option>Business</option><option>Money</option><option>Health</option><option>Family</option><option>Focus</option></select></div>
-          <div class="field"><label for="taskPriority">Priority</label><select class="select" id="taskPriority"><option value="high">High</option><option value="medium" selected="">Medium</option><option value="low">Low</option></select></div>
+          <div class="field"><label for="taskPriority">Priority</label><select class="select" id="taskPriority"><option value="high">High</option><option value="medium" selected>Medium</option><option value="low">Low</option></select></div>
         </div>
         <div class="form-grid two">
           <div class="field"><label for="taskDate">Date</label><input class="input" id="taskDate" type="date"></div>
@@ -1264,7 +1225,7 @@
       if (activeTab === "settings") renderSettings();
     }
 
-    function renderToday() {
+    function renderTodayCore() {
       const stats = dayStats();
       const next = nextReminder();
       $("#dashboardMetrics").innerHTML = `
@@ -2156,8 +2117,441 @@
       if (!((window.SpeechRecognition || window.webkitSpeechRecognition))) $("#voiceBtn").disabled = true;
     }
 
+    // ══════════════════════════════════════
+    // BULLYJUICE + BASE DAY + PROTEIN
+    // ══════════════════════════════════════
+
+    const BJ_WORKOUTS = [
+      {day:1,name:"Total-Body Burn",dur:"11:00"},{day:2,name:"Core Activation",dur:"10:59"},
+      {day:3,name:"Chest and Core",dur:"10:48"},{day:4,name:"Lower Body Blast",dur:"15:53"},
+      {day:5,name:"Total-Body HIIT",dur:"16:35"},{day:6,name:"Mobility",dur:"14:46"},
+      {day:7,name:"Upper Body",dur:"21:09"},{day:8,name:"Lower Body Power",dur:"11:39"},
+      {day:9,name:"Total-Body Burn",dur:"10:42"},{day:10,name:"Core",dur:"10:59"},
+      {day:11,name:"Total-Body HIIT",dur:"16:28"},{day:12,name:"Lower-Body HIIT",dur:"15:45"},
+      {day:13,name:"Upper Body Burn",dur:"16:15"},{day:14,name:"Mobility Movements",dur:"21:05"},
+      {day:15,name:"Total-Body Burn",dur:"10:42"},{day:16,name:"Back Strength",dur:"11:04"},
+      {day:17,name:"Total-Body HIIT",dur:"16:28"},{day:18,name:"Lower Body Burn",dur:"16:04"},
+      {day:19,name:"Core Routine",dur:"21:01"},{day:20,name:"Total-Body Blast",dur:"20:23"},
+      {day:21,name:"Mobility",dur:"21:07"},{day:22,name:"Upper Body Burn",dur:"11:09"},
+      {day:23,name:"Total-Body Burn",dur:"10:51"},{day:24,name:"Upper Body Routine",dur:"16:03"},
+      {day:25,name:"Total-Body HIIT",dur:"16:28"},{day:26,name:"Lower Body HIIT",dur:"21:11"},
+      {day:27,name:"Upper Body Burn",dur:"21:06"},{day:28,name:"Total-Body Stretch",dur:"21:11"},
+      {day:29,name:"Total-Body Burn",dur:"10:52"},{day:30,name:"Total-Body HIIT",dur:"15:58"},
+      {day:31,name:"Total-Body HIIT",dur:"16:28"},{day:32,name:"Lower Body Routine",dur:"16:05"},
+      {day:33,name:"Total-Body Blast",dur:"20:09"},{day:34,name:"Chest and Back",dur:"21:11"},
+      {day:35,name:"Core Activation",dur:"21:07"},{day:36,name:"Total-Body Stretch",dur:"11:13"},
+      {day:37,name:"Upper Body Burn",dur:"15:59"},{day:38,name:"Lower Body Burn",dur:"16:09"},
+      {day:39,name:"Total-Body HIIT",dur:"16:28"},{day:40,name:"Total-Body Stretch",dur:"20:56"},
+      {day:41,name:"Upper Body and Cardio",dur:"21:13"},{day:42,name:"Total-Body Blast",dur:"20:08"},
+      {day:43,name:"Total-Body Obliterator",dur:"10:53"},{day:44,name:"Final Core Crusher",dur:"20:21"},
+      {day:45,name:"Ultimate Total-Body Routine",dur:"30:45"}
+    ];
+
+    const BJ_START_DATE = new Date(2026, 4, 28); // May 28 = Day 11
+    const BJ_START_DAY = 11;
+
+    function getCurrentBJDay() {
+      const now0 = new Date(); now0.setHours(0,0,0,0);
+      const diff = Math.floor((now0 - BJ_START_DATE) / 86400000);
+      return Math.min(45, Math.max(1, BJ_START_DAY + diff));
+    }
+
+    const BASE_ITEMS = [
+      { id:"morning", label:"🌅 Morning Routine", type:"sub", subs:["Wake up & stretch","Shower / freshen up","Skincare"] },
+      { id:"dogs", label:"🐾 Dog Walks", type:"sub", subs:["Walk Miles (quick)","Walk Penny (20–30 min)"] },
+      { id:"meals", label:"🍽️ Meals", type:"sub", subs:["Protein shake / Breakfast","Lunch","Dinner"] },
+      { id:"creatine", label:"💊 Creatine", type:"dots", count:4 },
+      { id:"water", label:"💧 Water (1 gallon)", type:"water", count:8 },
+      { id:"evening", label:"🌙 Evening Routine", type:"sub", subs:["Plan tomorrow","Wind down","Sleep on time"] }
+    ];
+
+    function getBDKey() { return "bd_" + today(); }
+    function getWKKey() { return "wk_" + today(); }
+    function getPRKey() { return "pr_" + today(); }
+
+    function getBDState() {
+      return safeJson(localStorage.getItem(getBDKey())) || {};
+    }
+    function saveBDState(s) { localStorage.setItem(getBDKey(), JSON.stringify(s)); }
+
+    function getWKState() {
+      return safeJson(localStorage.getItem(getWKKey())) || { bjDone: false, extraType: "none", extraDone: false };
+    }
+    function saveWKState(s) { localStorage.setItem(getWKKey(), JSON.stringify(s)); }
+
+    function getPRState() {
+      return safeJson(localStorage.getItem(getPRKey())) || { breakfast:0, lunch:0, dinner:0, snacks:[] };
+    }
+    function savePRState(s) { localStorage.setItem(getPRKey(), JSON.stringify(s)); }
+
+    // ── RENDER WORKOUT CARD ──
+    function renderBJWorkout() {
+      const el = $("#bjWorkoutCard"); if (!el) return;
+      const bjDay = getCurrentBJDay();
+      const wk = BJ_WORKOUTS[bjDay - 1] || BJ_WORKOUTS[0];
+      const ws = getWKState();
+      const preDone = bjDay < BJ_START_DAY;
+      const done = ws.bjDone || preDone;
+
+      let extraHTML = "";
+      if (!done) {
+        const opts = [
+          { v:"none", label:"Bullyjuice Only", sub:"" },
+          { v:"run", label:"🏃 Run (30–40 min)", sub:"After BJ · outdoor run" },
+          { v:"gym", label:"🏋️ Upper Body Gym", sub:"After BJ · upper body strength" }
+        ];
+        extraHTML = `<div class="radio-group">
+          <div class="radio-group-label">Add Extra Workout?</div>
+          ${opts.map(o => `
+            <div class="radio-opt ${ws.extraType===o.v?"sel":""}" data-extra-type="${esc(o.v)}">
+              <div class="radio-circle"><div class="radio-dot"></div></div>
+              <div><div class="radio-label">${esc(o.label)}</div>${o.sub?`<div class="radio-sublabel">${esc(o.sub)}</div>`:""}</div>
+            </div>`).join("")}
+          ${ws.extraType && ws.extraType !== "none" ? `
+          <div class="sub-item ${ws.extraDone?"done":""}" data-bj-extra-done="1" style="background:var(--card-2);border:1px solid var(--border);border-radius:9px;padding:7px 10px;margin-top:2px;">
+            <div class="sub-check">${ws.extraDone?"✓":""}</div>
+            <span class="sub-label" style="font-weight:600;">${ws.extraType==="run"?"🏃 Run completed":"🏋️ Gym session done"}</span>
+          </div>` : ""}
+        </div>`;
+      }
+
+      el.innerHTML = `<div class="workout-card">
+        <div class="wk-header">
+          <div class="wk-eyebrow">Bullyjuice 45-Day Challenge</div>
+          <div class="wk-day-badge">Day ${bjDay}/45</div>
+        </div>
+        <div class="wk-main">
+          <div class="wk-icon">🔥</div>
+          <div>
+            <div class="wk-name">${esc(wk.name)}</div>
+            <div class="wk-dur">⏱ ${esc(wk.dur)} · iFIT Bodyweight</div>
+          </div>
+        </div>
+        <div class="wk-check-row">
+          <div class="sub-item ${done?"done":""}" data-bj-done="1" style="background:var(--card-2);border:1px solid var(--border);border-radius:9px;padding:8px 11px;">
+            <div class="sub-check">${done?"✓":""}</div>
+            <span class="sub-label" style="font-size:13px;font-weight:600;">${done?"Workout complete!":"Mark Bullyjuice workout done"}</span>
+          </div>
+        </div>
+        ${done && !preDone ? `<div class="wk-done-badge">✓ Crushed It</div>` : ""}
+        ${done && preDone ? `<div class="wk-done-badge">✓ Pre-Completed</div>` : ""}
+        ${extraHTML}
+      </div>`;
+    }
+
+    // ── RENDER PROTEIN TRACKER ──
+    function renderProteinTracker() {
+      const el = $("#proteinTracker"); if (!el) return;
+      const GOAL = 190;
+      const pr = getPRState();
+      const snacks = pr.snacks || [];
+      const total = (parseInt(pr.breakfast)||0) + (parseInt(pr.lunch)||0) + (parseInt(pr.dinner)||0) + snacks.reduce((a,s) => a+(parseInt(s.p)||0), 0);
+      const C = 2 * Math.PI * 28;
+      const offset = C - (Math.min(100, total/GOAL*100)/100) * C;
+      const statusClass = total < 170 ? "ps-low" : total <= 220 ? "ps-good" : "ps-over";
+      const statusMsg = total < 170 ? `⚡ ${GOAL-total}g below target — push your meals` : total <= 220 ? `✅ ${total}g — In the zone!` : `⚠️ ${total}g — Over range`;
+
+      const snackRows = snacks.map((s,i) => `
+        <div class="meal-row">
+          <div class="meal-ico">🍎</div>
+          <div class="meal-lbl">${esc(s.name||"Snack "+(i+1))}</div>
+          <input class="meal-input" type="number" value="${s.p||""}" placeholder="0" data-snack-idx="${i}" style="width:46px;">
+          <span class="meal-unit">g</span>
+          <button class="badge" style="margin-left:4px;cursor:pointer;" data-del-snack="${i}">✕</button>
+        </div>`).join("");
+
+      el.innerHTML = `<div class="protein-card">
+        <div class="protein-header">
+          <div class="protein-title">Protein Tracker</div>
+          <div class="protein-range">170–220g range</div>
+        </div>
+        <div class="protein-ring-wrap">
+          <div class="protein-ring">
+            <svg width="68" height="68" viewBox="0 0 68 68">
+              <defs><linearGradient id="prg" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#00d4b8"/><stop offset="100%" stop-color="#f5a623"/></linearGradient></defs>
+              <circle class="ring-track" cx="34" cy="34" r="28"/>
+              <circle class="ring-prog" cx="34" cy="34" r="28" stroke="url(#prg)" stroke-dasharray="${C}" stroke-dashoffset="${offset}"/>
+            </svg>
+            <div class="ring-center"><div class="ring-val">${total}</div><div class="ring-unit">GRAMS</div></div>
+          </div>
+          <div class="protein-info">
+            <div class="protein-stat">Goal: <strong>${GOAL}g</strong></div>
+            <div class="protein-stat">Left: <strong style="color:${total>=GOAL?"var(--teal)":"var(--amber)"}">${Math.max(0,GOAL-total)}g</strong></div>
+            <div class="protein-stat" style="font-size:10px;">Range: 170–220g</div>
+          </div>
+        </div>
+        <div class="meal-rows">
+          <div class="meal-row">
+            <div class="meal-ico">🌅</div><div class="meal-lbl">Breakfast / Shake</div>
+            <input class="meal-input" type="number" value="${pr.breakfast||""}" placeholder="0" data-meal="breakfast"><span class="meal-unit">g</span>
+          </div>
+          <div class="meal-row">
+            <div class="meal-ico">☀️</div><div class="meal-lbl">Lunch</div>
+            <input class="meal-input" type="number" value="${pr.lunch||""}" placeholder="0" data-meal="lunch"><span class="meal-unit">g</span>
+          </div>
+          <div class="meal-row">
+            <div class="meal-ico">🌙</div><div class="meal-lbl">Dinner</div>
+            <input class="meal-input" type="number" value="${pr.dinner||""}" placeholder="0" data-meal="dinner"><span class="meal-unit">g</span>
+          </div>
+          ${snackRows}
+        </div>
+        <button class="add-snack-btn" data-action="addProteinSnack">+ Add Snack</button>
+        <div class="protein-status ${statusClass}">${statusMsg}</div>
+      </div>`;
+    }
+
+    // ── RENDER BASE DAY ──
+    function renderBaseDay() {
+      const el = $("#baseDayList"); if (!el) return;
+      const bs = getBDState();
+      el.innerHTML = BASE_ITEMS.map(item => {
+        let isDone = false;
+        let innerHTML = "";
+
+        if (item.type === "sub") {
+          const subs = bs[item.id+"_subs"] || [];
+          isDone = subs.filter(Boolean).length === item.subs.length;
+          innerHTML = `<div class="sub-items">${item.subs.map((s,i) => `
+            <div class="sub-item ${subs[i]?"done":""}" data-base-sub="${esc(item.id)}" data-sub-idx="${i}" data-sub-total="${item.subs.length}">
+              <div class="sub-check">${subs[i]?"✓":""}</div>
+              <span class="sub-label">${esc(s)}</span>
+            </div>`).join("")}</div>`;
+        } else if (item.type === "dots") {
+          const cnt = bs[item.id] || 0;
+          isDone = cnt >= item.count;
+          innerHTML = `<div class="dot-tracker">${Array.from({length:item.count},(_,i) => `
+            <div class="tracker-dot ${i<cnt?"on":""}" data-base-dot="${esc(item.id)}" data-dot-n="${i+1}" data-dot-total="${item.count}">${i+1}</div>`).join("")}
+            <span class="tracker-label">${cnt}/${item.count}</span></div>`;
+        } else if (item.type === "water") {
+          const cnt = bs[item.id] || 0;
+          isDone = cnt >= item.count;
+          innerHTML = `<div class="dot-tracker">${Array.from({length:item.count},(_,i) => `
+            <span class="water-drop ${i<cnt?"on":""}" data-base-water="${esc(item.id)}" data-water-n="${i+1}" data-water-total="${item.count}">💧</span>`).join("")}
+            <span class="tracker-label">${cnt}/${item.count} glasses</span></div>`;
+        }
+
+        return `<div class="base-card ${isDone?"done":""}" data-base-id="${esc(item.id)}">
+          <button class="base-check" data-base-toggle="${esc(item.id)}">${isDone?"✓":""}</button>
+          <div>
+            <div class="base-title">${esc(item.label)}</div>
+            ${innerHTML}
+          </div>
+        </div>`;
+      }).join("");
+    }
+
+    // ── PLAN TOMORROW MODAL ──
+    function openPlanModal() {
+      const tm = new Date(); tm.setDate(tm.getDate() + 1);
+      const tmKey = todayKey(tm);
+      const tmTasks = state.tasks.filter(t => {
+        if (t.repeat === "daily") return true;
+        if (t.repeat === "weekly") {
+          return parseLocalDate(t.date || today()).getDay() === tm.getDay();
+        }
+        return t.date === tmKey;
+      });
+      const list = $("#planModalList");
+      if (!tmTasks.length) {
+        list.innerHTML = `<div class="empty">No tasks yet for tomorrow. Add below!</div>`;
+      } else {
+        list.innerHTML = tmTasks.map(t => `
+          <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-bottom:6px;display:flex;align-items:center;gap:8px;">
+            <span style="flex:1;font-size:13px;font-weight:600;">${esc(t.title)}</span>
+            <span class="badge">${esc(t.category||"")}</span>
+          </div>`).join("");
+      }
+      $("#planModal").classList.add("open");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closePlanModal() {
+      $("#planModal").classList.remove("open");
+      document.body.style.overflow = "";
+    }
+
+    // ── EVENT HANDLERS FOR NEW SECTIONS ──
+    function handleNewActions(event) {
+      const target = event.target;
+
+      // BJ workout done toggle
+      const bjDone = target.closest("[data-bj-done]");
+      if (bjDone) {
+        const ws = getWKState();
+        const bjDay = getCurrentBJDay();
+        if (bjDay < BJ_START_DAY) return;
+        ws.bjDone = !ws.bjDone;
+        saveWKState(ws);
+        renderBJWorkout();
+        renderHeader();
+        return;
+      }
+
+      // BJ extra done toggle
+      const bjExtraDone = target.closest("[data-bj-extra-done]");
+      if (bjExtraDone) {
+        const ws = getWKState();
+        ws.extraDone = !ws.extraDone;
+        saveWKState(ws);
+        renderBJWorkout();
+        return;
+      }
+
+      // BJ extra type radio
+      const radioOpt = target.closest("[data-extra-type]");
+      if (radioOpt) {
+        const ws = getWKState();
+        ws.extraType = radioOpt.dataset.extraType;
+        ws.extraDone = false;
+        saveWKState(ws);
+        renderBJWorkout();
+        return;
+      }
+
+      // Sub-item toggle
+      const subItem = target.closest("[data-base-sub]");
+      if (subItem) {
+        const id = subItem.dataset.baseSub;
+        const idx = parseInt(subItem.dataset.subIdx);
+        const total = parseInt(subItem.dataset.subTotal);
+        const bs = getBDState();
+        if (!bs[id+"_subs"]) bs[id+"_subs"] = [];
+        bs[id+"_subs"][idx] = !bs[id+"_subs"][idx];
+        bs[id] = bs[id+"_subs"].filter(Boolean).length === total;
+        saveBDState(bs);
+        renderBaseDay();
+        renderHeader();
+        return;
+      }
+
+      // Dot tracker
+      const dotEl = target.closest("[data-base-dot]");
+      if (dotEl) {
+        const id = dotEl.dataset.baseDot;
+        const n = parseInt(dotEl.dataset.dotN);
+        const total = parseInt(dotEl.dataset.dotTotal);
+        const bs = getBDState();
+        bs[id] = bs[id] === n ? n - 1 : n;
+        bs[id+"_done"] = bs[id] >= total;
+        saveBDState(bs);
+        renderBaseDay();
+        renderHeader();
+        return;
+      }
+
+      // Water tracker
+      const waterEl = target.closest("[data-base-water]");
+      if (waterEl) {
+        const id = waterEl.dataset.baseWater;
+        const n = parseInt(waterEl.dataset.waterN);
+        const total = parseInt(waterEl.dataset.waterTotal);
+        const bs = getBDState();
+        bs[id] = n;
+        bs[id+"_done"] = n >= total;
+        saveBDState(bs);
+        renderBaseDay();
+        renderHeader();
+        return;
+      }
+
+      // Protein meal input
+      const mealInput = target.closest("[data-meal]");
+      if (mealInput && target.tagName === "INPUT") {
+        const meal = target.dataset.meal;
+        const pr = getPRState();
+        pr[meal] = parseInt(target.value) || 0;
+        savePRState(pr);
+        setTimeout(renderProteinTracker, 300);
+        return;
+      }
+
+      // Protein snack input
+      if (target.dataset.snackIdx !== undefined && target.tagName === "INPUT") {
+        const i = parseInt(target.dataset.snackIdx);
+        const pr = getPRState();
+        pr.snacks[i].p = parseInt(target.value) || 0;
+        savePRState(pr);
+        setTimeout(renderProteinTracker, 300);
+        return;
+      }
+
+      // Delete snack
+      if (target.dataset.delSnack !== undefined) {
+        const pr = getPRState();
+        pr.snacks.splice(parseInt(target.dataset.delSnack), 1);
+        savePRState(pr);
+        renderProteinTracker();
+        return;
+      }
+
+      // Add snack
+      if (target.dataset.action === "addProteinSnack") {
+        const name = prompt("Snack name?") || "Snack";
+        const pr = getPRState();
+        pr.snacks = pr.snacks || [];
+        pr.snacks.push({ name, p: 0 });
+        savePRState(pr);
+        renderProteinTracker();
+        return;
+      }
+
+      // Plan modal open
+      if (target.closest("#planBanner") || target.dataset.action === "openPlanModal") {
+        openPlanModal(); return;
+      }
+      // Plan modal close
+      if (target.dataset.action === "closePlanModal") { closePlanModal(); return; }
+      // Plan lock
+      if (target.dataset.action === "lockPlanDay") {
+        closePlanModal();
+        showToast("🔒 Tomorrow locked in! You got this.");
+        return;
+      }
+      // Plan quick add
+      if (target.dataset.action === "addPlanQuick") {
+        const v = $("#planQuickInput").value.trim();
+        if (!v) return;
+        const tm = new Date(); tm.setDate(tm.getDate() + 1);
+        state.tasks.push({ id:uid("task"), title:v, description:"", category:"Discipline", priority:"medium", date:todayKey(tm), time:"", block:"anytime", repeat:"once", system:false });
+        saveState();
+        $("#planQuickInput").value = "";
+        openPlanModal();
+        showToast("Added for tomorrow!");
+        return;
+      }
+      // Close plan modal clicking overlay
+      const planModal = $("#planModal");
+      if (event.target === planModal) { closePlanModal(); return; }
+    }
+
+    // Attach protein input listeners via delegation on input event
+    document.addEventListener("input", event => {
+      const t = event.target;
+      if (t.dataset.meal) {
+        const pr = getPRState();
+        pr[t.dataset.meal] = parseInt(t.value) || 0;
+        savePRState(pr);
+        renderProteinTracker();
+      }
+      if (t.dataset.snackIdx !== undefined && !t.dataset.meal) {
+        const i = parseInt(t.dataset.snackIdx);
+        const pr = getPRState();
+        if (pr.snacks[i]) { pr.snacks[i].p = parseInt(t.value) || 0; savePRState(pr); renderProteinTracker(); }
+      }
+    });
+
+    // Single renderToday that covers everything
+    function renderToday() {
+      renderTodayCore();
+      renderBJWorkout();
+      renderProteinTracker();
+      renderBaseDay();
+    }
+
+    // Register new action handler
+    document.addEventListener("click", handleNewActions);
+
     init();
   </script>
-
-
-</body></html>
+</body>
+</html>
